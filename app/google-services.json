@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "835939218133",
+    "firebase_url": "https://hamesakem.firebaseio.com",
+    "project_id": "hamesakem",
+    "storage_bucket": "hamesakem.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835939218133:android:a23cd510878e870511a85c",
+        "android_client_info": {
+          "package_name": "com.example.hamesakem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "835939218133-8qsqd3lhog4n8r828u82p6v5mv5osnmn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh0l42z_Qv7aiU2vr4xWt96HpxpQQ3jME"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835939218133-8qsqd3lhog4n8r828u82p6v5mv5osnmn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
