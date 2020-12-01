@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">HaMesakem</string>
+    <string name="facebook_application_id" translatable="false">1:835939218133:android:a23cd510878e870511a85c</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb1:835939218133:android:a23cd510878e870511a85c</string>
 </resources>
