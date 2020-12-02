@@ -92,7 +92,7 @@ public class Register extends AppCompatActivity {
 //                                }
 //                            });
 
-                            Toast.makeText(Register.this, "User Created.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Register.this, "User Created.", Toast.LENGTH_LONG).show();
 //                            userID = fAuth.getCurrentUser().getUid();
 //                            DocumentReference documentReference = fStore.collection("users").document(userID);
 //                            Map<String,Object> user = new HashMap<>();
@@ -113,7 +113,7 @@ public class Register extends AppCompatActivity {
                             startActivity(new Intent(getApplicationContext(),MainActivity.class));
 
                         }else {
-                            Toast.makeText(Register.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Register.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             progressBar.setVisibility(View.GONE);
                         }
                     }
