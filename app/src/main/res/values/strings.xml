@@ -24,7 +24,9 @@
     <string name="logout">Logout</string>
     <string name="choose_course">בחר קורס</string>
     <string name="choose_university">בחר אוניברסיטה</string>
-
+    <string name="choose_lecturer">בחר מרצה</string>
+    <string name="search">חפש</string>
+    <string name="upload">העלה סיכום</string>
 
 
 
