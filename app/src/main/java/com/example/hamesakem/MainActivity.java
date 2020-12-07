@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -176,6 +177,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d("myTag", "This is my message");
                 dialog_c.show();
+//                dialog_c.getWindow().setLayout(800, 1000);
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+
+                lp.copyFrom(dialog_c.getWindow().getAttributes());
+                lp.width = 750;
+                lp.height = 1150;
+                lp.x=40;
+                lp.y=100;
+                dialog_c.getWindow().setAttributes(lp);
             }
         });
         university.setOnClickListener(new View.OnClickListener() {
@@ -195,7 +205,13 @@ public class MainActivity extends AppCompatActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"-- "+course_choice+" --"+university_choice+" --"+lecturer_choice,  Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),"-- "+course_choice+" --"+university_choice+" --"+lecturer_choice,  Toast.LENGTH_LONG).show();
+                Intent intent= new Intent(MainActivity.this, result.class);
+                intent.putExtra("course_choice",course_choice);
+                intent.putExtra("university_choice",university_choice);
+                intent.putExtra("lecturer_choice",lecturer_choice);
+                startActivity(intent);
+
 
             }
         });
