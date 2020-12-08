@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/aclonica"
-        android:text="Create New Account"
+        android:text="התחבר"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +43,7 @@
         android:background="@color/black"
         android:ems="10"
         android:fontFamily="@font/aclonica"
-        android:hint="Email"
+        android:hint="אימייל"
         android:inputType="textEmailAddress"
         android:padding="10dp"
         android:textColor="#FFFFFF"
@@ -65,7 +65,7 @@
         android:background="@color/black"
         android:ems="10"
         android:fontFamily="@font/aclonica"
-        android:hint="Password"
+        android:hint="סיסמא"
         android:inputType="textPassword"
         android:padding="10dp"
         android:textColor="#FFFFFF"
@@ -84,7 +84,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:background="@color/teal_700"
-        android:text="Login"
+        android:text="התחבר"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -96,14 +96,14 @@
         android:id="@+id/createText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Here? Create Account"
+        android:text="חדש? הירשם כאן"
         android:textColor="#FFEB3B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginBtn"
-        app:layout_constraintVertical_bias="0.372" />
+        app:layout_constraintVertical_bias="0.19999999" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -115,6 +115,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/createText" />
+
+    <TextView
+        android:id="@+id/forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="שכחת סיסמא?"
+        android:textColor="#FFEB3B"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createText"
+        app:layout_constraintVertical_bias="0.19999999" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
