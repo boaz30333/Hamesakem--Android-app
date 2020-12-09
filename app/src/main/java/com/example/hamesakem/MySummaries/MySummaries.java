@@ -32,15 +32,15 @@ public class MySummaries extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_result);
+        setContentView(R.layout.activity_my_summaries);
 
         sum_array= (ArrayList<Summary>) getIntent().getSerializableExtra("sum_result");
         rv= findViewById(R.id.RV);
         rv_adapter = new RvAdapterSum(sum_array,this);
         rv.setAdapter(rv_adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        course_choice=getIntent().getExtras().getString("course_choice");
-        university_choice=getIntent().getExtras().getString("university_choice");;
-        lecturer_choice=getIntent().getExtras().getString("lecturer_choice");;
+//        course_choice=getIntent().getExtras().getString("course_choice");
+//        university_choice=getIntent().getExtras().getString("university_choice");;
+//        lecturer_choice=getIntent().getExtras().getString("lecturer_choice");;
     }
 }
