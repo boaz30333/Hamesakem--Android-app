@@ -4,72 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".result">
+    tools:context=".Result.result">
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RV"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="152dp"
-        tools:layout_editor_absoluteY="373dp">
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/checkBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="CheckBox" />
-
-                <Button
-                    android:id="@+id/button7"
-                    android:layout_width="157dp"
-                    android:layout_height="wrap_content"
-                    android:text="Button" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="right">
-
-                <CheckBox
-                    android:id="@+id/checkBox2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="CheckBox" />
-
-                <RatingBar
-                    android:id="@+id/rating"
-                    style="@android:attr/ratingBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
-                    android:foregroundGravity="center"
-                    android:isIndicator="true"
-                    android:max="5"
-                    android:scaleX=".5"
-                    android:scaleY=".5"
-                    android:transformPivotX="5dp"
-                    android:transformPivotY="15dp" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </TableLayout>
-    </ScrollView>
-
+        android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

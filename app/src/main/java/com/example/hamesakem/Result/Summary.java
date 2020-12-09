@@ -1,4 +1,4 @@
-package com.example.hamesakem;
+package com.example.hamesakem.Result;
 
 public class Summary {
    public String lecturer;
