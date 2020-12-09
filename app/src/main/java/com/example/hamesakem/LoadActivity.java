@@ -17,12 +17,20 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hamesakem.Result.Summary;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.okhttp.internal.DiskLruCache;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 
@@ -79,7 +87,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
                 return false;
             }
         }
-        if(sim.length() != 1 || (!sim.equals('a') && ! !sim.equals('b') && sim.equals('s') && !sim.equals('א') && !sim.equals('ב') && !sim.equals('ק'))){
+        if(sim.length() != 1 || (!sim.equals("a") && !sim.equals("b") && !sim.equals("s") && !sim.equals("א") && !sim.equals("ב") && !sim.equals("ק"))){
             Toast.makeText(this, " שגיאה: הסימסטר לא תקין!" + sim, Toast.LENGTH_LONG).show();
             return false;
         }
@@ -131,9 +139,14 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading");
             progressDialog.show();
+            FirebaseAuth fAuth;
+            fAuth = FirebaseAuth.getInstance();
+            String userId =fAuth.getCurrentUser().getUid();
+            String path = "uploads"+ "/" +editInput(university.getText().toString()) + "/" +editInput(teacher.getText().toString()) + "/" +
+                    editInput(course.getText().toString()) + "/" + year.getText().toString() + "/" + simester.getText().toString().toLowerCase() + "/" + userId;
 
 //            StorageReference riversRef = mStorageRef.child("uploads").child(university.toString()).child(teacher.toString()).child(course.toString()).child(year.toString()).child(simester.toString()).child(MimeTypeMap.getFileExtensionFromUrl(filePath.toString()));
-            StorageReference riversRef = mStorageRef.child("uploads"+ "/" +university.getText().toString().toLowerCase() + "/" +teacher.getText().toString().toLowerCase() + "/" + course.getText().toString().toLowerCase() + "/" + year.getText().toString() + "/" + simester.getText().toString().toLowerCase() + "/" + MimeTypeMap.getFileExtensionFromUrl(filePath.toString()));
+            StorageReference riversRef = mStorageRef.child(path+"." +MimeTypeMap.getFileExtensionFromUrl(filePath.toString()));
             riversRef.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -141,6 +154,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
                             //if the upload is successfull
                             //hiding the progress dialog
                             progressDialog.dismiss();
+                            updateRealTimeDB(userId, path);
 
                             //and displaying a success toast
                             Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
@@ -171,5 +185,25 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
         //if there is not any file
         else {
             Toast.makeText(getApplicationContext(), "File null ", Toast.LENGTH_LONG).show();        }
+    }
+
+    private void updateRealTimeDB(String userId, String path) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("sum");
+        Summary sum = new Summary(teacher.getText().toString(), simester.getText().toString(), course.getText().toString(), university.getText().toString(), path+"." +MimeTypeMap.getFileExtensionFromUrl(filePath.toString()), userId);
+        path = path.replaceAll("/", "")+ "-" +userId;
+        myRef.child(path).setValue(sum);
+        DatabaseReference db = database.getReference();
+        db.child("universities").child(university.getText().toString()).setValue(university.getText().toString());
+        db.child("courses").child(course.getText().toString()).setValue(course.getText().toString());
+        db.child("lecturer").child(teacher.getText().toString()).setValue(teacher.getText().toString());
+    }
+
+    private String editInput(String str) {
+        return str.toLowerCase().replaceAll(" ","").replaceAll("-","").replaceAll("'","");
+    }
+    public void onClick2(View v){
+        Intent intent=new Intent(this,Download.class);
+        startActivity(intent);
     }
 }
