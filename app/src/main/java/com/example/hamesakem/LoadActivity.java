@@ -141,19 +141,12 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
             progressDialog.show();
             FirebaseAuth fAuth;
             fAuth = FirebaseAuth.getInstance();
-            String user =fAuth.getCurrentUser().getUid();
-            String path = "uploads"+ "/" +university.getText().toString().toLowerCase() + "/" +teacher.getText().toString().toLowerCase() + "/" +
-                    course.getText().toString().toLowerCase() + "/" + year.getText().toString() + "/" + simester.getText().toString().toLowerCase() + "/" + user +MimeTypeMap.getFileExtensionFromUrl(filePath.toString());
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("sum");
-            Summary sum = new Summary(teacher.getText().toString(), simester.getText().toString(), course.getText().toString(), university.getText().toString(), path, user);
-            myRef.push().setValue(sum);
-            DatabaseReference db = database.getReference();
-            db.child("universities").child(university.getText().toString()).setValue(university.getText().toString());
-            db.child("courses").child(course.getText().toString()).setValue(course.getText().toString());
+            String userId =fAuth.getCurrentUser().getUid();
+            String path = "uploads"+ "/" +editInput(university.getText().toString()) + "/" +editInput(teacher.getText().toString()) + "/" +
+                    editInput(course.getText().toString()) + "/" + year.getText().toString() + "/" + simester.getText().toString().toLowerCase() + "/" + userId;
 
 //            StorageReference riversRef = mStorageRef.child("uploads").child(university.toString()).child(teacher.toString()).child(course.toString()).child(year.toString()).child(simester.toString()).child(MimeTypeMap.getFileExtensionFromUrl(filePath.toString()));
-            StorageReference riversRef = mStorageRef.child(path);
+            StorageReference riversRef = mStorageRef.child(path+"." +MimeTypeMap.getFileExtensionFromUrl(filePath.toString()));
             riversRef.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -161,6 +154,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
                             //if the upload is successfull
                             //hiding the progress dialog
                             progressDialog.dismiss();
+                            updateRealTimeDB(userId, path);
 
                             //and displaying a success toast
                             Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
@@ -191,5 +185,25 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
         //if there is not any file
         else {
             Toast.makeText(getApplicationContext(), "File null ", Toast.LENGTH_LONG).show();        }
+    }
+
+    private void updateRealTimeDB(String userId, String path) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("sum");
+        Summary sum = new Summary(teacher.getText().toString(), simester.getText().toString(), course.getText().toString(), university.getText().toString(), path+"." +MimeTypeMap.getFileExtensionFromUrl(filePath.toString()), userId);
+        path = path.replaceAll("/", "")+ "-" +userId;
+        myRef.child(path).setValue(sum);
+        DatabaseReference db = database.getReference();
+        db.child("universities").child(university.getText().toString()).setValue(university.getText().toString());
+        db.child("courses").child(course.getText().toString()).setValue(course.getText().toString());
+        db.child("lecturer").child(teacher.getText().toString()).setValue(teacher.getText().toString());
+    }
+
+    private String editInput(String str) {
+        return str.toLowerCase().replaceAll(" ","").replaceAll("-","").replaceAll("'","");
+    }
+    public void onClick2(View v){
+        Intent intent=new Intent(this,Download.class);
+        startActivity(intent);
     }
 }

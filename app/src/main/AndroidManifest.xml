@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HaMesakem">
-        <activity android:name=".MySummaries.MySummaries" />
+        <activity android:name=".Download"></activity>
         <activity android:name=".Result.result" />
+        <activity android:name=".MySummaries.MySummaries" />
         <activity android:name=".Login" />
         <activity android:name=".Register">
             <intent-filter>
