@@ -19,10 +19,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.okhttp.internal.DiskLruCache;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 
@@ -79,7 +86,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
                 return false;
             }
         }
-        if(sim.length() != 1 || (!sim.equals('a') && ! !sim.equals('b') && sim.equals('s') && !sim.equals('א') && !sim.equals('ב') && !sim.equals('ק'))){
+        if(sim.length() != 1 || (!sim.equals('a') && !sim.equals('b') && !sim.equals('s') && !sim.equals('א') && !sim.equals('ב') && !sim.equals('ק'))){
             Toast.makeText(this, " שגיאה: הסימסטר לא תקין!" + sim, Toast.LENGTH_LONG).show();
             return false;
         }
@@ -131,9 +138,16 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading");
             progressDialog.show();
-
+            FirebaseAuth fAuth;
+            fAuth = FirebaseAuth.getInstance();
+            String user =fAuth.getCurrentUser().getUid();
+            String path = "uploads"+ "/" +university.getText().toString().toLowerCase() + "/" +teacher.getText().toString().toLowerCase() + "/" +
+                    course.getText().toString().toLowerCase() + "/" + year.getText().toString() + "/" + simester.getText().toString().toLowerCase() + "/" + user + ".";
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("sum");
+            myRef.child(path+MimeTypeMap.getFileExtensionFromUrl(filePath.toString()));
 //            StorageReference riversRef = mStorageRef.child("uploads").child(university.toString()).child(teacher.toString()).child(course.toString()).child(year.toString()).child(simester.toString()).child(MimeTypeMap.getFileExtensionFromUrl(filePath.toString()));
-            StorageReference riversRef = mStorageRef.child("uploads"+ "/" +university.getText().toString().toLowerCase() + "/" +teacher.getText().toString().toLowerCase() + "/" + course.getText().toString().toLowerCase() + "/" + year.getText().toString() + "/" + simester.getText().toString().toLowerCase() + "/" + MimeTypeMap.getFileExtensionFromUrl(filePath.toString()));
+            StorageReference riversRef = mStorageRef.child(path);
             riversRef.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
