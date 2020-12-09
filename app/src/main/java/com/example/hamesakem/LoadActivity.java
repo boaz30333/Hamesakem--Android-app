@@ -17,6 +17,7 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hamesakem.Result.Summary;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -86,7 +87,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
                 return false;
             }
         }
-        if(sim.length() != 1 || (!sim.equals('a') && !sim.equals('b') && !sim.equals('s') && !sim.equals('א') && !sim.equals('ב') && !sim.equals('ק'))){
+        if(sim.length() != 1 || (!sim.equals("a") && !sim.equals("b") && !sim.equals("s") && !sim.equals("א") && !sim.equals("ב") && !sim.equals("ק"))){
             Toast.makeText(this, " שגיאה: הסימסטר לא תקין!" + sim, Toast.LENGTH_LONG).show();
             return false;
         }
@@ -142,10 +143,15 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
             fAuth = FirebaseAuth.getInstance();
             String user =fAuth.getCurrentUser().getUid();
             String path = "uploads"+ "/" +university.getText().toString().toLowerCase() + "/" +teacher.getText().toString().toLowerCase() + "/" +
-                    course.getText().toString().toLowerCase() + "/" + year.getText().toString() + "/" + simester.getText().toString().toLowerCase() + "/" + user + ".";
+                    course.getText().toString().toLowerCase() + "/" + year.getText().toString() + "/" + simester.getText().toString().toLowerCase() + "/" + user +MimeTypeMap.getFileExtensionFromUrl(filePath.toString());
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference("sum");
-            myRef.child(path+MimeTypeMap.getFileExtensionFromUrl(filePath.toString()));
+            Summary sum = new Summary(teacher.getText().toString(), simester.getText().toString(), course.getText().toString(), university.getText().toString(), path, user);
+            myRef.push().setValue(sum);
+            DatabaseReference db = database.getReference();
+            db.child("universities").child(university.getText().toString()).setValue(university.getText().toString());
+            db.child("courses").child(course.getText().toString()).setValue(course.getText().toString());
+
 //            StorageReference riversRef = mStorageRef.child("uploads").child(university.toString()).child(teacher.toString()).child(course.toString()).child(year.toString()).child(simester.toString()).child(MimeTypeMap.getFileExtensionFromUrl(filePath.toString()));
             StorageReference riversRef = mStorageRef.child(path);
             riversRef.putFile(filePath)
