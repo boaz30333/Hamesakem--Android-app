@@ -12,12 +12,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 
+import com.example.hamesakem.Result.result;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
