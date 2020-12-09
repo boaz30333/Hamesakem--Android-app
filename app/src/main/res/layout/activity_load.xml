@@ -25,16 +25,16 @@
         android:id="@+id/teyear"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/year"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/teteacher"
-        app:layout_constraintVertical_bias="0.128"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/teuniversity"
+        app:layout_constraintVertical_bias="0.288" />
 
     <EditText
         android:id="@+id/tecourse"
@@ -52,9 +52,25 @@
         android:autofillHints="" />
 
     <EditText
+        android:id="@+id/teuniversity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/university"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tecourse"
+        app:layout_constraintVertical_bias="0.055" />
+
+    <EditText
         android:id="@+id/teteacher"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/teacher"
         android:inputType="textPersonName"
@@ -63,14 +79,13 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tecourse"
-        app:layout_constraintVertical_bias="0.106"
-        android:autofillHints="" />
+        app:layout_constraintVertical_bias="0.214" />
 
     <Button
         android:id="@+id/bsave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/save"
+        android:layout_width="449dp"
+        android:layout_height="39dp"
+        android:hint="@string/loadFile"
         android:onClick="onClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -78,5 +93,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.838" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="210dp"
+        android:layout_height="114dp"
+        app:layout_constraintBottom_toTopOf="@+id/bsave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tesimester" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
