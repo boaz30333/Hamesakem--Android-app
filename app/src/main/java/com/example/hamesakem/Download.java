@@ -2,8 +2,14 @@ package com.example.hamesakem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -23,15 +29,23 @@ import java.io.IOException;
 public class Download extends AppCompatActivity {
 
     FirebaseStorage storage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
         storage = FirebaseStorage.getInstance();
+        int PERMISSION_ALL = 1;
+        String[] PERMISSIONS = {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if(!hasPermissions(this, PERMISSIONS)){
+            //ask user for granting permissions on api22+
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+        }
     }
     public void onClick(View v) throws IOException {
+
         // Create a storage reference from our app
-        StorageReference storageRef = storage.getReference();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://hamesakem.appspot.com/uploads/a/a/a/2020/a/tNOWcdn9wrUCy5lqiT3e2Zn2uCu1.pdf");
         //displaying a progress dialog while upload is going on
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Downloading");
@@ -48,7 +62,8 @@ public class Download extends AppCompatActivity {
         path = path.replaceAll("/", "");
         File localFile = new File(rootPath, path + ".pdf");
 
-        pathReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+//        pathReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+        storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 // Local temp file has been created
@@ -63,16 +78,20 @@ public class Download extends AppCompatActivity {
 
                 //and displaying error message
                 Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+                exception.printStackTrace();
             }
         });
-//        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                //calculating progress percentage
-//                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-//                //displaying percentage in progress dialog
-//                progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
-//            }
-//        });
+    }
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        //checaking if the application has permission
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
