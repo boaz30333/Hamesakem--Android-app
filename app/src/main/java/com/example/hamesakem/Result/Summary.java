@@ -1,6 +1,8 @@
 package com.example.hamesakem.Result;
 
-public class Summary {
+import java.io.Serializable;
+
+public class Summary implements Serializable {
     public String lecturer;
     public String topic;
     public String university;

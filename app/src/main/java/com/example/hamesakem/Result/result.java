@@ -26,58 +26,20 @@ public class result extends AppCompatActivity {
     ArrayList<Summary> sum_array;
 RecyclerView rv ;
 RvAdapter rv_adapter;
+   ArrayList<Summary> sum_list = new ArrayList<Summary>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        sum_array= new ArrayList<>();
+        sum_array= (ArrayList<Summary>) getIntent().getSerializableExtra("sum_result");
        rv= findViewById(R.id.RV);
         rv_adapter = new RvAdapter(sum_array,this);
         rv.setAdapter(rv_adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
-//         course_choice=getIntent().getExtras().getString("course_choice");
-//         university_choice=getIntent().getExtras().getString("university_choice");;
-//         lecturer_choice=getIntent().getExtras().getString("lecturer_choice");;
-//
-//        Toast.makeText(getApplicationContext(),"-- "+course_choice+" --"+university_choice+" --"+lecturer_choice,  Toast.LENGTH_LONG).show();
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference myRef = database.getReference("sum");
-//        Query vv = myRef
-//                .orderByChild("lecturer").equalTo("boaz");
-//        vv.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if(snapshot.exists()){
-//                    for(DataSnapshot child: snapshot.getChildren()){
-//                        Summary sum = child.getValue(Summary.class);
-//                        sum_array.add(sum);
-//                        Toast.makeText(getApplicationContext(),sum.lecturer,  Toast.LENGTH_LONG).show();
-//                        delay(2);
-//                    }
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-
-//        myRef.child("userId").setValue("Boaz");
-
-
+         course_choice=getIntent().getExtras().getString("course_choice");
+         university_choice=getIntent().getExtras().getString("university_choice");;
+         lecturer_choice=getIntent().getExtras().getString("lecturer_choice");;
     }
-
-    public  void delay(int secs){
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        }, secs * 1000); // afterDelay will be executed after (secs*1000) milliseconds.
-    }
-
 }
