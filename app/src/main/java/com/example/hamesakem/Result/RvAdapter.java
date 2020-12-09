@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,21 +32,35 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-holder.b.setText("ghgh");
+//holder.b.setText("ghgh");
+        holder.l_name.setText(sum_array.get(position).lecturer);
+        holder.c_name.setText(sum_array.get(position).topic);
+        holder.id_name.setText(sum_array.get(position).userId);
+        holder.u_name.setText(sum_array.get(position).university);
     }
 
     @Override
     public int getItemCount() {
-        return 30;
+        return sum_array.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 Button b;
         RatingBar r;
+        TextView u_name;
+        TextView c_name;
+        TextView l_name;
+        TextView id_name;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             b= (Button) itemView.findViewById(R.id.button_row);
             r=  (RatingBar)itemView.findViewById(R.id.rating);
+            u_name = itemView.findViewById(R.id.u_name);
+            c_name=itemView.findViewById(R.id.c_name);
+            l_name=itemView.findViewById(R.id.t_name);
+            id_name=itemView.findViewById(R.id.id_name);
+
         }
     }
 }
