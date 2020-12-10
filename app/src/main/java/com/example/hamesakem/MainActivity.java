@@ -349,7 +349,7 @@ sum_result_after_c.addAll(sum_list);
 
                     }
                 });
-                Intent intent= new Intent(MainActivity.this, result.class);
+                Intent intent= new Intent(MainActivity.this, MySummaries.class);
                 intent.putExtra("sum_result",my_summaries);
                 startActivity(intent);
             }
