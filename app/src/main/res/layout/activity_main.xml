@@ -14,14 +14,14 @@
         android:layout_height="39dp"
         android:background="@drawable/rounded"
         android:onClick="onClick"
-        android:text="הסיכומים שלי"
+        android:text="@string/summeries"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.924"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.919" />
+        app:layout_constraintVertical_bias="0.962" />
 
     <Button
         android:id="@+id/button"
@@ -30,7 +30,7 @@
         android:layout_marginTop="24dp"
         android:background="@drawable/rounded"
         android:onClick="logout"
-        android:text="התנתק"
+        android:text="@string/cancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,10 +58,10 @@
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.759"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.466">
+        app:layout_constraintVertical_bias="0.455">
 
         <TableRow
             android:layout_width="match_parent"
