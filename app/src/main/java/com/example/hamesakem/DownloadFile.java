@@ -29,7 +29,7 @@ public class DownloadFile {
     String path, pdf;
     Activity act;
 
-    DownloadFile(Activity act, String path) {
+   public DownloadFile(Activity act, String path) {
         storage = FirebaseStorage.getInstance();
         this.act = act;
         String[] fullPath = path.split("\\.");

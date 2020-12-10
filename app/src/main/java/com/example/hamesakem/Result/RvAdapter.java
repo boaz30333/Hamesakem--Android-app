@@ -1,5 +1,6 @@
 package com.example.hamesakem.Result;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,10 +8,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hamesakem.DownloadFile;
+import com.example.hamesakem.MainActivity;
 import com.example.hamesakem.R;
 
 import java.util.ArrayList;
@@ -18,9 +22,11 @@ import java.util.ArrayList;
 public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
     ArrayList<Summary> sum_array;
     Context context;
-    public RvAdapter(ArrayList<Summary> sum_array, Context context){
+    Activity result_activity;
+    public RvAdapter(ArrayList<Summary> sum_array, Context context, Activity result_activity){
         this.sum_array= sum_array;
         this.context=context;
+        this.result_activity=result_activity;
     }
     @NonNull
     @Override
@@ -37,6 +43,17 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
         holder.c_name.setText(sum_array.get(position).topic);
         holder.id_name.setText(sum_array.get(position).userId);
         holder.u_name.setText(sum_array.get(position).university);
+        holder.b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DownloadFile d= new DownloadFile(result_activity,sum_array.get(position).uri);
+                d.down();
+                Toast.makeText(context, "ygy",  Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+
     }
 
     @Override
