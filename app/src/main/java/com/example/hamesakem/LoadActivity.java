@@ -142,8 +142,8 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
             FirebaseAuth fAuth;
             fAuth = FirebaseAuth.getInstance();
             String userId =fAuth.getCurrentUser().getUid();
-            String path = "uploads"+ "/" +editInput(university.getText().toString()) + "/" +editInput(teacher.getText().toString()) + "/" +
-                    editInput(course.getText().toString()) + "/" + year.getText().toString() + "/" + simester.getText().toString().toLowerCase() + "/" + userId;
+            String path = "uploads"+ "/" +editInput(university.getText().toString()) + "/" +editInput(course.getText().toString()) + "/" +
+                    editInput(teacher.getText().toString()) + "/" + year.getText().toString() + "/" + simester.getText().toString().toLowerCase() + "/" + userId;
 
 //            StorageReference riversRef = mStorageRef.child("uploads").child(university.toString()).child(teacher.toString()).child(course.toString()).child(year.toString()).child(simester.toString()).child(MimeTypeMap.getFileExtensionFromUrl(filePath.toString()));
             StorageReference riversRef = mStorageRef.child(path+"." +MimeTypeMap.getFileExtensionFromUrl(filePath.toString()));
