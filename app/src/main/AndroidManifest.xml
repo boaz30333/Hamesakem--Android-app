@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HaMesakem">
-        <activity android:name=".Manager"></activity>
+        <activity android:name=".Manager.Manager"></activity>
         <activity android:name=".Download" />
         <activity android:name=".Result.result" />
         <activity android:name=".MySummaries.MySummaries" />

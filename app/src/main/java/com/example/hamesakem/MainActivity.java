@@ -5,13 +5,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
@@ -19,8 +17,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
+import com.example.hamesakem.Manager.Manager;
 import com.example.hamesakem.MySummaries.MySummaries;
-import com.example.hamesakem.MySummaries.RvAdapterSum;
 import com.example.hamesakem.Result.Summary;
 import com.example.hamesakem.Result.result;
 import com.google.firebase.auth.FirebaseAuth;
@@ -55,11 +53,13 @@ public class MainActivity extends AppCompatActivity {
     public ListAdapter adapter_l;
     public ListAdapter adapter_my_sum;
     int course_num=-1;
+    Button upload;
     Button course;
     Button university;
     Button lecturer;
     Button search;
     Button my_sum;
+    Button sum_to_manager;
     AlertDialog dialog_c;
     AlertDialog dialog_u;
     AlertDialog dialog_l;
@@ -82,11 +82,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        upload = (Button)findViewById(R.id.button2);
         course = (Button)findViewById(R.id.button3);
         university = (Button)findViewById(R.id.button4);
         lecturer = (Button)findViewById(R.id.button5);
         search = (Button)findViewById(R.id.button9);
         my_sum = (Button)findViewById(R.id.button6);
+        sum_to_manager = (Button)findViewById(R.id.button7);
 
         list_c = new ListView(this);// (ListView) findViewById(R.id.dor);
         list_u = new ListView(this);// (ListView) findViewById(R.id.dor);
@@ -362,8 +364,15 @@ sum_result_after_c.addAll(sum_list);
     }
     public void onClick(View v)
     {
-        Intent intent=new Intent(this,LoadActivity.class);
-        startActivity(intent);
+        if(upload == v){
+            Intent intent=new Intent(this,LoadActivity.class);
+            startActivity(intent);
+        }
+        if(sum_to_manager == v){
+            Intent intent=new Intent(this, Manager.class);
+            startActivity(intent);
+        }
+
 
     }
     public void OnBtnClick(){

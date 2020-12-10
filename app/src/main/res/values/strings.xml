@@ -33,6 +33,8 @@
     <string name="download">הורד סיכום</string>
     <string name="summeries">הסיכומים שלי</string>
     <string name="cancel">התנתק</string>
+    <string name="loadAndSave">טען קובץ ושמור</string>
+    <string name="checkSummaries">סיכומים לבדיקה</string>
 
 
 </resources>
