@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 
 import com.example.hamesakem.MySummaries.MySummaries;
+import com.example.hamesakem.MySummaries.RvAdapterSum;
 import com.example.hamesakem.Result.Summary;
 import com.example.hamesakem.Result.result;
 import com.google.firebase.auth.FirebaseAuth;
@@ -147,6 +148,27 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        Query v3 = myRef
+                .child("sum").orderByChild("userId").equalTo(userId);
+        v3.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                my_summaries.clear();
+                if(snapshot.exists()){
+                    for(DataSnapshot child: snapshot.getChildren()){
+                        Summary sum = child.getValue(Summary.class);
+                        my_sum_listItems.add(sum.topic);
+                        my_summaries.add(sum);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
         //--------------------------------------------------
@@ -179,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
 //                        dialog.dismiss();
             }
         });
+//        builder_u.
         DialogInterface.OnClickListener university_listener= new DialogInterface.OnClickListener() { //when click ok
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -328,28 +351,8 @@ sum_result_after_c.addAll(sum_list);
 //                FirebaseAuth fAuth;
 //                fAuth = FirebaseAuth.getInstance();
 //                String userId =fAuth.getCurrentUser().getUid();
-                Query v2 = myRef
-                        .child("sum").orderByChild("userId").equalTo(userId);
-                v2.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        my_summaries.clear();
-                        if(snapshot.exists()){
-                            for(DataSnapshot child: snapshot.getChildren()){
-                                Summary sum = child.getValue(Summary.class);
-                                my_sum_listItems.add(sum.topic);
-                                my_summaries.add(sum);
-                            }
-                        }
 
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-                Intent intent= new Intent(MainActivity.this, MySummaries.class);
+                Intent intent= new Intent(MainActivity.this,MySummaries.class);
                 intent.putExtra("sum_result",my_summaries);
                 startActivity(intent);
             }
@@ -387,6 +390,8 @@ else
 
                 Log.d("myTag", "This is my message");
                 dialog_u.show();
+                list_u.getRootView().performClick();
+
 //                list_u.
             }
         });

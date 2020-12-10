@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import com.example.hamesakem.R;
+import com.example.hamesakem.Result.RvAdapter;
 import com.example.hamesakem.Result.Summary;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +30,7 @@ public class MySummaries extends AppCompatActivity {
     RvAdapterSum rv_adapter;
     ArrayList<Summary> sum_list = new ArrayList<Summary>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +41,8 @@ public class MySummaries extends AppCompatActivity {
         rv_adapter = new RvAdapterSum(sum_array,this, this);
         rv.setAdapter(rv_adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
+
+        rv_adapter.notifyDataSetChanged();
 //        course_choice=getIntent().getExtras().getString("course_choice");
 //        university_choice=getIntent().getExtras().getString("university_choice");;
 //        lecturer_choice=getIntent().getExtras().getString("lecturer_choice");;
