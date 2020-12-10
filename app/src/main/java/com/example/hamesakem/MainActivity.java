@@ -116,11 +116,13 @@ public class MainActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
 
-        myRef.child("sum").orderByChild("userId").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child("sum").orderByChild("userId").equalTo(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     my_sum.setVisibility(View.VISIBLE);
+                }else{
+                    my_sum.setVisibility(View.INVISIBLE);
                 }
             }
             @Override
@@ -150,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         });
         Query v3 = myRef
                 .child("sum").orderByChild("userId").equalTo(userId);
-        v3.addListenerForSingleValueEvent(new ValueEventListener() {
+        v3.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 my_summaries.clear();
