@@ -197,14 +197,29 @@ protected void onCreate(Bundle savedInstanceState) {
         myRef.child(path).setValue(sum);
         DatabaseReference db = database.getReference();
         updateValue(db, "universities", university.getText().toString() );
-        db.child("universities").child(university.getText().toString()).setValue(university.getText().toString());
-        db.child("courses").child(course.getText().toString()).setValue(course.getText().toString());
-        db.child("lecturer").child(teacher.getText().toString()).setValue(teacher.getText().toString());
+        updateValue(db, "courses", course.getText().toString() );
+        updateValue(db, "lecturer", teacher.getText().toString() );
+//        db.child("universities").child(university.getText().toString()).setValue(university.getText().toString());
+//        db.child("courses").child(course.getText().toString()).setValue(course.getText().toString());
+//        db.child("lecturer").child(teacher.getText().toString()).setValue(teacher.getText().toString());
     }
 
     private void updateValue( DatabaseReference db,  String parent, String child) {
-//        db.child(parent).
-    }
+        db.child(parent).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.hasChild(child)) {
+                    db.child(parent).child(child).setValue((Long)(snapshot.child(child).getValue())+1);
+                }
+                else
+                    db.child(parent).child(child).setValue(1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });    }
 
     private String editInput(String str) {
         return str.toLowerCase().replaceAll(" ","").replaceAll("-","").replaceAll("'","");
