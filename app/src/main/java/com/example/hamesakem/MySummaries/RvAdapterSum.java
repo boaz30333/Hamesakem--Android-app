@@ -38,6 +38,12 @@ public class RvAdapterSum extends RecyclerView.Adapter<RvAdapterSum.MyViewHolder
         holder.c_name.setText(sum_array.get(position).topic);
         holder.id_name.setText(sum_array.get(position).userId);
         holder.u_name.setText(sum_array.get(position).university);
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -46,7 +52,7 @@ public class RvAdapterSum extends RecyclerView.Adapter<RvAdapterSum.MyViewHolder
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        Button b;
+        Button delete;
         RatingBar r;
         TextView u_name;
         TextView c_name;
@@ -55,7 +61,7 @@ public class RvAdapterSum extends RecyclerView.Adapter<RvAdapterSum.MyViewHolder
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            b= (Button) itemView.findViewById(R.id.button_row);
+            delete= (Button) itemView.findViewById(R.id.button_row);
             r=  (RatingBar)itemView.findViewById(R.id.rating);
             u_name = itemView.findViewById(R.id.u_name);
             c_name=itemView.findViewById(R.id.c_name);

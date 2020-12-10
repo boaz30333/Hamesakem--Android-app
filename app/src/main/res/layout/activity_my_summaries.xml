@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/notepad2"
-    tools:context=".Result.result">
+    tools:context=".MySummaries.MySummaries">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RV"
