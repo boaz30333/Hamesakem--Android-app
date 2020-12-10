@@ -24,8 +24,8 @@ public class result extends AppCompatActivity {
     String university_choice="";
     String lecturer_choice="";
     ArrayList<Summary> sum_array;
-RecyclerView rv ;
-RvAdapter rv_adapter;
+    RecyclerView rv ;
+    RvAdapter rv_adapter;
    ArrayList<Summary> sum_list = new ArrayList<Summary>();
 
     @Override
@@ -35,7 +35,7 @@ RvAdapter rv_adapter;
 
         sum_array= (ArrayList<Summary>) getIntent().getSerializableExtra("sum_result");
        rv= findViewById(R.id.RV);
-        rv_adapter = new RvAdapter(sum_array,this);
+        rv_adapter = new RvAdapter(sum_array,this,this);
         rv.setAdapter(rv_adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
          course_choice=getIntent().getExtras().getString("course_choice");

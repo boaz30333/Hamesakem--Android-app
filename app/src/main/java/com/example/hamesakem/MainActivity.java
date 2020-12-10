@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         lecturer = (Button)findViewById(R.id.button5);
         search = (Button)findViewById(R.id.button9);
         my_sum = (Button)findViewById(R.id.button6);
-
+        my_sum.setVisibility(View.VISIBLE);
 
         list_c = new ListView(this);// (ListView) findViewById(R.id.dor);
         list_u = new ListView(this);// (ListView) findViewById(R.id.dor);
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                 choose_l=false;
                 if(u_listItems.isEmpty()) return;
 
-                if(choose_u==false) university_choice=u_listItems.get(list_u.getSelectedItemPosition());
+                if(choose_u==false) return;// university_choice=u_listItems.get(list_u.getSelectedItemPosition());
                 Toast.makeText(getApplicationContext(),""+university_choice,  Toast.LENGTH_SHORT).show();
                 university.setText(""+university_choice);
                 Query v2 = myRef
@@ -384,10 +384,10 @@ else
         university.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disableItemSelection(list_u);
 
                 Log.d("myTag", "This is my message");
                 dialog_u.show();
+//                list_u.
             }
         });
         lecturer.setOnClickListener(new View.OnClickListener() {

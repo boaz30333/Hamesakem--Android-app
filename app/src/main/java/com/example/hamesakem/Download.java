@@ -39,65 +39,68 @@ public class Download extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
-        storage = FirebaseStorage.getInstance();
-        int PERMISSION_ALL = 1;
-        String[] PERMISSIONS = {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        if(!hasPermissions(this, PERMISSIONS)){
-            //ask user for granting permissions on api22+
-            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
-        }
+//        storage = FirebaseStorage.getInstance();
+//        int PERMISSION_ALL = 1;
+//        String[] PERMISSIONS = {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+//        if(!hasPermissions(this, PERMISSIONS)){
+//            //ask user for granting permissions on api22+
+//            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+//        }
     }
     public void onClick(View v) throws IOException {
 
+        path = "uploads/a/a/a/2020/a/tNOWcdn9wrUCy5lqiT3e2Zn2uCu1.pdf";
+        DownloadFile df = new DownloadFile(this , path);
+        df.down();
         // Create a storage reference from our app
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://hamesakem.appspot.com/uploads/a/a/a/2020/a/tNOWcdn9wrUCy5lqiT3e2Zn2uCu1.pdf");
-        //displaying a progress dialog while upload is going on
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Downloading");
-        progressDialog.show();
-        // Create a reference with an initial file path and name
-        path = "uploads/a/a/a/2020/a/tNOWcdn9wrUCy5lqiT3e2Zn2uCu1";
-//        StorageReference pathReference = storageRef.child(path + ".pdf");
-//        File rootPath = new File(Environment.getExternalStorageDirectory(), "Downloads");
-//        if (!rootPath.exists()) {
-//            rootPath.mkdirs();
-//        }
-        String key = path.replaceAll("/", "");
-        ;
-//        StorageReference islandRef = storageRef.child("images/island.jpg");
-//        islandRef = storageRef.child("images/island.jpg");
-//        File localFile = new File(rootPath, key + ".pdf");
-
-//        pathReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//        storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                // Local temp file has been created
-                progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), "File Download ", Toast.LENGTH_LONG).show();
-                String url = uri.toString();
-                downloadFile(Download.this, path, ".pdf", DIRECTORY_DOWNLOADS, url);
-            }
-//        })
+//        StorageReference storageRef = storage.getReferenceFromUrl("gs://hamesakem.appspot.com/uploads/a/a/a/2020/a/tNOWcdn9wrUCy5lqiT3e2Zn2uCu1.pdf");
+//        //displaying a progress dialog while upload is going on
+//        final ProgressDialog progressDialog = new ProgressDialog(this);
+//        progressDialog.setTitle("Downloading");
+//        progressDialog.show();
+//        // Create a reference with an initial file path and name
+//        path = "uploads/a/a/a/2020/a/tNOWcdn9wrUCy5lqiT3e2Zn2uCu1";
+////        StorageReference pathReference = storageRef.child(path + ".pdf");
+////        File rootPath = new File(Environment.getExternalStorageDirectory(), "Downloads");
+////        if (!rootPath.exists()) {
+////            rootPath.mkdirs();
+////        }
+//        String key = path.replaceAll("/", "");
+//        ;
+////        StorageReference islandRef = storageRef.child("images/island.jpg");
+////        islandRef = storageRef.child("images/island.jpg");
+////        File localFile = new File(rootPath, key + ".pdf");
+//
+////        pathReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+////        storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+//        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
 //            @Override
-//            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+//            public void onSuccess(Uri uri) {
 //                // Local temp file has been created
 //                progressDialog.dismiss();
 //                Toast.makeText(getApplicationContext(), "File Download ", Toast.LENGTH_LONG).show();
+//                String url = uri.toString();
+//                downloadFile(Download.this, path, ".pdf", DIRECTORY_DOWNLOADS, url);
 //            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-                progressDialog.dismiss();
-
-                //and displaying error message
-                Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
-                exception.printStackTrace();
-            }
-
-        });
+////        })
+////            @Override
+////            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+////                // Local temp file has been created
+////                progressDialog.dismiss();
+////                Toast.makeText(getApplicationContext(), "File Download ", Toast.LENGTH_LONG).show();
+////            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception exception) {
+//                // Handle any errors
+//                progressDialog.dismiss();
+//
+//                //and displaying error message
+//                Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+//                exception.printStackTrace();
+//            }
+//
+//        });
     }
     private void downloadFile(Context context, String path, String s, String directoryDownloads, String url) {
         DownloadManager dm = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);

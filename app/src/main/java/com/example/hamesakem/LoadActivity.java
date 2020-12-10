@@ -40,10 +40,10 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
 //    StorageReference photoRef;
     private StorageReference mStorageRef;
     //a constant to track the file chooser intent
-    private static final int PICK_IMAGE_REQUEST = 234;
+//    private static final int PICK_IMAGE_REQUEST = 234;
     private static final int PICK_PDF_REQUEST = 2342;
     //Buttons
-    private Button buttonChoose;
+//    private Button buttonChoose;
     private Button buttonUpload;
     TextView course;
     TextView teacher;
@@ -56,7 +56,24 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
     //a Uri object to store file path
     private Uri filePath;
     static final int PICK_FILE_REQUEST = 101 , RESULT_OK = -1;
-    TextSwitcher textView;
+//    TextSwitcher textView;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_load);
+    mStorageRef = FirebaseStorage.getInstance().getReference();
+
+    //getting views from layout
+//        buttonChoose = (Button) findViewById(R.id.buttonChoose);
+    buttonUpload = (Button) findViewById(R.id.bsave);
+
+//        imageView = (ImageView) findViewById(R.id.imageView);
+
+    //attaching listener
+//        buttonChoose.setOnClickListener(this);
+//        buttonUpload.setOnClickListener(this);
+}
+
     public void onClick(View v){
         course = (TextView)findViewById(R.id.tecourse);
         teacher = (TextView)findViewById(R.id.teteacher);
@@ -106,22 +123,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_load);
-        mStorageRef = FirebaseStorage.getInstance().getReference();
 
-        //getting views from layout
-//        buttonChoose = (Button) findViewById(R.id.buttonChoose);
-        buttonUpload = (Button) findViewById(R.id.bsave);
-
-        imageView = (ImageView) findViewById(R.id.imageView);
-
-        //attaching listener
-//        buttonChoose.setOnClickListener(this);
-//        buttonUpload.setOnClickListener(this);
-    }
     //handling the image chooser activity result
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -184,7 +186,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
         }
         //if there is not any file
         else {
-            Toast.makeText(getApplicationContext(), "File null ", Toast.LENGTH_LONG).show();        }
+            Toast.makeText(getApplicationContext(), "File not found ", Toast.LENGTH_LONG).show();        }
     }
 
     private void updateRealTimeDB(String userId, String path) {
@@ -194,9 +196,14 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
         path = path.replaceAll("/", "")+ "-" +userId;
         myRef.child(path).setValue(sum);
         DatabaseReference db = database.getReference();
+        updateValue(db, "universities", university.getText().toString() );
         db.child("universities").child(university.getText().toString()).setValue(university.getText().toString());
         db.child("courses").child(course.getText().toString()).setValue(course.getText().toString());
         db.child("lecturer").child(teacher.getText().toString()).setValue(teacher.getText().toString());
+    }
+
+    private void updateValue( DatabaseReference db,  String parent, String child) {
+//        db.child(parent).
     }
 
     private String editInput(String str) {
