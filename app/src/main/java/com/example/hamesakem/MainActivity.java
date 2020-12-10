@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 
 import com.example.hamesakem.MySummaries.MySummaries;
+import com.example.hamesakem.MySummaries.RvAdapterSum;
 import com.example.hamesakem.Result.Summary;
 import com.example.hamesakem.Result.result;
 import com.google.firebase.auth.FirebaseAuth;
@@ -86,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         lecturer = (Button)findViewById(R.id.button5);
         search = (Button)findViewById(R.id.button9);
         my_sum = (Button)findViewById(R.id.button6);
-        my_sum.setVisibility(View.VISIBLE);
 
         list_c = new ListView(this);// (ListView) findViewById(R.id.dor);
         list_u = new ListView(this);// (ListView) findViewById(R.id.dor);
@@ -136,8 +136,29 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     for(DataSnapshot child: snapshot.getChildren()){
-                        String u = (String) child.getValue();
+                        String u = (String) child.getKey();
                         u_listItems.add(u);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        Query v3 = myRef
+                .child("sum").orderByChild("userId").equalTo(userId);
+        v3.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                my_summaries.clear();
+                if(snapshot.exists()){
+                    for(DataSnapshot child: snapshot.getChildren()){
+                        Summary sum = child.getValue(Summary.class);
+                        my_sum_listItems.add(sum.topic);
+                        my_summaries.add(sum);
                     }
                 }
 
@@ -180,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
 //                        dialog.dismiss();
             }
         });
+//        builder_u.
         DialogInterface.OnClickListener university_listener= new DialogInterface.OnClickListener() { //when click ok
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -329,28 +351,8 @@ sum_result_after_c.addAll(sum_list);
 //                FirebaseAuth fAuth;
 //                fAuth = FirebaseAuth.getInstance();
 //                String userId =fAuth.getCurrentUser().getUid();
-                Query v2 = myRef
-                        .child("sum").orderByChild("userId").equalTo(userId);
-                v2.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        my_summaries.clear();
-                        if(snapshot.exists()){
-                            for(DataSnapshot child: snapshot.getChildren()){
-                                Summary sum = child.getValue(Summary.class);
-                                my_sum_listItems.add(sum.topic);
-                                my_summaries.add(sum);
-                            }
-                        }
 
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-                Intent intent= new Intent(MainActivity.this, MySummaries.class);
+                Intent intent= new Intent(MainActivity.this,MySummaries.class);
                 intent.putExtra("sum_result",my_summaries);
                 startActivity(intent);
             }
@@ -366,9 +368,10 @@ sum_result_after_c.addAll(sum_list);
         course.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disableItemSelection(list_c);
+//                disableItemSelection(list_c);
 
-                if(c_listItems==null||c_listItems.isEmpty())                 choice_p_c.show();
+                if(c_listItems==null||c_listItems.isEmpty())
+                    choice_p_c.show();
 else
                 dialog_c.show();
 //                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
@@ -387,13 +390,15 @@ else
 
                 Log.d("myTag", "This is my message");
                 dialog_u.show();
+                list_u.getRootView().performClick();
+
 //                list_u.
             }
         });
         lecturer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disableItemSelection(list_l);
+//                disableItemSelection(list_l);
                 if(l_listItems==null||l_listItems.isEmpty())     {
                     choice_p_l.show();
                 }
