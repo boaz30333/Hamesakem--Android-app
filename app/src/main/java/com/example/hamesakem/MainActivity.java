@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
         lecturer = (Button)findViewById(R.id.button5);
         search = (Button)findViewById(R.id.button9);
         my_sum = (Button)findViewById(R.id.button6);
-        my_sum.setVisibility(View.VISIBLE);
 
         list_c = new ListView(this);// (ListView) findViewById(R.id.dor);
         list_u = new ListView(this);// (ListView) findViewById(R.id.dor);
@@ -136,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     for(DataSnapshot child: snapshot.getChildren()){
-                        String u = (String) child.getValue();
+                        String u = (String) child.getKey();
                         u_listItems.add(u);
                     }
                 }
@@ -366,9 +365,10 @@ sum_result_after_c.addAll(sum_list);
         course.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disableItemSelection(list_c);
+//                disableItemSelection(list_c);
 
-                if(c_listItems==null||c_listItems.isEmpty())                 choice_p_c.show();
+                if(c_listItems==null||c_listItems.isEmpty())
+                    choice_p_c.show();
 else
                 dialog_c.show();
 //                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
@@ -393,7 +393,7 @@ else
         lecturer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disableItemSelection(list_l);
+//                disableItemSelection(list_l);
                 if(l_listItems==null||l_listItems.isEmpty())     {
                     choice_p_l.show();
                 }
