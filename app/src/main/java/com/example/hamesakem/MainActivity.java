@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
+import com.example.hamesakem.MySummaries.MySummaries;
 import com.example.hamesakem.Result.Summary;
 import com.example.hamesakem.Result.result;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,21 +38,27 @@ public class MainActivity extends AppCompatActivity {
     public  ListView list_c;
     public  ListView list_u;
     public  ListView list_l;
+    public  ListView list_my_sum;
     public ArrayList<String> c_listItems = new ArrayList<String>();
     public ArrayList<String> u_listItems = new ArrayList<String>();
     public ArrayList<String> l_listItems = new ArrayList<String>(); ;
-   public ArrayList<Summary> sum_list;
+    public ArrayList<String> my_sum_listItems = new ArrayList<String>(); ;
+
+    public ArrayList<Summary> sum_list;
     public ArrayList<Summary> sum_result_after_l;
     public ArrayList<Summary> sum_result_after_c;
+    public ArrayList<Summary> my_summaries;
 
     public ListAdapter adapter_c;
     public ListAdapter adapter_u;
     public ListAdapter adapter_l;
+    public ListAdapter adapter_my_sum;
     int course_num=-1;
     Button course;
     Button university;
     Button lecturer;
     Button search;
+    Button my_sum;
     AlertDialog dialog_c;
     AlertDialog dialog_u;
     AlertDialog dialog_l;
@@ -78,25 +85,50 @@ public class MainActivity extends AppCompatActivity {
         university = (Button)findViewById(R.id.button4);
         lecturer = (Button)findViewById(R.id.button5);
         search = (Button)findViewById(R.id.button9);
+        my_sum = (Button)findViewById(R.id.button6);
+
 
         list_c = new ListView(this);// (ListView) findViewById(R.id.dor);
         list_u = new ListView(this);// (ListView) findViewById(R.id.dor);
         list_l = new ListView(this);// (ListView) findViewById(R.id.dor);
+        list_my_sum = new ListView(this);
+
 
 
         adapter_c= new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_activated_1, c_listItems);
         adapter_u= new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_activated_1, u_listItems);
         adapter_l= new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_activated_1, l_listItems);
+        adapter_my_sum= new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_activated_1, my_sum_listItems);
+
         list_u.setAdapter(adapter_u);
         list_c.setAdapter(adapter_c);
         list_l.setAdapter(adapter_l);
+        list_my_sum.setAdapter(adapter_my_sum);
         sum_list = new ArrayList<Summary>();
         sum_result_after_l = new ArrayList<Summary>();
         sum_result_after_c = new ArrayList<Summary>();
+        my_summaries = new ArrayList<>();
 
+        FirebaseAuth fAuth;
+        fAuth = FirebaseAuth.getInstance();
+        String userId =fAuth.getCurrentUser().getUid();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
+
+        myRef.child("sum").orderByChild("userId").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    my_sum.setVisibility(View.VISIBLE);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         Query vv = myRef
                 .child("universities");
         vv.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -290,6 +322,39 @@ sum_result_after_c.addAll(sum_list);
 //        setContentView(R.layout.activity_main);
 
         OnBtnClick();
+
+        my_sum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                FirebaseAuth fAuth;
+//                fAuth = FirebaseAuth.getInstance();
+//                String userId =fAuth.getCurrentUser().getUid();
+                Query v2 = myRef
+                        .child("sum").orderByChild("userId").equalTo(userId);
+                v2.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        my_summaries.clear();
+                        if(snapshot.exists()){
+                            for(DataSnapshot child: snapshot.getChildren()){
+                                Summary sum = child.getValue(Summary.class);
+                                my_sum_listItems.add(sum.topic);
+                                my_summaries.add(sum);
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                Intent intent= new Intent(MainActivity.this, MySummaries.class);
+                intent.putExtra("sum_result",my_summaries);
+                startActivity(intent);
+            }
+        });
     }
     public void onClick(View v)
     {
@@ -351,6 +416,7 @@ else
 
             }
         });
+
 //        list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 //
 //            @Override
@@ -360,11 +426,13 @@ else
 //            }
 //        });
     }
+
     public void logout(View view) {
         FirebaseAuth.getInstance().signOut();//logout
         startActivity(new Intent(getApplicationContext(),Login.class));
         finish();
     }
+
     private void disableItemSelection(ListView lv) {
         for (int i = 0; i < lv.getChildCount(); i++){
             View v = lv.getChildAt(i);
