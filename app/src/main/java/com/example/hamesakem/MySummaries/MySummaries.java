@@ -36,7 +36,7 @@ public class MySummaries extends AppCompatActivity {
 
         sum_array= (ArrayList<Summary>) getIntent().getSerializableExtra("sum_result");
         rv= findViewById(R.id.RV);
-        rv_adapter = new RvAdapterSum(sum_array,this);
+        rv_adapter = new RvAdapterSum(sum_array,this, this);
         rv.setAdapter(rv_adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
 //        course_choice=getIntent().getExtras().getString("course_choice");
