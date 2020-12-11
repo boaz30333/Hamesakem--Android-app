@@ -5,13 +5,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
@@ -19,8 +17,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
+import com.example.hamesakem.Manager.Manager;
 import com.example.hamesakem.MySummaries.MySummaries;
-import com.example.hamesakem.MySummaries.RvAdapterSum;
 import com.example.hamesakem.Result.Summary;
 import com.example.hamesakem.Result.result;
 import com.google.firebase.auth.FirebaseAuth;
@@ -55,11 +53,13 @@ public class MainActivity extends AppCompatActivity {
     public ListAdapter adapter_l;
     public ListAdapter adapter_my_sum;
     int course_num=-1;
+    Button upload;
     Button course;
     Button university;
     Button lecturer;
     Button search;
     Button my_sum;
+    Button sum_to_manager;
     AlertDialog dialog_c;
     AlertDialog dialog_u;
     AlertDialog dialog_l;
@@ -82,11 +82,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        upload = (Button)findViewById(R.id.button2);
         course = (Button)findViewById(R.id.button3);
         university = (Button)findViewById(R.id.button4);
         lecturer = (Button)findViewById(R.id.button5);
         search = (Button)findViewById(R.id.button9);
         my_sum = (Button)findViewById(R.id.button6);
+        sum_to_manager = (Button)findViewById(R.id.button7);
 
         list_c = new ListView(this);// (ListView) findViewById(R.id.dor);
         list_u = new ListView(this);// (ListView) findViewById(R.id.dor);
@@ -116,11 +118,13 @@ public class MainActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
 
-        myRef.child("sum").orderByChild("userId").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child("sum").orderByChild("userId").equalTo(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     my_sum.setVisibility(View.VISIBLE);
+                }else{
+                    my_sum.setVisibility(View.INVISIBLE);
                 }
             }
             @Override
@@ -131,13 +135,35 @@ public class MainActivity extends AppCompatActivity {
 
         Query vv = myRef
                 .child("universities");
-        vv.addListenerForSingleValueEvent(new ValueEventListener() {
+        vv.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                u_listItems.clear();
                 if(snapshot.exists()){
                     for(DataSnapshot child: snapshot.getChildren()){
                         String u = (String) child.getKey();
                         u_listItems.add(u);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        Query v3 = myRef
+                .child("sum").orderByChild("userId").equalTo(userId);
+        v3.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                my_summaries.clear();
+                if(snapshot.exists()){
+                    for(DataSnapshot child: snapshot.getChildren()){
+                        Summary sum = child.getValue(Summary.class);
+                        my_sum_listItems.add(sum.topic);
+                        my_summaries.add(sum);
                     }
                 }
 
@@ -202,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
                 university.setText(""+university_choice);
                 Query v2 = myRef
                         .child("sum").orderByChild("university").equalTo(university_choice+"");
-                v2.addListenerForSingleValueEvent(new ValueEventListener() {
+                v2.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         sum_list.clear();
@@ -263,7 +289,6 @@ sum_result_after_c.addAll(sum_list);
 
                     return;// university_choice=u_listItems.get(list_u.getSelectedItemPosition());
                 }
-
                 Toast.makeText(getApplicationContext(),""+course_choice,  Toast.LENGTH_SHORT).show();
                 course.setText(""+course_choice);
                 Iterator<Summary> iter = sum_result_after_c.iterator();
@@ -349,15 +374,21 @@ sum_result_after_c.addAll(sum_list);
     }
     public void onClick(View v)
     {
-        Intent intent=new Intent(this,LoadActivity.class);
-        startActivity(intent);
+        if(upload == v){
+            Intent intent=new Intent(this,LoadActivity.class);
+            startActivity(intent);
+        }
+        if(sum_to_manager == v){
+            Intent intent=new Intent(this, Manager.class);
+            startActivity(intent);
+        }
+
 
     }
     public void OnBtnClick(){
         course.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                disableItemSelection(list_c);
 
                 if(c_listItems==null||c_listItems.isEmpty())
                     choice_p_c.show();
@@ -411,14 +442,7 @@ else
             }
         });
 
-//        list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(getApplicationContext(),(String)adapter.getItem(position),  Toast.LENGTH_SHORT).show();
-//                dialog.dismiss();
-//            }
-//        });
+
     }
 
     public void logout(View view) {
@@ -427,12 +451,7 @@ else
         finish();
     }
 
-    private void disableItemSelection(ListView lv) {
-        for (int i = 0; i < lv.getChildCount(); i++){
-            View v = lv.getChildAt(i);
-            v.setEnabled(false);
-        }
-    }
+
     public void find_my_sum(String userId) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();

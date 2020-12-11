@@ -45,11 +45,12 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
     //Buttons
 //    private Button buttonChoose;
     private Button buttonUpload;
-    TextView course;
-    TextView teacher;
-    TextView year;
-    TextView simester;
-    TextView university;
+    String course, teacher, year, semester, university;
+//    TextView course;
+//    TextView teacher;
+//    TextView year;
+//    TextView simester;
+//    TextView university;
     //ImageView
     private ImageView imageView;
 
@@ -75,11 +76,11 @@ protected void onCreate(Bundle savedInstanceState) {
 }
 
     public void onClick(View v){
-        course = (TextView)findViewById(R.id.tecourse);
-        teacher = (TextView)findViewById(R.id.teteacher);
-        year = (TextView)findViewById(R.id.teyear);
-        simester = (TextView)findViewById(R.id.tesimester);
-        university = (TextView)findViewById(R.id.teuniversity);
+        course = editInput(((TextView)findViewById(R.id.tecourse)).getText().toString());
+        teacher = editInput(((TextView)findViewById(R.id.teteacher)).getText().toString());
+        year = ((TextView)findViewById(R.id.teyear)).getText().toString().replaceAll(" ", "");
+        semester = ((TextView)findViewById(R.id.tesimester)).getText().toString().toLowerCase().replaceAll(" ", "");
+        university = editInput(((TextView)findViewById(R.id.teuniversity)).getText().toString());;
 //        Toast.makeText(this, "course: "+ course.getText().toString(), Toast.LENGTH_LONG).show();
         if(checkInput())
             showFileChooser();
@@ -87,25 +88,25 @@ protected void onCreate(Bundle savedInstanceState) {
     }
 
     private boolean checkInput() {
-        if(university.getText().toString().length()==0 ||course.getText().toString().length()==0 || teacher.getText().toString().length()==0 || year.getText().toString().length()==0 || simester.getText().toString().length()==0 || course.getText().toString().length()==0){
+        if(university.length()==0 ||course.length()==0 || teacher.length()==0 || year.length()==0 || semester.length()==0 || course.length()==0){
             Toast.makeText(this, "שגיאה: דרוש למלא את כל השדות!", Toast.LENGTH_LONG).show();
             return false;
         }
-        String yr = year.getText().toString().replaceAll(" ", "");;
-        String sim = simester.getText().toString().toLowerCase().replaceAll(" ", "");
+//        String yr = year.replaceAll(" ", "");;
+//        String sem = semester.toLowerCase().replaceAll(" ", "");
 
-        if(yr.length()!=4){
-            Toast.makeText(this, " שגיאה: השנה לא תקינה!"+ yr , Toast.LENGTH_LONG).show();
+        if(year.length()!=4){
+            Toast.makeText(this, " שגיאה: השנה לא תקינה!"+ year , Toast.LENGTH_LONG).show();
             return false;
         }
-        for(int i=0; i<yr.length(); i++) {
-            if (yr.charAt(i) < '0' || year.getText().toString().charAt(i) > '9') {
-                Toast.makeText(this, " שגיאה: השנה לא תקינה!" + yr, Toast.LENGTH_LONG).show();
+        for(int i=0; i<year.length(); i++) {
+            if (year.charAt(i) < '0' ||  year.charAt(i) > '9') {
+                Toast.makeText(this, " שגיאה: השנה לא תקינה!" + year, Toast.LENGTH_LONG).show();
                 return false;
             }
         }
-        if(sim.length() != 1 || (!sim.equals("a") && !sim.equals("b") && !sim.equals("s") && !sim.equals("א") && !sim.equals("ב") && !sim.equals("ק"))){
-            Toast.makeText(this, " שגיאה: הסימסטר לא תקין!" + sim, Toast.LENGTH_LONG).show();
+        if(semester.length() != 1 || (!semester.equals("a") && !semester.equals("b") && !semester.equals("s") && !semester.equals("א") && !semester.equals("ב") && !semester.equals("ק"))){
+            Toast.makeText(this, " שגיאה: הסימסטר לא תקין! " + semester, Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -144,8 +145,10 @@ protected void onCreate(Bundle savedInstanceState) {
             FirebaseAuth fAuth;
             fAuth = FirebaseAuth.getInstance();
             String userId =fAuth.getCurrentUser().getUid();
-            String path = "uploads"+ "/" +editInput(university.getText().toString()) + "/" +editInput(course.getText().toString()) + "/" +
-                    editInput(teacher.getText().toString()) + "/" + year.getText().toString() + "/" + simester.getText().toString().toLowerCase() + "/" + userId;
+            String path = "uploads"+ "/" +university + "/" +course + "/" + teacher+ "/" + year+ "/" + semester + "/" + userId;
+//            String path = "uploads"+ "/" +editInput(university.getText().toString()) + "/" +editInput(course.getText().toString()) + "/" +
+//                    editInput(teacher.getText().toString()) + "/" + year.getText().toString() + "/" + simester.getText().toString().toLowerCase() + "/" + userId;
+
 
 //            StorageReference riversRef = mStorageRef.child("uploads").child(university.toString()).child(teacher.toString()).child(course.toString()).child(year.toString()).child(simester.toString()).child(MimeTypeMap.getFileExtensionFromUrl(filePath.toString()));
             StorageReference riversRef = mStorageRef.child(path+"." +MimeTypeMap.getFileExtensionFromUrl(filePath.toString()));
@@ -192,21 +195,62 @@ protected void onCreate(Bundle savedInstanceState) {
     private void updateRealTimeDB(String userId, String path) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("sum");
-        Summary sum = new Summary(teacher.getText().toString(), simester.getText().toString(), course.getText().toString(), university.getText().toString(), path+"." +MimeTypeMap.getFileExtensionFromUrl(filePath.toString()), userId);
-        path = path.replaceAll("/", "")+ "-" +userId;
-        myRef.child(path).setValue(sum);
-        DatabaseReference db = database.getReference();
-        updateValue(db, "universities", university.getText().toString() );
-        db.child("universities").child(university.getText().toString()).setValue(university.getText().toString());
-        db.child("courses").child(course.getText().toString()).setValue(course.getText().toString());
-        db.child("lecturer").child(teacher.getText().toString()).setValue(teacher.getText().toString());
-    }
+        Summary sum = new Summary(teacher, semester, course, university, path+"." +MimeTypeMap.getFileExtensionFromUrl(filePath.toString()), userId);
+//        Summary sum = new Summary(teacher.getText().toString(), simester.getText().toString(), course.getText().toString(), university.getText().toString(), path+"." +MimeTypeMap.getFileExtensionFromUrl(filePath.toString()), userId);
+        final String keyName = path.replaceAll("/", "")+ "-" +userId;
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.hasChild(keyName)) {
+                    myRef.child(keyName).setValue(sum);
+                }
+                else {
+                    myRef.child(keyName).setValue(sum);
+                    DatabaseReference db = database.getReference();
+                    updateValue(db, "universities", university);
+                    updateValue(db, "courses", course);
+                    updateValue(db, "lecturer", teacher);
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+//        db.child("universities").child(university.getText().toString()).setValue(university.getText().toString());
+//        db.child("courses").child(course.getText().toString()).setValue(course.getText().toString());
+//        db.child("lecturer").child(teacher.getText().toString()).setValue(teacher.getText().toString());
+    }
+    //could be a bug when uploads summary with the same path, its update value again, but has just one summary.
     private void updateValue( DatabaseReference db,  String parent, String child) {
-//        db.child(parent).
+        db.child(parent).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.hasChild(child)) {
+                    db.child(parent).child(child).setValue((Long)(snapshot.child(child).getValue())+1);
+                }
+                else
+                    db.child(parent).child(child).setValue(1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private String editInput(String str) {
+        str = str.toLowerCase();
+        for(int i = 0; i < str.length(); i++){
+            if(!(str.charAt(i) >= 'a' && str.charAt(i) <= 'z') && !(str.charAt(i) >= 'א' && str.charAt(i) <= 'ת') ) {
+                String cahrToReplace = ""+str.charAt(i);
+                str = str.replaceAll(cahrToReplace, "");
+                i--;
+            }
+        }
         return str.toLowerCase().replaceAll(" ","").replaceAll("-","").replaceAll("'","");
     }
     public void onClick2(View v){

@@ -1,4 +1,4 @@
-package com.example.hamesakem.MySummaries;
+package com.example.hamesakem.Manager;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,30 +13,31 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hamesakem.Delete;
+import com.example.hamesakem.MySummaries.RvAdapterSum;
 import com.example.hamesakem.R;
 import com.example.hamesakem.Result.Summary;
 
 import java.util.ArrayList;
 
-public class RvAdapterSum extends RecyclerView.Adapter<RvAdapterSum.MyViewHolder> {
+public class RvAdapterMan extends RecyclerView.Adapter<RvAdapterMan.MyViewHolder>  {
     ArrayList<Summary> sum_array;
     Context context;
     Activity my_summaries_activity;
-    public RvAdapterSum(ArrayList<Summary> sum_array, Context context, Activity my_summaries_activity){
+    public RvAdapterMan(ArrayList<Summary> sum_array, Context context, Activity my_summaries_activity){
         this.sum_array= sum_array;
         this.context=context;
         this.my_summaries_activity = my_summaries_activity;
     }
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RvAdapterMan.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater= LayoutInflater.from(context);
         View v=  inflater.inflate(R.layout.my_sum_row,parent,false);
-        return new MyViewHolder(v);
+        return new RvAdapterMan.MyViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RvAdapterMan.MyViewHolder holder, int position) {
 //holder.b.setText("ghgh");
         holder.l_name.setText(sum_array.get(position).lecturer);
         holder.c_name.setText(sum_array.get(position).topic);
@@ -56,6 +57,8 @@ public class RvAdapterSum extends RecyclerView.Adapter<RvAdapterSum.MyViewHolder
 
     @Override
     public int getItemCount() {
+        if(sum_array == null)
+            return 0;
         return sum_array.size();
     }
 

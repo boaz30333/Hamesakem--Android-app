@@ -34,11 +34,11 @@ public class MySummaries extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_summaries);
+        setContentView(R.layout.activity_manager);
 
         sum_array= (ArrayList<Summary>) getIntent().getSerializableExtra("sum_result");
         rv= findViewById(R.id.RV);
-        rv_adapter = new RvAdapterSum(sum_array,this);
+        rv_adapter = new RvAdapterSum(sum_array,this, this);
         rv.setAdapter(rv_adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
 

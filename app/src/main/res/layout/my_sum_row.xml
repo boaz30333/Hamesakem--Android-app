@@ -38,7 +38,7 @@
             <Button
                 android:id="@+id/button_row"
                 android:layout_width="99dp"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:text="מחק סיכום"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
