@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     AlertDialog dialog_l;
     AlertDialog choice_p_c;
     AlertDialog choice_p_l;
-
+    String userId;
     String course_choice="";
     String university_choice="";
     String lecturer_choice="";
@@ -111,8 +111,8 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseAuth fAuth;
         fAuth = FirebaseAuth.getInstance();
-        String userId =fAuth.getCurrentUser().getUid();
-
+         userId =fAuth.getCurrentUser().getUid();
+        find_my_sum(userId);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
 
@@ -148,28 +148,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        Query v3 = myRef
-                .child("sum").orderByChild("userId").equalTo(userId);
-        v3.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                my_summaries.clear();
-                if(snapshot.exists()){
-                    for(DataSnapshot child: snapshot.getChildren()){
-                        Summary sum = child.getValue(Summary.class);
-                        my_sum_listItems.add(sum.topic);
-                        my_summaries.add(sum);
-                    }
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
 
         //--------------------------------------------------
          AlertDialog.Builder choice_problem1 = new AlertDialog.Builder(this);
@@ -201,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
 //                        dialog.dismiss();
             }
         });
-//        builder_u.
         DialogInterface.OnClickListener university_listener= new DialogInterface.OnClickListener() { //when click ok
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -216,7 +193,11 @@ public class MainActivity extends AppCompatActivity {
                 choose_l=false;
                 if(u_listItems.isEmpty()) return;
 
-                if(choose_u==false) return;// university_choice=u_listItems.get(list_u.getSelectedItemPosition());
+                if(choose_u==false) {
+                    Toast.makeText(getApplicationContext(),"no item chosen"+ "\n"+" please click one option before press ok",  Toast.LENGTH_LONG).show();
+
+                    return;// university_choice=u_listItems.get(list_u.getSelectedItemPosition());
+                }
                 Toast.makeText(getApplicationContext(),""+university_choice,  Toast.LENGTH_SHORT).show();
                 university.setText(""+university_choice);
                 Query v2 = myRef
@@ -277,7 +258,11 @@ public class MainActivity extends AppCompatActivity {
 sum_result_after_c.clear();
 sum_result_after_c.addAll(sum_list);
                 if(c_listItems.isEmpty()) return;
-                if(choose_c==false) course_choice=c_listItems.get(list_c.getSelectedItemPosition());
+                if(choose_c==false) {
+                    Toast.makeText(getApplicationContext(),"no item chosen "+ "\n"+" please click one option before press ok",  Toast.LENGTH_LONG).show();
+
+                    return;// university_choice=u_listItems.get(list_u.getSelectedItemPosition());
+                }
 
                 Toast.makeText(getApplicationContext(),""+course_choice,  Toast.LENGTH_SHORT).show();
                 course.setText(""+course_choice);
@@ -322,8 +307,11 @@ sum_result_after_c.addAll(sum_list);
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(l_listItems.isEmpty()) return;
-                if(choose_l==false) lecturer_choice=l_listItems.get(0);
+                if(choose_l==false) {
+                    Toast.makeText(getApplicationContext(),"no item chosen"+ "\n"+" please click one option before press ok",  Toast.LENGTH_LONG).show();
 
+                    return;// university_choice=u_listItems.get(list_u.getSelectedItemPosition());
+                }
                 Toast.makeText(getApplicationContext(),""+lecturer_choice,  Toast.LENGTH_SHORT).show();
                 lecturer.setText(""+lecturer_choice);
                 dialog.dismiss();
@@ -355,6 +343,7 @@ sum_result_after_c.addAll(sum_list);
                 Intent intent= new Intent(MainActivity.this,MySummaries.class);
                 intent.putExtra("sum_result",my_summaries);
                 startActivity(intent);
+                find_my_sum(userId);
             }
         });
     }
@@ -443,5 +432,31 @@ else
             View v = lv.getChildAt(i);
             v.setEnabled(false);
         }
+    }
+    public void find_my_sum(String userId) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        Query v3 = myRef
+                .child("sum").orderByChild("userId").equalTo(userId);
+        v3.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                my_summaries.clear();
+                if (snapshot.exists()) {
+                    for (DataSnapshot child : snapshot.getChildren()) {
+                        Summary sum = child.getValue(Summary.class);
+                        my_sum_listItems.add(sum.topic);
+                        my_summaries.add(sum);
+                    }
+                }
+
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
