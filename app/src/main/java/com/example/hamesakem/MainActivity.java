@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 if(snapshot.exists()){
                     for(DataSnapshot child: snapshot.getChildren()){
                         String u = (String) child.getKey();
+                        if(!u_listItems.contains(u))
                         u_listItems.add(u);
                     }
                 }
@@ -235,7 +236,8 @@ public class MainActivity extends AppCompatActivity {
                         if(snapshot.exists()){
                             for(DataSnapshot child: snapshot.getChildren()){
                                 Summary sum = child.getValue(Summary.class);
-                                c_listItems.add(sum.topic);
+                                if(!c_listItems.contains(sum.topic))
+                                    c_listItems.add(sum.topic);
                                 sum_list.add(sum);
                             }
                         }
@@ -294,7 +296,7 @@ sum_result_after_c.addAll(sum_list);
                 Iterator<Summary> iter = sum_result_after_c.iterator();
                 while(iter.hasNext()){
                     Summary s = iter.next();
-                    if(s.topic==course_choice) l_listItems.add(s.lecturer);
+                    if(s.topic==course_choice&&!l_listItems.contains(s.lecturer)) l_listItems.add(s.lecturer);
                     else iter.remove();
                 }
 //                dialog.dismiss();

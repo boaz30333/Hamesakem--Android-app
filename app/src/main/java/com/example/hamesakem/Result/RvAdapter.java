@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.RatingBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.hamesakem.DownloadFile;
 import com.example.hamesakem.MainActivity;
 import com.example.hamesakem.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -39,6 +42,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 //holder.b.setText("ghgh");
+
         holder.l_name.setText(sum_array.get(position).lecturer);
         holder.c_name.setText(sum_array.get(position).topic);
         holder.id_name.setText(sum_array.get(position).userId);
@@ -51,6 +55,17 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                 Toast.makeText(context, "ygy",  Toast.LENGTH_SHORT).show();
 
 
+            }
+        });
+        holder.s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+
+                }
+                else{
+
+                }
             }
         });
 
@@ -68,6 +83,7 @@ Button b;
         TextView c_name;
         TextView l_name;
         TextView id_name;
+        Switch s;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,6 +93,7 @@ Button b;
             c_name=itemView.findViewById(R.id.c_name);
             l_name=itemView.findViewById(R.id.t_name);
             id_name=itemView.findViewById(R.id.id_name);
+            s= (Switch) itemView.findViewById(R.id.switch1);
 
         }
     }

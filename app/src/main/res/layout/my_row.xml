@@ -20,46 +20,53 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="232dp"
+            android:layout_height="313dp"
             android:background="@android:color/transparent"
             android:backgroundTint="#222121">
 
             <RatingBar
                 android:id="@+id/rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@android:style/Widget.Material.RatingBar.Indicator"
+                android:layout_width="179dp"
+                android:layout_height="41dp"
+                android:isIndicator="false"
+                android:scrollbarStyle="insideOverlay"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.093"
+                app:layout_constraintHorizontal_bias="0.116"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.977" />
+                app:layout_constraintVertical_bias="0.933" />
 
             <Button
                 android:id="@+id/button_row"
-                android:layout_width="99dp"
-                android:layout_height="wrap_content"
+                android:background="@drawable/rounded"
+                android:layout_width="match_parent"
+                android:layout_height="39dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
                 android:text="@string/download"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.884"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.971" />
+                app:layout_constraintVertical_bias="0.722" />
 
             <TextView
                 android:id="@+id/u_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="48dp"
                 android:text="@string/university"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.973"
+                app:layout_constraintHorizontal_bias="0.974"
                 app:layout_constraintStart_toEndOf="@+id/c_title"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.078" />
 
             <TextView
                 android:id="@+id/u_name"
@@ -67,10 +74,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:text="TextView"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/t_title"
                 app:layout_constraintStart_toStartOf="@+id/u_title"
-                app:layout_constraintTop_toBottomOf="@+id/u_title"
-                app:layout_constraintVertical_bias="0.129" />
+                app:layout_constraintTop_toBottomOf="@+id/u_title" />
 
             <TextView
                 android:id="@+id/c_name"
@@ -79,14 +85,17 @@
                 android:layout_marginTop="2dp"
                 android:text="TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/u_name"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/c_title"
                 app:layout_constraintTop_toBottomOf="@+id/c_title"
-                app:layout_constraintVertical_bias="0.104" />
+                app:layout_constraintVertical_bias="0.083" />
 
             <TextView
                 android:id="@+id/c_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/course"
                 android:textSize="20sp"
@@ -117,7 +126,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/id_name"
-                app:layout_constraintStart_toStartOf="@+id/id_name"
+                app:layout_constraintStart_toStartOf="@+id/c_name"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
@@ -126,24 +135,44 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="96dp"
+                android:layout_marginEnd="104dp"
                 android:text="@string/teacher"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.664"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/u_name"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/id_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="72dp"
+                android:layout_marginBottom="124dp"
                 android:text="TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/t_name"
-                app:layout_constraintHorizontal_bias="0.202"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/id_title"
+                app:layout_constraintTop_toTopOf="@+id/t_name" />
+
+            <Switch
+                android:id="@+id/switch1"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:layout_marginStart="250dp"
+                android:layout_marginEnd="30dp"
+                android:background="@drawable/rounded_red"
+                android:backgroundTintMode="multiply"
+                android:fadeScrollbars="false"
+                android:gravity="center"
+                android:hapticFeedbackEnabled="false"
+                android:text="@string/Report_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/rating"
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
