@@ -135,9 +135,10 @@ public class MainActivity extends AppCompatActivity {
 
         Query vv = myRef
                 .child("universities");
-        vv.addListenerForSingleValueEvent(new ValueEventListener() {
+        vv.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                u_listItems.clear();
                 if(snapshot.exists()){
                     for(DataSnapshot child: snapshot.getChildren()){
                         String u = (String) child.getKey();
@@ -225,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
                 university.setText(""+university_choice);
                 Query v2 = myRef
                         .child("sum").orderByChild("university").equalTo(university_choice+"");
-                v2.addListenerForSingleValueEvent(new ValueEventListener() {
+                v2.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         sum_list.clear();

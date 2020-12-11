@@ -7,11 +7,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.hamesakem.Result.Summary;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -55,7 +59,28 @@ public class Delete {
                 String[] fullPath = path.split("\\.");
                 String path_ = fullPath[0];
                 path_ = path_.replaceAll("/", "")+ "-" +userId;
-                myRef.child(path_).removeValue();
+                final Summary[] sum = new Summary[1];
+                myRef.child(path_).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            sum[0] = snapshot.getValue(Summary.class);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                myRef.child(path_).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        DatabaseReference db = database.getReference();
+                        updateValue(db, "universities", sum[0].university);
+                        updateValue(db, "courses", sum[0].topic);
+                        updateValue(db, "lecturer", sum[0].lecturer);
+                    }
+                });
                 Toast.makeText(act.getApplicationContext(), "File Deleted ", Toast.LENGTH_LONG).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -66,6 +91,28 @@ public class Delete {
                 //and displaying error message
                 Toast.makeText(act.getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                 e.printStackTrace();
+            }
+        });
+    }
+
+    //could be a bug when uploads summary with the same path, its update value again, but has just one summary.
+    private void updateValue( DatabaseReference db,  String parent, String child) {
+        db.child(parent).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.hasChild(child)) {
+                    if((Long)(snapshot.child(child).getValue())>0) {
+                        db.child(parent).child(child).setValue((Long) (snapshot.child(child).getValue()) - 1);
+                    }else{
+                        db.child(parent).child(child).removeValue();
+                    }
+                }
+//                else
+//                    db.child(parent).child(child).setValue(1);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
