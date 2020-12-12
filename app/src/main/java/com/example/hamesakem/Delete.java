@@ -101,7 +101,7 @@ public class Delete {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.hasChild(child)) {
-                    if((Long)(snapshot.child(child).getValue())>0) {
+                    if((Long)(snapshot.child(child).getValue())>1) {
                         db.child(parent).child(child).setValue((Long) (snapshot.child(child).getValue()) - 1);
                     }else{
                         db.child(parent).child(child).removeValue();
