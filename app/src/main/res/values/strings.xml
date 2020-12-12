@@ -37,8 +37,7 @@
     <string name="checkSummaries">סיכומים לבדיקה</string>
     <string name="Report_content">דווח על תוכן לא ראוי</string>
     <string name="cancel_report">בטל דיווח על תוכן לא ראוי</string>
-
-
+    <string name="cancelReport">בטל דיווח</string>
 
 
 </resources>

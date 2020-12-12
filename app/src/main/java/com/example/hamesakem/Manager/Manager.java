@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class Manager extends AppCompatActivity {
 
-    ArrayList<Summary> sum_array;
+    ArrayList<String> sum_array;
     RecyclerView rv ;
     RvAdapterMan rv_adapter;
     @Override
@@ -30,19 +30,18 @@ public class Manager extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager);
 
-        sum_array= (ArrayList<Summary>) getIntent().getSerializableExtra("sum_result");
-        sum_array = new ArrayList<Summary>();
+//        sum_array= (ArrayList<String>) getIntent().getSerializableExtra("sum_result");
+        sum_array = new ArrayList<String>();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("summariesToManager");
-        myRef.child("test").setValue(new Summary("a","a","a","a","a","a"));
+//        myRef.child("test").setValue(new Summary("a","a","a","a","a","a"));
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.e("Count ", "" + snapshot.getChildrenCount());
+//                Log.e("Count ", "" + snapshot.getChildrenCount());
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    sum_array.add(postSnapshot.getValue(Summary.class));
-//                    Log.e("Get Data", sum.<YourMethod>());
-                }
+                    sum_array.add(postSnapshot.getKey());
+                    Log.e("Get Data", postSnapshot.getKey()); }
             }
 
             @Override
