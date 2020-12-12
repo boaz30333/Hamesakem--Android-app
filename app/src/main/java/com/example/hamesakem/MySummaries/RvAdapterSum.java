@@ -2,6 +2,7 @@ package com.example.hamesakem.MySummaries;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.hamesakem.Delete;
 import com.example.hamesakem.R;
 import com.example.hamesakem.Result.Summary;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -37,10 +43,27 @@ public class RvAdapterSum extends RecyclerView.Adapter<RvAdapterSum.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-//holder.b.setText("ghgh");
+        final String[] name_from_id = new String[1];
+        DocumentReference docRef = holder.fStore.collection("users").document(sum_array.get(position).userId);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        name_from_id[0]=  (String)document.getData().get("fName");
+                        holder.id_name.setText(""+name_from_id[0]);
+                        Log.d("TAG", "DocumentSnapshot data: " + document.getData());
+                    } else {
+                        Log.d("TAG", "No such document");
+                    }
+                } else {
+                    Log.d("TAG", "get failed with ", task.getException());
+                }
+            }
+        });
         holder.l_name.setText(sum_array.get(position).lecturer);
         holder.c_name.setText(sum_array.get(position).topic);
-        holder.id_name.setText(sum_array.get(position).userId);
         holder.u_name.setText(sum_array.get(position).university);
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +89,7 @@ public class RvAdapterSum extends RecyclerView.Adapter<RvAdapterSum.MyViewHolder
         TextView c_name;
         TextView l_name;
         TextView id_name;
+        FirebaseFirestore fStore;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,6 +99,7 @@ public class RvAdapterSum extends RecyclerView.Adapter<RvAdapterSum.MyViewHolder
             c_name=itemView.findViewById(R.id.c_name);
             l_name=itemView.findViewById(R.id.t_name);
             id_name=itemView.findViewById(R.id.id_name);
+            fStore = FirebaseFirestore.getInstance();
 
         }
     }

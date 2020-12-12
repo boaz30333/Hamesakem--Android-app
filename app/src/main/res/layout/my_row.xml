@@ -153,7 +153,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/t_name"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/id_title"
-                app:layout_constraintTop_toTopOf="@+id/t_name" />
+                app:layout_constraintTop_toTopOf="@+id/t_name"
+                app:layout_constraintVertical_bias="0.0" />
 
             <Switch
                 android:id="@+id/switch1"

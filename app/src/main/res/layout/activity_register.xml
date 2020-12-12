@@ -85,6 +85,7 @@
         android:background="@color/black"
         android:ems="10"
         android:fontFamily="@font/aclonica"
+        android:gravity="right"
         android:hint="סיסמא"
         android:inputType="textPassword"
         android:padding="10dp"

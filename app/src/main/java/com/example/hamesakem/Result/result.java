@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -26,7 +28,9 @@ public class result extends AppCompatActivity {
     ArrayList<Summary> sum_array;
     RecyclerView rv ;
     RvAdapter rv_adapter;
-   ArrayList<Summary> sum_list = new ArrayList<Summary>();
+    FirebaseFirestore fStore;
+
+    ArrayList<Summary> sum_list = new ArrayList<Summary>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +38,7 @@ public class result extends AppCompatActivity {
         setContentView(R.layout.activity_result);
 
         sum_array= (ArrayList<Summary>) getIntent().getSerializableExtra("sum_result");
-       rv= findViewById(R.id.RV);
+        rv= findViewById(R.id.RV);
         rv_adapter = new RvAdapter(sum_array,this,this);
         rv.setAdapter(rv_adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
