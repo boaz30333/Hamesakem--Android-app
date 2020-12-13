@@ -31,17 +31,19 @@ public class Manager extends AppCompatActivity {
         setContentView(R.layout.activity_manager);
 
         sum_array= (ArrayList<Summary>) getIntent().getSerializableExtra("sum_result");
-        sum_array = new ArrayList<Summary>();
+//        sum_array = new ArrayList<String>();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("summariesToManager");
-        myRef.child("test").setValue(new Summary("a","a","a","a","a","a"));
+//        myRef.child("test").setValue(new Summary("a","a","a","a","a","a"));
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.e("Count ", "" + snapshot.getChildrenCount());
+//                Log.e("Count ", "" + snapshot.getChildrenCount());
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    sum_array.add(postSnapshot.getValue(Summary.class));
-//                    Log.e("Get Data", sum.<YourMethod>());
+                    Log.e("Get Data", postSnapshot.getKey());
+                    Summary sum = getSummary((String)postSnapshot.getKey());
+                    sum_array.add(sum);
+
                 }
             }
 
@@ -62,5 +64,36 @@ public class Manager extends AppCompatActivity {
 
         rv_adapter.notifyDataSetChanged();
 
+    }
+
+    private Summary getSummary(String key) {
+        final Summary[] sum = new Summary[1];
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("sum");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.hasChild(key)) {
+                    Log.d("key", ""+key);
+                    sum[0] = (Summary)snapshot.child(key).getValue();
+                    System.out.println("sum.userId:" + sum[0].userId);
+                }
+                else
+                    Log.d("key else", ""+key);
+//                    else {
+//                        myRef.child(keyName).setValue(sum[0]);
+//                        DatabaseReference db = database.getReference();
+//                        updateValue(db, "universities", university);
+//                        updateValue(db, "courses", course);
+//                        updateValue(db, "lecturer", teacher);
+//                    }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("cancel", "cancel");            }
+        });
+//        System.out.println("sum.userId:" + sum[0].userId);
+        return sum[0];
     }
 }

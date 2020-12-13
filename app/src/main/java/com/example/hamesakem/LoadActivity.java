@@ -149,9 +149,9 @@ protected void onCreate(Bundle savedInstanceState) {
 //            String path = "uploads"+ "/" +editInput(university.getText().toString()) + "/" +editInput(course.getText().toString()) + "/" +
 //                    editInput(teacher.getText().toString()) + "/" + year.getText().toString() + "/" + simester.getText().toString().toLowerCase() + "/" + userId;
 
-
+//            MimeTypeMap.getFileExtensionFromUrl(filePath.toString())
 //            StorageReference riversRef = mStorageRef.child("uploads").child(university.toString()).child(teacher.toString()).child(course.toString()).child(year.toString()).child(simester.toString()).child(MimeTypeMap.getFileExtensionFromUrl(filePath.toString()));
-            StorageReference riversRef = mStorageRef.child(path+"." +MimeTypeMap.getFileExtensionFromUrl(filePath.toString()));
+            StorageReference riversRef = mStorageRef.child(path+".pdf" );
             riversRef.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -195,7 +195,7 @@ protected void onCreate(Bundle savedInstanceState) {
     private void updateRealTimeDB(String userId, String path) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("sum");
-        Summary sum = new Summary(teacher, semester, course, university, path+"." +MimeTypeMap.getFileExtensionFromUrl(filePath.toString()), userId);
+        Summary sum = new Summary(teacher, semester, course, university, path+ ".pdf", userId);
 //        Summary sum = new Summary(teacher.getText().toString(), simester.getText().toString(), course.getText().toString(), university.getText().toString(), path+"." +MimeTypeMap.getFileExtensionFromUrl(filePath.toString()), userId);
         final String keyName = path.replaceAll("/", "")+ "-" +userId;
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {

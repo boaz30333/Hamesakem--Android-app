@@ -21,6 +21,8 @@ import com.example.hamesakem.Manager.Manager;
 import com.example.hamesakem.MySummaries.MySummaries;
 import com.example.hamesakem.Result.Summary;
 import com.example.hamesakem.Result.result;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,6 +30,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -132,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+//        checkAdmin();
 
         Query vv = myRef
                 .child("universities");
@@ -374,6 +379,16 @@ sum_result_after_c.addAll(sum_list);
             }
         });
     }
+
+    private void checkAdmin() {
+        ArrayList<String> admins = new ArrayList<String>();
+        admins.add("boas30333@gmail.com");
+        admins.add("bhorib@gmail.com");
+        admins.add("itamarzo0@gmail.com");
+
+
+    }
+
     public void onClick(View v)
     {
         if(upload == v){
