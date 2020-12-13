@@ -91,7 +91,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
         holder.report.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String key = sum_array.get(position).uri;
+                String key = (String)sum_array.get(position).uri;
                 String[] fullPath = key.split("\\.");
                 key = fullPath[0];
                 key = key.replaceAll("/", "") + "-" + sum_array.get(position).userId;
@@ -99,7 +99,6 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("summariesToManager");
                 if (isChecked) {
-
                     myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
