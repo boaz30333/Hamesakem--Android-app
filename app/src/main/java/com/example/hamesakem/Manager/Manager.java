@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class Manager extends AppCompatActivity {
 
-    ArrayList<Summary> sum_array;
+    ArrayList<Summary> sum_array = new ArrayList<Summary>();
     RecyclerView rv ;
     RvAdapterMan rv_adapter;
     @Override
@@ -30,18 +30,18 @@ public class Manager extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager);
 
-        sum_array= (ArrayList<Summary>) getIntent().getSerializableExtra("sum_result");
-//        sum_array = new ArrayList<String>();
+//        sum_array= (ArrayList<Summary>) getIntent().getSerializableExtra("sum_result");
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("summariesToManager");
+        DatabaseReference myRef = database.getReference();
 //        myRef.child("test").setValue(new Summary("a","a","a","a","a","a"));
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.child("summariesToManager").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 //                Log.e("Count ", "" + snapshot.getChildrenCount());
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Log.e("Get Data", postSnapshot.getKey());
-                    Summary sum = getSummary((String)postSnapshot.getKey());
+                    Summary sum = getSummary(postSnapshot.getKey());
                     sum_array.add(sum);
 
                 }
@@ -70,12 +70,12 @@ public class Manager extends AppCompatActivity {
         final Summary[] sum = new Summary[1];
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("sum");
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.hasChild(key)) {
                     Log.d("key", ""+key);
-                    sum[0] = (Summary)snapshot.child(key).getValue();
+                    sum[0] = snapshot.child(key).getValue(Summary.class);
                     System.out.println("sum.userId:" + sum[0].userId);
                 }
                 else

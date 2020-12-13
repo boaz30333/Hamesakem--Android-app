@@ -245,13 +245,13 @@ protected void onCreate(Bundle savedInstanceState) {
     private String editInput(String str) {
         str = str.toLowerCase();
         for(int i = 0; i < str.length(); i++){
-            if(!(str.charAt(i) >= 'a' && str.charAt(i) <= 'z') && !(str.charAt(i) >= 'א' && str.charAt(i) <= 'ת') ) {
+            if(!(str.charAt(i) >= 'a' && str.charAt(i) <= 'z') && !(str.charAt(i) >= 'א' && str.charAt(i) <= 'ת') && !(str.charAt(i) != ' ' || (str.charAt(i) != '-') )) {
                 String cahrToReplace = ""+str.charAt(i);
                 str = str.replaceAll(cahrToReplace, "");
                 i--;
             }
         }
-        return str.toLowerCase().replaceAll(" ","").replaceAll("-","").replaceAll("'","");
+        return str.replaceAll(" ", "-");
     }
     public void onClick2(View v){
         Intent intent=new Intent(this,Download.class);
