@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<Summary> sum_result_after_l;
     public ArrayList<Summary> sum_result_after_c;
     public ArrayList<Summary> my_summaries;
+    ArrayList<Summary> sum_array_check=new ArrayList<>();;
 
     public ListAdapter adapter_c;
     public ListAdapter adapter_u;
@@ -136,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-//        checkAdmin();
+        checkAdmin();
 
         Query vv = myRef
                 .child("universities");
@@ -385,6 +386,13 @@ sum_result_after_c.addAll(sum_list);
         admins.add("boas30333@gmail.com");
         admins.add("bhorib@gmail.com");
         admins.add("itamarzo0@gmail.com");
+        FirebaseAuth fAuth;
+        fAuth = FirebaseAuth.getInstance();
+        String email =fAuth.getCurrentUser().getEmail();
+        if(admins.contains(email))
+            sum_to_manager.setVisibility(View.VISIBLE);
+        else
+            sum_to_manager.setVisibility(View.INVISIBLE);
 
 
     }
@@ -396,7 +404,9 @@ sum_result_after_c.addAll(sum_list);
             startActivity(intent);
         }
         if(sum_to_manager == v){
+//            sum_to_check();
             Intent intent=new Intent(this, Manager.class);
+//            intent.putExtra("sum_array",sum_array_check);
             startActivity(intent);
         }
 
@@ -468,7 +478,62 @@ else
         finish();
     }
 
+public void sum_to_check(){
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference();
+//        myRef.child("test").setValue(new Summary("a","a","a","a","a","a"));
+    Query v3 = myRef
+            .child("summariesToManager");
+   v3.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot snapshot) {
+//                Log.e("Count ", "" + snapshot.getChildrenCount());
+            for (DataSnapshot child : snapshot.getChildren()) {
 
+                getSummary(child.getKey());
+
+            }
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+
+        }
+    });
+}
+    private void getSummary(String key) {
+        final Summary[] sum = new Summary[1];
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("sum");
+        Query v3 = myRef
+                .child(key);
+        v3.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Log.d("key", ""+key);
+                    sum[0] = snapshot.getValue(Summary.class);
+                    System.out.println("sum.userId:" + sum[0].userId);
+                    sum_array_check.add(sum[0]);
+                }
+                else
+                    Log.d("key else", ""+key);
+//                    else {
+//                        myRef.child(keyName).setValue(sum[0]);
+//                        DatabaseReference db = database.getReference();
+//                        updateValue(db, "universities", university);
+//                        updateValue(db, "courses", course);
+//                        updateValue(db, "lecturer", teacher);
+//                    }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("cancel", "cancel");            }
+        });
+//        System.out.println("sum.userId:" + sum[0].userId);
+//        return sum[0];
+    }
     public void find_my_sum(String userId) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();

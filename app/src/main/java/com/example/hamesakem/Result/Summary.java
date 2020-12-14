@@ -22,4 +22,13 @@ public class Summary implements Serializable {
         this.userId = userId;
         this.semester = semester;
     }
+
+    public Summary(Summary summary) {
+        this.lecturer = summary.lecturer;
+        this.topic = summary.topic;
+        this.university = summary.university;
+        this.uri = summary.uri;
+        this.userId = summary.userId;
+        this.semester = summary.semester;
+    }
 }
