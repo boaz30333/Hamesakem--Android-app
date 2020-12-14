@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
 
+import com.example.hamesakem.Manager.Manager;
 import com.example.hamesakem.R;
 import com.example.hamesakem.Result.RvAdapter;
 import com.example.hamesakem.Result.Summary;
@@ -22,29 +23,56 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class MySummaries extends AppCompatActivity {
-    String course_choice="";
-    String university_choice="";
-    String lecturer_choice="";
-    ArrayList<Summary> sum_array;
-    RecyclerView rv ;
-    RvAdapterSum rv_adapter;
-    ArrayList<Summary> sum_list = new ArrayList<Summary>();
 
+  public  ArrayList<Summary> my_summaries=new ArrayList<>();
+  public  RecyclerView rv ;
+  public  RvAdapterSum rv_adapter;
+  public  String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager);
-
-        sum_array= (ArrayList<Summary>) getIntent().getSerializableExtra("sum_result");
         rv= findViewById(R.id.RV);
-        rv_adapter = new RvAdapterSum(sum_array,this, this);
+
+        rv_adapter = new RvAdapterSum(my_summaries,this, this);
         rv.setAdapter(rv_adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
-
+        userId= (String) getIntent().getExtras().getString("userId");
+        FireBaseCallBackSum fbcbSum = list -> rv_adapter.notifyDataSetChanged();
+        find_my_sum(userId,fbcbSum);
         rv_adapter.notifyDataSetChanged();
-//        course_choice=getIntent().getExtras().getString("course_choice");
-//        university_choice=getIntent().getExtras().getString("university_choice");;
-//        lecturer_choice=getIntent().getExtras().getString("lecturer_choice");;
     }
+
+
+    public void find_my_sum(String userId, FireBaseCallBackSum fbcbSum) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        Query v3 = myRef
+                .child("sum").orderByChild("userId").equalTo(userId);
+        v3.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                my_summaries.clear();
+                if (snapshot.exists()) {
+                    for (DataSnapshot child : snapshot.getChildren()) {
+                        Summary sum = child.getValue(Summary.class);
+                        my_summaries.add(sum);
+                    }
+                }
+                fbcbSum.onCallback(my_summaries);
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    interface FireBaseCallBackSum{
+        void onCallback(ArrayList<Summary> list);
+    }
+
+
 }
