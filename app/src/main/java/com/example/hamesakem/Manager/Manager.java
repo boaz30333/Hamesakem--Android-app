@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class Manager extends AppCompatActivity {
 
-    ArrayList<Summary> sum_array = new ArrayList<Summary>();
+    static ArrayList<Summary> sum_array = new ArrayList<Summary>();
     RecyclerView rv ;
     RvAdapterMan rv_adapter;
     @Override
@@ -56,14 +56,20 @@ public class Manager extends AppCompatActivity {
 //            public void onCancelled(FirebaseError firebaseError) {
 ////                Log.e("The read failed: " );
 //            }
+        if(sum_array.size() > 0)
+            rv();
 
+
+    }
+
+    private void rv() {
         rv= findViewById(R.id.RV);
         rv_adapter = new RvAdapterMan(sum_array,this, this);
         rv.setAdapter(rv_adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
 
         rv_adapter.notifyDataSetChanged();
-
+        sum_array.clear();
     }
 
     private Summary getSummary(String key) {
@@ -75,7 +81,7 @@ public class Manager extends AppCompatActivity {
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.hasChild(key)) {
                     Log.d("key", ""+key);
-                    sum[0] = snapshot.child(key).getValue(Summary.class);
+                    sum_array.add( snapshot.child(key).getValue(Summary.class));
                     System.out.println("sum.userId:" + sum[0].userId);
                 }
                 else
