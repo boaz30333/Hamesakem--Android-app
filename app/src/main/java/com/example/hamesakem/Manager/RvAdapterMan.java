@@ -71,7 +71,6 @@ public class RvAdapterMan extends RecyclerView.Adapter<RvAdapterMan.MyViewHolder
         });
         holder.l_name.setText(sum_array.get(position).lecturer);
         holder.c_name.setText(sum_array.get(position).topic);
-        holder.id_name.setText(sum_array.get(position).userId);
         holder.u_name.setText(sum_array.get(position).university);
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override

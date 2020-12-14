@@ -1,4 +1,3 @@
-
 package com.example.hamesakem;
 
 import androidx.annotation.NonNull;
@@ -15,7 +14,6 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
 
 import com.example.hamesakem.Manager.Manager;
 import com.example.hamesakem.MySummaries.MySummaries;
@@ -36,7 +34,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 
 public class MainActivity extends AppCompatActivity {
     public ListView list_c;
@@ -73,12 +70,10 @@ public class MainActivity extends AppCompatActivity {
     boolean choose_l = false;
     boolean choose_u = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         upload = (Button) findViewById(R.id.button2);
         course = (Button) findViewById(R.id.button3);
         university = (Button) findViewById(R.id.button4);
@@ -86,30 +81,24 @@ public class MainActivity extends AppCompatActivity {
         search = (Button) findViewById(R.id.button9);
         my_sum = (Button) findViewById(R.id.button6);
         sum_to_manager = (Button) findViewById(R.id.button7);
-
         list_c = new ListView(this);
         list_u = new ListView(this);
         list_l = new ListView(this);
         list_my_sum = new ListView(this);
-
-
         adapter_c = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_activated_1, c_listItems);
         adapter_u = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_activated_1, u_listItems);
         adapter_l = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_activated_1, l_listItems);
-
         list_u.setAdapter(adapter_u);
         list_c.setAdapter(adapter_c);
         list_l.setAdapter(adapter_l);
         sum_list = new ArrayList<>();
         sum_result_after_l = new ArrayList<>();
         sum_result_after_c = new ArrayList<>();
-
         FirebaseAuth fAuth;
         fAuth = FirebaseAuth.getInstance();
         userId = fAuth.getCurrentUser().getUid();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
-
         myRef.child("sum").orderByChild("userId").equalTo(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -122,13 +111,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
         checkAdmin();
-
-        Query vv = myRef
-                .child("universities");
+        Query vv = myRef.child("universities");
         vv.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -136,43 +122,34 @@ public class MainActivity extends AppCompatActivity {
                 if (snapshot.exists()) {
                     for (DataSnapshot child : snapshot.getChildren()) {
                         String u = (String) child.getKey();
-                        if (!u_listItems.contains(u))
-                            u_listItems.add(u);
+                        if (!u_listItems.contains(u)) u_listItems.add(u);
                     }
                 }
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
-
-
         //--------------------------------------------------
         AlertDialog.Builder choice_problem1 = new AlertDialog.Builder(this);
         choice_problem1.setTitle("אין אפשרויות לבחירה");
         choice_problem1.setMessage("בחר אוניברסיטה ולאחר מכן נסה שוב!").setCancelable(false);
         choice_p_c = choice_problem1.create();
         choice_p_c.setCanceledOnTouchOutside(true);
-
         AlertDialog.Builder choice_problem2 = new AlertDialog.Builder(this);
         choice_problem2.setTitle("אין אפשרויות לבחירה");
         choice_problem2.setMessage("בחר אוניברסיטה ומרצה ולאחר מכן נסה שוב!").setCancelable(false);
         choice_p_l = choice_problem2.create();
         choice_p_l.setCanceledOnTouchOutside(true);
-
-
-//---------------------------------------
+        //---------------------------------------
         AlertDialog.Builder builder_u = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogCustom);
         builder_u.setCancelable(true);
         builder_u.setTitle("בחר אוניברסיטה");
         builder_u.setSingleChoiceItems(adapter_u, 1, (dialog, which) -> { // when click on curse
             university_choice = u_listItems.get(which);
             choose_u = true;
-        });
-        //when click ok
+        }); //when click ok
         DialogInterface.OnClickListener university_listener = (dialog, which) -> {
             sum_list.clear();
             c_listItems.clear();
@@ -190,8 +167,7 @@ public class MainActivity extends AppCompatActivity {
             }
             Toast.makeText(getApplicationContext(), "" + university_choice, Toast.LENGTH_SHORT).show();
             university.setText("" + university_choice);
-            Query v2 = myRef
-                    .child("sum").orderByChild("university").equalTo(university_choice + "");
+            Query v2 = myRef.child("sum").orderByChild("university").equalTo(university_choice + "");
             v2.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -199,8 +175,7 @@ public class MainActivity extends AppCompatActivity {
                     if (snapshot.exists()) {
                         for (DataSnapshot child : snapshot.getChildren()) {
                             Summary sum = child.getValue(Summary.class);
-                            if (!c_listItems.contains(sum.topic))
-                                c_listItems.add(sum.topic);
+                            if (!c_listItems.contains(sum.topic)) c_listItems.add(sum.topic);
                             sum_list.add(sum);
                         }
                     }
@@ -208,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
                 }
             });
         };
@@ -217,16 +191,14 @@ public class MainActivity extends AppCompatActivity {
         dialog_u = builder_u.create();
         ((ArrayAdapter) adapter_u).notifyDataSetChanged();
         //--------------------------------------------------------------------
-
         AlertDialog.Builder builder_c = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogCustom);
         builder_c.setCancelable(true);
         builder_c.setTitle("בחר קורס");
-
-        builder_c.setSingleChoiceItems(adapter_c, 1, (dialog, which) -> { // when click on curse
+        builder_c.setSingleChoiceItems(adapter_c, 1, (dialog, which) -> {
+            // when click on curse
             course_choice = c_listItems.get(which);
             choose_c = true;
-        });
-        //when click ok
+        }); //when click ok
         DialogInterface.OnClickListener course_listener = (dialog, which) -> {
             choose_l = false;
             l_listItems.clear();
@@ -248,20 +220,17 @@ public class MainActivity extends AppCompatActivity {
                     l_listItems.add(s.lecturer);
                 else iter.remove();
             }
-
         };
         builder_c.setPositiveButton("OK", course_listener);
         builder_c.setNegativeButton("Cancel", null);
         dialog_c = builder_c.create();
         ((ArrayAdapter) adapter_c).notifyDataSetChanged();
-
-
         //---------------------------------------------------------------------
         AlertDialog.Builder builder_l = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogCustom);
         builder_l.setCancelable(true);
         builder_l.setTitle("בחר מרצה");
-
-        builder_l.setSingleChoiceItems(adapter_l, 1, (dialog, which) -> { // when click on curse
+        builder_l.setSingleChoiceItems(adapter_l, 1, (dialog, which) -> {
+            // when click on curse
             lecturer_choice = l_listItems.get(which);
             choose_l = true;
             sum_result_after_l.clear();
@@ -288,9 +257,7 @@ public class MainActivity extends AppCompatActivity {
         dialog_l = builder_l.create();
         ((ArrayAdapter) adapter_l).notifyDataSetChanged();
         //----------------------------------------------------------------------
-
         OnBtnClick();
-
         my_sum.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, MySummaries.class);
             intent.putExtra("userId", userId);
@@ -300,18 +267,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkAdmin() {
         ArrayList<String> admins = new ArrayList<String>();
-        admins.add("boas30333@gmail.com");
+        admins.add("boaz30333@gmail.com");
         admins.add("bhorib@gmail.com");
         admins.add("itamarzo0@gmail.com");
         FirebaseAuth fAuth;
         fAuth = FirebaseAuth.getInstance();
-        String email =fAuth.getCurrentUser().getEmail();
-        if(admins.contains(email))
-            sum_to_manager.setVisibility(View.VISIBLE);
-        else
-            sum_to_manager.setVisibility(View.INVISIBLE);
-
-
+        String email = fAuth.getCurrentUser().getEmail();
+        if (admins.contains(email)) sum_to_manager.setVisibility(View.VISIBLE);
+        else sum_to_manager.setVisibility(View.INVISIBLE);
     }
 
     public void onClick(View v) {
@@ -327,12 +290,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void OnBtnClick() {
         course.setOnClickListener(v -> {
-
-            if (c_listItems == null || c_listItems.isEmpty())
-                choice_p_c.show();
-            else
-                dialog_c.show();
-
+            if (c_listItems == null || c_listItems.isEmpty()) choice_p_c.show();
+            else dialog_c.show();
         });
         university.setOnClickListener(v -> {
             Log.d("myTag", "This is my message");
@@ -353,8 +312,6 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("sum_result", sum_result_after_l);
             startActivity(intent);
         });
-
-
     }
 
     public void logout(View view) {
@@ -362,6 +319,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), Login.class));
         finish();
     }
-
-
 }

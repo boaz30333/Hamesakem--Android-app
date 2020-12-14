@@ -34,11 +34,17 @@ public class Manager extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager);
+        rv= findViewById(R.id.RV);
 
 
         FireBaseCallBackSum fbcbSum = new FireBaseCallBackSum() {
             @Override
             public void onCallback(ArrayList<Summary> list) {
+                if(rv.getAdapter()==null){
+                    rv_adapter = new RvAdapterMan(sum_array_check,Manager.this, Manager.this);
+                    rv.setAdapter(rv_adapter);
+                    rv.setLayoutManager(new LinearLayoutManager(Manager.this));
+                }
                 rv_adapter.notifyDataSetChanged();
 
             }
@@ -51,10 +57,7 @@ public class Manager extends AppCompatActivity {
             }
         };
         sum_to_check(fbcbString);
-        rv= findViewById(R.id.RV);
-        rv_adapter = new RvAdapterMan(sum_array_check,this, this);
-        rv.setAdapter(rv_adapter);
-        rv.setLayoutManager(new LinearLayoutManager(this));
+
 
 
     }
@@ -98,13 +101,7 @@ public class Manager extends AppCompatActivity {
                     }
                 }
                 else{}
-//                    else {
-//                        myRef.child(keyName).setValue(sum[0]);
-//                        DatabaseReference db = database.getReference();
-//                        updateValue(db, "universities", university);
-//                        updateValue(db, "courses", course);
-//                        updateValue(db, "lecturer", teacher);
-//                    }
+
                 fbcbSum.onCallback(sum_array_check);
             }
 
@@ -112,8 +109,7 @@ public class Manager extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("cancel", "cancel");            }
         });
-//        System.out.println("sum.userId:" + sum[0].userId);
-//        return sum[0];
+
     }
 
 
