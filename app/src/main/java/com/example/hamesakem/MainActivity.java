@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-//        checkAdmin();
+        checkAdmin();
 
         Query vv = myRef
                 .child("universities");
@@ -303,6 +303,13 @@ public class MainActivity extends AppCompatActivity {
         admins.add("boas30333@gmail.com");
         admins.add("bhorib@gmail.com");
         admins.add("itamarzo0@gmail.com");
+        FirebaseAuth fAuth;
+        fAuth = FirebaseAuth.getInstance();
+        String email =fAuth.getCurrentUser().getEmail();
+        if(admins.contains(email))
+            sum_to_manager.setVisibility(View.VISIBLE);
+        else
+            sum_to_manager.setVisibility(View.INVISIBLE);
 
 
     }

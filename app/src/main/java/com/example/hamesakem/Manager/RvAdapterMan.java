@@ -44,7 +44,7 @@ public class RvAdapterMan extends RecyclerView.Adapter<RvAdapterMan.MyViewHolder
     @Override
     public RvAdapterMan.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater= LayoutInflater.from(context);
-        View v=  inflater.inflate(R.layout.my_sum_row,parent,false);
+        View v=  inflater.inflate(R.layout.my_man_row,parent,false);
         return new RvAdapterMan.MyViewHolder(v);
     }
 
