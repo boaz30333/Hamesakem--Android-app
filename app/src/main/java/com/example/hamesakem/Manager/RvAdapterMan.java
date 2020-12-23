@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,11 +35,11 @@ import java.util.ArrayList;
 public class RvAdapterMan extends RecyclerView.Adapter<RvAdapterMan.MyViewHolder>  {
     ArrayList<Summary> sum_array;
     Context context;
-    Activity my_summaries_activity;
-    public RvAdapterMan(ArrayList<Summary> sum_array, Context context, Activity my_summaries_activity){
+    Activity manager_activity;
+    public RvAdapterMan(ArrayList<Summary> sum_array, Context context, Activity manager_activity){
         this.sum_array= sum_array;
         this.context=context;
-        this.my_summaries_activity = my_summaries_activity;
+        this.manager_activity = manager_activity;
     }
     @NonNull
     @Override
@@ -72,14 +73,60 @@ public class RvAdapterMan extends RecyclerView.Adapter<RvAdapterMan.MyViewHolder
         holder.l_name.setText(sum_array.get(position).lecturer);
         holder.c_name.setText(sum_array.get(position).topic);
         holder.u_name.setText(sum_array.get(position).university);
+        String key = (String)sum_array.get(position).uri;
+        String[] fullPath = key.split("\\.");
+        key = fullPath[0];
+        key = key.replaceAll("/", "") + "-" + sum_array.get(position).userId;
+        final String key_= key;
+        Log.d("key:  ", ""+ key_);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("summariesToManager");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if(snapshot.hasChild(key_)) {
+                    System.out.println(""+(Long) (snapshot.child(key_).getValue()));
+                    holder.num.setText(""+(Long) (snapshot.child(key_).getValue()));
+                    Toast.makeText(context,"add value",  Toast.LENGTH_LONG).show();
+
+                } else {
+                    myRef.child(key_).setValue(1);
+                    Toast.makeText(context,"new key",  Toast.LENGTH_LONG).show();
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+//        holder.num.setText(""+num[0]);
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Delete d = new Delete(my_summaries_activity, sum_array.get(position).uri);
+                Delete d = new Delete(manager_activity, sum_array.get(position).uri);
                 d.del();
                 sum_array.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, sum_array.size());
+            }
+        });
+
+        holder.download.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DownloadFile d = new DownloadFile(manager_activity, sum_array.get(position).uri);
+                d.down();
+            }
+        });
+
+        holder.reject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myRef.child(key_).removeValue();
+                Toast.makeText(manager_activity.getApplicationContext(), "Report denied ", Toast.LENGTH_LONG).show();
+
             }
         });
     }
@@ -93,21 +140,27 @@ public class RvAdapterMan extends RecyclerView.Adapter<RvAdapterMan.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         Button delete;
+        Button download;
+        Button reject;
         RatingBar r;
         TextView u_name;
         TextView c_name;
         TextView l_name;
         TextView id_name;
+        TextView num;
         FirebaseFirestore fStore;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             delete= (Button) itemView.findViewById(R.id.button_row);
+            download= (Button) itemView.findViewById(R.id.button_row2);
+            reject= (Button) itemView.findViewById(R.id.button_row3);
             r=  (RatingBar)itemView.findViewById(R.id.rating);
             u_name = itemView.findViewById(R.id.u_name);
             c_name=itemView.findViewById(R.id.c_name);
             l_name=itemView.findViewById(R.id.t_name);
             id_name=itemView.findViewById(R.id.id_name);
+            num = itemView.findViewById(R.id.num);
             fStore = FirebaseFirestore.getInstance();
 
         }
