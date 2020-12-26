@@ -5,15 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.hamesakem.MainActivity;
-import com.example.hamesakem.MySummaries.RvAdapterSum;
 import com.example.hamesakem.R;
-import com.example.hamesakem.Result.Summary;
-import com.google.firebase.FirebaseError;
+import com.example.hamesakem.Summary;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -61,7 +57,7 @@ public class Manager extends AppCompatActivity {
 
 
     }
-    public void sum_to_check(FireBaseCallBackString fbcb_s){
+    public void sum_to_check(FireBaseCallBackString fbcbString){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
         Query v3 = myRef
@@ -73,7 +69,7 @@ public class Manager extends AppCompatActivity {
                 for(DataSnapshot child : snapshot.getChildren()){
                     keys_sum.add(child.getKey());
                 }
-                fbcb_s.onCallback(keys_sum);
+                fbcbString.onCallback(keys_sum);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

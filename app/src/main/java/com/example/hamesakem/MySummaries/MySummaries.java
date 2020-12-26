@@ -6,13 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.widget.Toast;
 
-import com.example.hamesakem.Manager.Manager;
 import com.example.hamesakem.R;
-import com.example.hamesakem.Result.RvAdapter;
-import com.example.hamesakem.Result.Summary;
+import com.example.hamesakem.Summary;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

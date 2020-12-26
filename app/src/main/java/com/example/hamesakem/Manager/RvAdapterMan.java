@@ -14,17 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hamesakem.Delete;
-import com.example.hamesakem.DownloadFile;
-import com.example.hamesakem.MySummaries.RvAdapterSum;
 import com.example.hamesakem.R;
-import com.example.hamesakem.Result.Summary;
+import com.example.hamesakem.Summary;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -72,15 +65,12 @@ public class RvAdapterMan extends RecyclerView.Adapter<RvAdapterMan.MyViewHolder
         holder.l_name.setText(sum_array.get(position).lecturer);
         holder.c_name.setText(sum_array.get(position).topic);
         holder.u_name.setText(sum_array.get(position).university);
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Delete d = new Delete(my_summaries_activity, sum_array.get(position).uri);
-                d.del();
-                sum_array.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, sum_array.size());
-            }
+        holder.delete.setOnClickListener(v -> {
+            Delete d = new Delete(my_summaries_activity, sum_array.get(position));
+            d.del();
+            sum_array.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, sum_array.size());
         });
     }
 

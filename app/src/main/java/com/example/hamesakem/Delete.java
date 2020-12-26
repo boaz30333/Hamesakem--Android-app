@@ -2,12 +2,10 @@ package com.example.hamesakem;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.hamesakem.Result.Summary;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,11 +21,14 @@ public class Delete {
     FirebaseStorage storage;
     String path;
     Activity act;
-
-    public Delete(Activity act, String path) {
+    Summary sum_;
+    String sum_key;
+    final Summary[] sum = new Summary[1];
+    public Delete(Activity act, Summary sum) {
         storage = FirebaseStorage.getInstance();
         this.act = act;
-        this.path = path;
+        this.path = sum.uri;
+        this.sum_=sum;
 //        String[] fullPath = path.split("\\.");
 
 //        this.path = fullPath[0];
@@ -57,28 +58,30 @@ public class Delete {
                 FirebaseAuth fAuth = FirebaseAuth.getInstance();
                 String userId =fAuth.getCurrentUser().getUid();
                 String[] fullPath = path.split("\\.");
-                String path_ = fullPath[0];
-                path_ = path_.replaceAll("/", "")+ "-" +userId;
-                final Summary[] sum = new Summary[1];
-                myRef.child(path_).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()){
-                            sum[0] = snapshot.getValue(Summary.class);
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-                myRef.child(path_).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                sum_key = fullPath[0];
+                sum_key = sum_key.replaceAll("/", "")+ "-" +userId;
+                
+//                myRef.child(sum_key).addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        if(snapshot.exists()){
+//                            sum_ = snapshot.getValue(Summary.class);
+//                        }
+//                    }
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
+                myRef.child(sum_key).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         DatabaseReference db = database.getReference();
-                        updateValue(db, "universities", sum[0].university);
-                        updateValue(db, "courses", sum[0].topic);
-                        updateValue(db, "lecturer", sum[0].lecturer);
+                        updateValue(db, "universities", sum_.university);
+                        updateValue(db, "courses", sum_.topic);
+                        updateValue(db, "lecturer", sum_.lecturer);
+                        updateValue(db, "summariesToManager", sum_key );
+
                     }
                 });
                 Toast.makeText(act.getApplicationContext(), "File Deleted ", Toast.LENGTH_LONG).show();
@@ -101,7 +104,7 @@ public class Delete {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.hasChild(child)) {
-                    if((Long)(snapshot.child(child).getValue())>1) {
+                    if((Long)(snapshot.child(child).getValue())>1&& !parent.equals("summariesToManager")) {
                         db.child(parent).child(child).setValue((Long) (snapshot.child(child).getValue()) - 1);
                     }else{
                         db.child(parent).child(child).removeValue();

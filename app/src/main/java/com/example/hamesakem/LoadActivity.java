@@ -5,19 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.hamesakem.Result.Summary;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,14 +20,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.okhttp.internal.DiskLruCache;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.io.IOException;
 
 
 public class LoadActivity extends AppCompatActivity implements View.OnClickListener {
@@ -53,6 +45,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
 //    TextView university;
     //ImageView
     private ImageView imageView;
+    Summary sum;
 
     //a Uri object to store file path
     private Uri filePath;
@@ -195,7 +188,7 @@ protected void onCreate(Bundle savedInstanceState) {
     private void updateRealTimeDB(String userId, String path) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("sum");
-        Summary sum = new Summary(teacher, semester, course, university, path+ ".pdf", userId);
+        sum = new Summary(teacher, semester, course, university, path+ ".pdf", userId);
 //        Summary sum = new Summary(teacher.getText().toString(), simester.getText().toString(), course.getText().toString(), university.getText().toString(), path+"." +MimeTypeMap.getFileExtensionFromUrl(filePath.toString()), userId);
         final String keyName = path.replaceAll("/", "")+ "-" +userId;
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -254,7 +247,7 @@ protected void onCreate(Bundle savedInstanceState) {
         return str.replaceAll(" ", "-");
     }
     public void onClick2(View v){
-        Intent intent=new Intent(this,Download.class);
+        Intent intent=new Intent(this,DownloadFile.class);
         startActivity(intent);
     }
 }
