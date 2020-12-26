@@ -298,6 +298,7 @@ public class MainActivity extends AppCompatActivity {
             if (c_listItems == null || c_listItems.isEmpty()) {
                 choice_p_c.show();
             } else {
+                adapter_c.getView(0,null,list_c).performClick();
                 dialog_c.show();
             }
         });
@@ -306,6 +307,7 @@ public class MainActivity extends AppCompatActivity {
             if (u_listItems.isEmpty()) {
                 choice_p_u.show();
             } else {
+                adapter_u.getView(0,null,list_u).performClick();
                 dialog_u.show();
             }
         });
@@ -313,6 +315,7 @@ public class MainActivity extends AppCompatActivity {
             if (l_listItems == null || l_listItems.isEmpty()) {
                 choice_p_l.show();
             } else {
+                adapter_l.getView(0,null,list_l).performClick();
                 dialog_l.show();
             }
         });
