@@ -1,0 +1,14 @@
+@startuml
+(*)  -->"login"
+-->"search summary"
+If "find the summery?" then
+---> [Yes] "download summary"
+If "return to search?" then
+--> [   Yes] "search summary"
+else
+--> [No] (*)
+Endif
+else
+---> [ No] "search summary"
+Endif
+@enduml
