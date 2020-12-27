@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RatingBar;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -18,12 +17,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hamesakem.DownloadFile;
-import com.example.hamesakem.MainActivity;
 import com.example.hamesakem.R;
+import com.example.hamesakem.Summary;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -58,21 +55,18 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final String[] name_from_id = new String[1];
         DocumentReference docRef = holder.fStore.collection("users").document(sum_array.get(position).userId);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        name_from_id[0] = (String) document.getData().get("fName");
-                        holder.id_name.setText("" + name_from_id[0]);
-                        Log.d("TAG", "DocumentSnapshot data: " + document.getData());
-                    } else {
-                        Log.d("TAG", "No such document");
-                    }
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    name_from_id[0] = (String) document.getData().get("fName");
+                    holder.id_name.setText("" + name_from_id[0]);
+                    Log.d("TAG", "DocumentSnapshot data: " + document.getData());
                 } else {
-                    Log.d("TAG", "get failed with ", task.getException());
+                    Log.d("TAG", "No such document");
                 }
+            } else {
+                Log.d("TAG", "get failed with ", task.getException());
             }
         });
         holder.l_name.setText(sum_array.get(position).lecturer);
@@ -81,7 +75,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
         holder.b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DownloadFile d = new DownloadFile(result_activity, sum_array.get(position).uri);
+                DownloadFile d = new DownloadFile(result_activity, sum_array.get(position));
                 d.down();
                 Toast.makeText(context, "ygy", Toast.LENGTH_SHORT).show();
 

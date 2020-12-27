@@ -15,7 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HaMesakem">
         <activity android:name=".Manager.Manager"></activity>
-        <activity android:name=".Download" />
         <activity android:name=".Result.result" />
         <activity android:name=".MySummaries.MySummaries" />
         <activity android:name=".Login" />

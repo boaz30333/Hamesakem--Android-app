@@ -1,4 +1,4 @@
-package com.example.hamesakem.Result;
+package com.example.hamesakem;
 
 import java.io.Serializable;
 

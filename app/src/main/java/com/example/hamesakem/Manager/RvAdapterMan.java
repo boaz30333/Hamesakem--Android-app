@@ -18,7 +18,7 @@ import com.example.hamesakem.Delete;
 import com.example.hamesakem.DownloadFile;
 import com.example.hamesakem.MySummaries.RvAdapterSum;
 import com.example.hamesakem.R;
-import com.example.hamesakem.Result.Summary;
+import com.example.hamesakem.Summary;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -105,7 +105,7 @@ public class RvAdapterMan extends RecyclerView.Adapter<RvAdapterMan.MyViewHolder
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Delete d = new Delete(manager_activity, sum_array.get(position).uri);
+                Delete d = new Delete(manager_activity, sum_array.get(position));
                 d.del();
                 sum_array.remove(position);
                 notifyItemRemoved(position);
@@ -116,7 +116,7 @@ public class RvAdapterMan extends RecyclerView.Adapter<RvAdapterMan.MyViewHolder
         holder.download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DownloadFile d = new DownloadFile(manager_activity, sum_array.get(position).uri);
+                DownloadFile d = new DownloadFile(manager_activity, sum_array.get(position));
                 d.down();
             }
         });

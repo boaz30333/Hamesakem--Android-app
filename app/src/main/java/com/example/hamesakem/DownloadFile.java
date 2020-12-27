@@ -28,11 +28,13 @@ public class DownloadFile {
     FirebaseStorage storage;
     String path, pdf;
     Activity act;
+    Summary sum;
 
-   public DownloadFile(Activity act, String path) {
+   public DownloadFile(Activity act, Summary sum) {
         storage = FirebaseStorage.getInstance();
+        this.sum=sum;
         this.act = act;
-        String[] fullPath = path.split("\\.");
+        String[] fullPath = sum.uri.split("\\.");
         this.path = fullPath[0];
         this.pdf = "." + fullPath[1];
         permissions();
