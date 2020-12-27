@@ -1,0 +1,80 @@
+@startuml
+
+object " sum 1 : Summary " as sum1
+object " sum 2 : Summary " as sum2
+
+object " sum 3 : Summary " as sum3
+object " Mesakem 1 : Mesakem " as mesakem1
+object " Manager 1 : Manager " as manager1
+
+
+
+
+
+
+
+
+
+object manager1{
+
+UserID : mAH881XDiNWPeLErAvVpcwMzRub2
+ name : Ori Ben-Hamo
+ Email: bhorib@gmail.com
+ PhoneNumber : 0545876084
+ keys_sum : {uploads/אריאל/הנדסת-תוכנה/קרן-ניבש/2020/א/mAH881XDiNWPeLErAvVpcwMzRub2.pdf}
+ sum_array_check : {sum1}
+ responsability : content
+}
+
+manager1 -- sum1
+
+object mesakem1 {
+UserID : PycqyX442yeIFOdeuBKTHY465my2
+ name : Boaz Sharabi
+ Email: boaz30333@gmail.com
+ PhoneNumber : 0549445363
+ Rank : 4.9
+ my_summaries : {sum1, sum2, sum3}
+
+}
+mesakem1 -- sum1
+mesakem1 -- sum2
+mesakem1 -- sum3
+
+Object  sum1 {
+ lecturer : נועם חזון
+ topic : אלגוריתמים בבינה מלאכותית
+ university : אריאל
+ uri : uploads/אריאל/אלגוריתמיםבבינהמלאכותית/נועםחזון/2020/א/PycqyX442yeIFOdeuBKTHY465my2.pdf
+ userId : PycqyX442yeIFOdeuBKTHY465my2
+ year : 2020
+ num_of_rate : 3
+ sum_rate : 14
+}
+Object  sum2 {
+ lecturer : קרן ניבש
+ topic : הנדסת-תוכנה
+ university : אריאל
+ uri : uploads/אריאל/הנדסת-תוכנה/קרן-ניבש/2020/א/mAH881XDiNWPeLErAvVpcwMzRub2.pdf
+ userId : PycqyX442yeIFOdeuBKTHY465my2
+year : 2020
+ num_of_rate : 10
+ sum_rate : 45
+}
+Object  sum3 {
+ lecturer : צפירה מנשה
+ topic : אומנות חזותית
+ university : אריאל
+ uri : uploads/אריאל/אומנות-חזותית/צפירה-מנשה/2016/א/DKIOu6Un6kMLEFzTTxVKAe7IZMG2.pdf
+ userId : PycqyX442yeIFOdeuBKTHY465my2
+ 
+ year : 2016
+num_of_rate : 8
+ sum_rate : 40
+}
+
+
+
+
+
+@enduml
