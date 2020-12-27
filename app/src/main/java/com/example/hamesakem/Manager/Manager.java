@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.hamesakem.MenuApp;
 import com.example.hamesakem.R;
 import com.example.hamesakem.Summary;
 import com.google.firebase.database.DataSnapshot;
@@ -19,7 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Manager extends AppCompatActivity {
+public class Manager extends MenuApp {
 
     RecyclerView rv ;
     RvAdapterMan rv_adapter;

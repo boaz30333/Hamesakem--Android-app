@@ -34,7 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends MenuApp {
 
     public ListView list_c;
     public ListView list_u;

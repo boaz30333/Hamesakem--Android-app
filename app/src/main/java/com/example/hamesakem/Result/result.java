@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.example.hamesakem.MenuApp;
 import com.example.hamesakem.R;
 import com.example.hamesakem.Summary;
 import com.example.hamesakem.User;
@@ -17,7 +18,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class result extends AppCompatActivity {
+public class result extends MenuApp {
 
     ArrayList<Summary> sum_array;
     RecyclerView rv ;

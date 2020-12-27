@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import com.example.hamesakem.MenuApp;
 import com.example.hamesakem.R;
 import com.example.hamesakem.Summary;
 import com.google.firebase.database.DataSnapshot;
@@ -18,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class MySummaries extends AppCompatActivity {
+public class MySummaries extends MenuApp {
 
   public  ArrayList<Summary> my_summaries=new ArrayList<>();
   public  RecyclerView rv ;
