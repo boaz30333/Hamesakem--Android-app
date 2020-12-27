@@ -100,7 +100,7 @@ public class Delete {
 
     //could be a bug when uploads summary with the same path, its update value again, but has just one summary.
     private void updateValue( DatabaseReference db,  String parent, String child) {
-        db.child(parent).addValueEventListener(new ValueEventListener() {
+        db.child(parent).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.hasChild(child)) {

@@ -7,6 +7,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,7 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class LoadActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoadActivity extends MenuApp implements View.OnClickListener {
 //    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 //    StorageReference photoRef;
     private StorageReference mStorageRef;
@@ -55,6 +57,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_load);
+    MenuApp menu = new MenuApp();
     mStorageRef = FirebaseStorage.getInstance().getReference();
 
     //getting views from layout
@@ -246,6 +249,28 @@ protected void onCreate(Bundle savedInstanceState) {
         }
         return str.replaceAll(" ", "-");
     }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu, (android.view.Menu) menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.setting:
+//                setting();
+//                return true;
+//            case R.id.search:
+//                search();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
+
     public void onClick2(View v){
         Intent intent=new Intent(this,DownloadFile.class);
         startActivity(intent);

@@ -6,13 +6,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import com.example.hamesakem.MenuApp;
 import com.example.hamesakem.R;
 import com.example.hamesakem.Summary;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-public class result extends AppCompatActivity {
+public class result extends MenuApp {
 
     ArrayList<Summary> sum_array;
     RecyclerView rv ;

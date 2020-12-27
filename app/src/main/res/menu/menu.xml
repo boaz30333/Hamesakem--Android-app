@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/search"
+        android:title="חיפוש">
+
+    </item>
+    <item
+        android:id="@+id/upload"
+        android:title="העלאת סיכום">
+
+    </item>
+    <item
+        android:id="@+id/my_summaries"
+        android:title="הסיכומים שלי">
+
+    </item>
+    <item
+        android:id="@+id/manager"
+        android:title="סיכומים למנהל">
+
+    </item>
+    <item
+        android:id="@+id/logout"
+        android:title="התנתק">
+
+    </item>
+</menu>
