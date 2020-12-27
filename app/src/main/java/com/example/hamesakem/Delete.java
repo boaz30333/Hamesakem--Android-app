@@ -55,12 +55,10 @@ public class Delete {
                 progressDialog.dismiss();
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("sum");
-                FirebaseAuth fAuth = FirebaseAuth.getInstance();
-                String userId =fAuth.getCurrentUser().getUid();
+                String userId =sum_.userId;
                 String[] fullPath = path.split("\\.");
                 sum_key = fullPath[0];
                 sum_key = sum_key.replaceAll("/", "")+ "-" +userId;
-                
 //                myRef.child(sum_key).addValueEventListener(new ValueEventListener() {
 //                    @Override
 //                    public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -100,11 +98,11 @@ public class Delete {
 
     //could be a bug when uploads summary with the same path, its update value again, but has just one summary.
     private void updateValue( DatabaseReference db,  String parent, String child) {
-        db.child(parent).addValueEventListener(new ValueEventListener() {
+        db.child(parent).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.hasChild(child)) {
-                    if((Long)(snapshot.child(child).getValue())>1&& !parent.equals("summariesToManager")) {
+                    if((Long)(snapshot.child(child).getValue())>1 && !parent.equals("summariesToManager")) {
                         db.child(parent).child(child).setValue((Long) (snapshot.child(child).getValue()) - 1);
                     }else{
                         db.child(parent).child(child).removeValue();
