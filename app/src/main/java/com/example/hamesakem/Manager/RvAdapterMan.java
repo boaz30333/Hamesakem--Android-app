@@ -85,15 +85,14 @@ public class RvAdapterMan extends RecyclerView.Adapter<RvAdapterMan.MyViewHolder
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if(snapshot.hasChild(key_)) {
-                    System.out.println(""+(Long) (snapshot.child(key_).getValue()));
-                    holder.num.setText(""+(Long) (snapshot.child(key_).getValue()));
-                    Toast.makeText(context,"add value",  Toast.LENGTH_LONG).show();
+                    System.out.println(""+(Long) (snapshot.child(key_).child("count").getValue()));
+                    holder.num.setText(""+(Long) (snapshot.child(key_).child("count").getValue()));
 
-                } else {
-                    myRef.child(key_).setValue(1);
-                    Toast.makeText(context,"new key",  Toast.LENGTH_LONG).show();
-
-                    }
+                }
+//                else {
+//                    myRef.child(key_).child("count").setValue(1);
+//
+//                    }
                 }
 
                 @Override

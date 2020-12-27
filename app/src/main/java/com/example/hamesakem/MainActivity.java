@@ -133,8 +133,6 @@ public class MainActivity extends MenuApp {
         vv.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                System.out.println("6");
-
                 u_listItems.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot child : snapshot.getChildren()) {
@@ -200,7 +198,9 @@ public class MainActivity extends MenuApp {
                     if (snapshot.exists()) {
                         for (DataSnapshot child : snapshot.getChildren()) {
                             Summary sum = child.getValue(Summary.class);
-                            if (!c_listItems.contains(sum.topic)) c_listItems.add(sum.topic);
+                            if (!c_listItems.contains(sum.topic)) {
+                                c_listItems.add(sum.topic);
+                            }
                             sum_list.add(sum);
                         }
                     }
@@ -243,8 +243,11 @@ public class MainActivity extends MenuApp {
             Iterator<Summary> iter = sum_result_after_c.iterator();
             while (iter.hasNext()) {
                 Summary s = iter.next();
-                if (s.topic == course_choice && !l_listItems.contains(s.lecturer))
-                    l_listItems.add(s.lecturer);
+                if (s.topic.equals(course_choice)){
+                   if( !l_listItems.contains(s.lecturer)){
+                       l_listItems.add(s.lecturer);
+                   }
+                }
                 else iter.remove();
             }
         };
@@ -276,6 +279,7 @@ public class MainActivity extends MenuApp {
             sum_result_after_l.addAll(sum_result_after_c);
             Iterator<Summary> iter = sum_result_after_c.iterator();
             while (iter.hasNext()) {
+
                 Summary s = iter.next();
                 if (s.lecturer != lecturer_choice) iter.remove();
             }
@@ -326,22 +330,26 @@ public class MainActivity extends MenuApp {
         my_sum.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, MySummaries.class);
             intent.putExtra("userId", userId);
+            intent.putExtra("current_user",current_user);
             startActivityForResult(intent, 1);
         });
 
         search.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, result.class);
             intent.putExtra("sum_result", sum_result_after_l);
+            intent.putExtra("current_user",current_user);
             startActivityForResult(intent, 2);
         });
 
         upload.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, LoadActivity.class);
+            intent.putExtra("current_user",current_user);
             startActivityForResult(intent, 3);
         });
 
         sum_to_manager.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, Manager.class);
+            intent.putExtra("current_user",current_user);
             startActivityForResult(intent, 4);
         });
     }

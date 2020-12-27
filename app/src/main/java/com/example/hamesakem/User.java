@@ -1,6 +1,8 @@
 package com.example.hamesakem;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 //    private String UserID;
     public String fName;
     public String email;

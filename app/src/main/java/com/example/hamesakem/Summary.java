@@ -9,7 +9,8 @@ public class Summary implements Serializable {
     public String uri;
     public String userId;
     public String semester;
-
+    public int num_of_rates;
+    public float sum_of_rate;
     public Summary(){
 
     }
@@ -21,6 +22,8 @@ public class Summary implements Serializable {
         this.uri = uri;
         this.userId = userId;
         this.semester = semester;
+        this.num_of_rates=0;
+        this.sum_of_rate=0;
     }
 
     public Summary(Summary summary) {
@@ -30,5 +33,9 @@ public class Summary implements Serializable {
         this.uri = summary.uri;
         this.userId = summary.userId;
         this.semester = summary.semester;
+    }
+    public float getRank(){
+        if(num_of_rates==0)return 0;
+        return sum_of_rate/num_of_rates;
     }
 }

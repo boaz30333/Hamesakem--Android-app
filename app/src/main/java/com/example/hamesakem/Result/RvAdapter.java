@@ -19,8 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.hamesakem.DownloadFile;
 import com.example.hamesakem.R;
 import com.example.hamesakem.Summary;
+import com.example.hamesakem.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,11 +38,19 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
     ArrayList<Summary> sum_array;
     Context context;
     Activity result_activity;
-
-    public RvAdapter(ArrayList<Summary> sum_array, Context context, Activity result_activity) {
+    String key_;
+    FirebaseDatabase database;
+    FirebaseAuth auth;
+    String current_uid;
+    User current_user;
+    public RvAdapter(ArrayList<Summary> sum_array, Context context, Activity result_activity,User current_user) {
         this.sum_array = sum_array;
         this.context = context;
         this.result_activity = result_activity;
+        this.database = FirebaseDatabase.getInstance();
+         this.auth = FirebaseAuth.getInstance();
+        this.current_uid= auth.getCurrentUser().getUid();
+        this.current_user= current_user;
     }
 
     @NonNull
@@ -53,55 +63,142 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        final String[] name_from_id = new String[1];
-        DocumentReference docRef = holder.fStore.collection("users").document(sum_array.get(position).userId);
-        docRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    name_from_id[0] = (String) document.getData().get("fName");
-                    holder.id_name.setText("" + name_from_id[0]);
-                    Log.d("TAG", "DocumentSnapshot data: " + document.getData());
-                } else {
-                    Log.d("TAG", "No such document");
-                }
-            } else {
-                Log.d("TAG", "get failed with ", task.getException());
-            }
-        });
-        holder.l_name.setText(sum_array.get(position).lecturer);
-        holder.c_name.setText(sum_array.get(position).topic);
-        holder.u_name.setText(sum_array.get(position).university);
+//        final String[] name_from_id = new String[1];
+//        DocumentReference docRef = holder.fStore.collection("users").document(sum_array.get(position).userId);
+//        docRef.get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                DocumentSnapshot document = task.getResult();
+//                if (document.exists()) {
+//                    name_from_id[0] = (String) document.getData().get("fName");
+//                    holder.id_name.setText("" + name_from_id[0]);
+//                    Log.d("TAG", "DocumentSnapshot data: " + document.getData());
+//                } else {
+//                    Log.d("TAG", "No such document");
+//                }
+//            } else {
+//                Log.d("TAG", "get failed with ", task.getException());
+//            }
+//        });
+        holder.id_name.setText(current_user.fName);
+//        holder.l_name.setText(sum_array.get(position).lecturer);
+//        holder.c_name.setText(sum_array.get(position).topic);
+//        holder.u_name.setText(sum_array.get(position).university);
         holder.b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DownloadFile d = new DownloadFile(result_activity, sum_array.get(position));
                 d.down();
-                Toast.makeText(context, "ygy", Toast.LENGTH_SHORT).show();
 
 
             }
         });
+        Summary sum = sum_array.get(position);
+        String key = (String)sum.uri;
+        String[] fullPath = key.split("\\.");
+        key = fullPath[0];
+        key = key.replaceAll("/", "") + "-" + sum.userId;
+        key_ = key;
+
+        holder.r.setRating(sum.getRank());
+        holder.r.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                DatabaseReference myRef = database.getReference("summariesRank");
+                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        //somebody rate
+                        DatabaseReference myRef2 = database.getReference("sum");
+
+                        if(snapshot.hasChild(key_)) {
+                            String e= key_ +"/users/"+current_uid;
+                            //this user already rate
+                            if(snapshot.hasChild(e)) {
+                                try {
+                                    Long d = (Long)snapshot.child(key_).child("users").child(current_uid).getValue();
+                                }
+                                catch(Exception c){
+                                    System.out.println(c.getMessage());
+                                }
+                                float diff = rating - (Long)snapshot.child(key_).child("users").child(current_uid).getValue();
+                                sum.sum_of_rate+=diff;
+                                myRef.child(key_).child("users").child(current_uid).setValue(rating);
+                                ratingBar.setRating(sum.getRank());
+
+                            }
+                            //this user never rate before
+                            else{
+                                sum.num_of_rates++;
+                                sum.sum_of_rate+=rating;
+                                ratingBar.setRating(sum.getRank());
+                                myRef.child(key_).child("count").setValue((Long) (snapshot.child(key_).getValue()) + 1);
+                                myRef.child(key_).child("users").child(current_uid).setValue(rating);
+
+                            }
+                        }
+                        //this sum never get rate before
+                        else{
+                          sum.num_of_rates++;
+                          sum.sum_of_rate+=rating;
+                          ratingBar.setRating(sum.getRank());
+                          myRef.child(key_).child("count").setValue(1);
+                          myRef.child(key_).child("users").child(current_uid).setValue(rating);
+
+                        }
+                        myRef2.child(key_).setValue(sum);
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
+
+        //-----check if this user already report and allow him to cancel his report
+
+      DatabaseReference myRef = database.getReference("summariesToManager");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if(snapshot.hasChild(key_)) {
+                    String e= key_ +"/reporters/"+current_uid;
+                    if(snapshot.hasChild(e)) {
+                    holder.report.setChecked(true);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        //---- listen to report
         holder.report.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String key = (String)sum_array.get(position).uri;
-                String[] fullPath = key.split("\\.");
-                key = fullPath[0];
-                key = key.replaceAll("/", "") + "-" + sum_array.get(position).userId;
-                final String key_= key;
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("summariesToManager");
                 if (isChecked) {
                     myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
+
+
                             if(snapshot.hasChild(key_)) {
-                                myRef.child(key_).setValue((Long) (snapshot.child(key_).getValue()) + 1);
-                                Toast.makeText(context,"add value",  Toast.LENGTH_LONG).show();
+                                String e= key_+"/reporters/"+current_uid;
+                                if(!snapshot.hasChild(e)) {
+                                    myRef.child(key_).child("count").setValue((Long) (snapshot.child(key_).child("count").getValue()) + 1);
+                                    Toast.makeText(context, "add value", Toast.LENGTH_LONG).show();
+                                    myRef.child(key_).child("reporters").child(current_uid).setValue(1);
+
+                                }
+                                Toast.makeText(context,"you are already reports",  Toast.LENGTH_LONG).show();
 
                             } else {
-                                myRef.child(key_).setValue(1);
+
+                                myRef.child(key_).child("count").setValue(1);
+                                myRef.child(key_).child("reporters").child(current_uid).setValue(1);
                                 Toast.makeText(context,"new key",  Toast.LENGTH_LONG).show();
 
                             }
@@ -117,10 +214,10 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
                             if (snapshot.hasChild(key_)) {
-                                if((Long)(snapshot.child(key_).getValue())>1) {
-                                    Toast.makeText(context,"remove value",  Toast.LENGTH_LONG).show();
+                                if((Long)(snapshot.child(key_).child("count").getValue())>1) {
 
-                                    myRef.child(key_).setValue((Long) (snapshot.child(key_).getValue()) - 1);
+                                    myRef.child(key_).child("count").setValue((Long) (snapshot.child(key_).getValue()) - 1);
+                                    myRef.child(key_).child("reporters").child(current_uid).removeValue();
                                 }else{
                                     myRef.child(key_).removeValue();
                                     Toast.makeText(context,"remove key",  Toast.LENGTH_LONG).show();
@@ -159,9 +256,9 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
             super(itemView);
             b = (Button) itemView.findViewById(R.id.button_row);
             r = (RatingBar) itemView.findViewById(R.id.rating);
-            u_name = itemView.findViewById(R.id.u_name);
-            c_name = itemView.findViewById(R.id.c_name);
-            l_name = itemView.findViewById(R.id.t_name);
+//            u_name = itemView.findViewById(R.id.u_name);
+//            c_name = itemView.findViewById(R.id.c_name);
+//            l_name = itemView.findViewById(R.id.t_name);
             id_name = itemView.findViewById(R.id.id_name);
             report = (ToggleButton)itemView.findViewById(R.id.report);
             fStore = FirebaseFirestore.getInstance();
