@@ -39,6 +39,7 @@ public class LoadActivity extends MenuApp implements View.OnClickListener {
     //Buttons
 //    private Button buttonChoose;
     private Button buttonUpload;
+    private Button email;
     String course, teacher, year, semester, university;
 //    TextView course;
 //    TextView teacher;
@@ -63,6 +64,7 @@ protected void onCreate(Bundle savedInstanceState) {
     //getting views from layout
 //        buttonChoose = (Button) findViewById(R.id.buttonChoose);
     buttonUpload = (Button) findViewById(R.id.bsave);
+    email = (Button) findViewById(R.id.email);
 
 //        imageView = (ImageView) findViewById(R.id.imageView);
 
@@ -272,7 +274,10 @@ protected void onCreate(Bundle savedInstanceState) {
 //    }
 
     public void onClick2(View v){
-        Intent intent=new Intent(this,DownloadFile.class);
-        startActivity(intent);
+//        Intent intent=new Intent(this,DownloadFile.class);
+//        startActivity(intent);
+        SendEmail se =new SendEmail(LoadActivity.this);
+        //send to..
+        se.send("itamarzo0@gmail.com");
     }
 }
