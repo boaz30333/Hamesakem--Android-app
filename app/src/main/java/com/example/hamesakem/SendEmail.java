@@ -17,14 +17,14 @@ public class SendEmail {
         Log.i("Send email", "");
 
         String[] TO = {to_email};
-        String[] CC = {""};
+//        String[] CC = {""};
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setData(Uri.parse("mailto:"));
         emailIntent.setType("text/plain");
 
 
         emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-        emailIntent.putExtra(Intent.EXTRA_CC, CC);
+//        emailIntent.putExtra(Intent.EXTRA_CC, CC);
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
         emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
 
