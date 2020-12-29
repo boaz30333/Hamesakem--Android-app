@@ -1,0 +1,10 @@
+@startuml
+User -> Summaries: Download summary
+User -> Summaries_to_manager: Report
+Summaries_to_manager -> Manager: Check the summary
+Manager -> Summaries: Download summary
+Manager --> Summaries_to_manager: Reject report
+'Manager --> Summaries_to_manager: Delete summary
+Manager -> Summaries: Delete summary
+
+@enduml

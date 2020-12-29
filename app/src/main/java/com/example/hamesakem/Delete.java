@@ -52,6 +52,11 @@ public class Delete {
         storageRef.child(path).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                User user = User.getUser(sum_.userId);
+                user.setNum_of_sum(user.getNum_of_sum()-1);
+                user.setNum_of_rates(user.getNum_of_rates()-sum_.num_of_rates);
+                user.setRank(user.getRank()-sum_.sum_of_rate);
+                user.updateFirestore();
                 progressDialog.dismiss();
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("sum");

@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -94,22 +95,26 @@ public class Register extends AppCompatActivity {
 //                            fuser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
 //                                @Override
 //                                public void onSuccess(Void aVoid) {
-//                                    Toast.makeText(Register.this, "Verification Email Has been Sent.", Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(Register.this, "Verification Email Has been Sent.", Toast.LENGTH_LONG).show();
 //                                }
 //                            }).addOnFailureListener(new OnFailureListener() {
 //                                @Override
 //                                public void onFailure(@NonNull Exception e) {
-//                                    Log.d(TAG, "onFailure: Email not sent " + e.getMessage());
+//                                    Log.d("TAG", "onFailure: Email not sent " + e.getMessage());
 //                                }
 //                            });
 
                             Toast.makeText(Register.this, "User Created.", Toast.LENGTH_LONG).show();
                             userID = fAuth.getCurrentUser().getUid();
                             DocumentReference documentReference = fStore.collection("users").document(userID);
-                            Map<String,Object> user = new HashMap<>();
-                            user.put("fName",fullName);
-                            user.put("email",email);
-                            user.put("phone",phone);
+//                            Map<String,Object> user = new HashMap<>();
+//                            user.put("fName",fullName);
+//                            user.put("email",email);
+//                            user.put("phone",phone);
+//                            user.put("number of rates",0);
+//                            user.put("number of summaries",0);
+//                            user.put("rank",0);
+                            User user = new User(fullName, email, phone, 0, 0, 0, userID);
                             documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {

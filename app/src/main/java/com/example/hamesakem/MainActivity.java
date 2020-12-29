@@ -14,13 +14,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hamesakem.Manager.Manager;
 import com.example.hamesakem.MySummaries.MySummaries;
 import com.example.hamesakem.Result.result;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -71,11 +75,17 @@ public class MainActivity extends MenuApp {
     boolean choose_l = false;
     boolean choose_u = false;
     private User current_user;
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
+        user = fAuth.getCurrentUser();
+
+
         upload = (Button) findViewById(R.id.button2);
         course = (Button) findViewById(R.id.button3);
         university = (Button) findViewById(R.id.button4);
@@ -101,8 +111,8 @@ public class MainActivity extends MenuApp {
         sum_result_after_l = new ArrayList<>();
         sum_result_after_c = new ArrayList<>();
 
-        FirebaseAuth fAuth;
-        fAuth = FirebaseAuth.getInstance();
+//        FirebaseAuth fAuth;
+//        fAuth = FirebaseAuth.getInstance();
         userId = fAuth.getCurrentUser().getUid();
 
         getUser(userId, user -> {

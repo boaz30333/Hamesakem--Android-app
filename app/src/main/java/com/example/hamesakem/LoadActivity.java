@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,9 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -194,6 +198,31 @@ protected void onCreate(Bundle savedInstanceState) {
     private void updateRealTimeDB(String userId, String path) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("sum");
+
+        FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+        final User[] user = new User[1];
+        DocumentReference docRef = fStore.collection("users").document(userId);
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+//                    User user = User.getUser(sum_array.get(position).userId);
+                    user[0] = document.toObject(User.class);
+                    user[0].setNum_of_sum(user[0].getNum_of_sum()+1);
+//
+//                    user[0].setNum_of_rates(user[0].getNum_of_rates()+1);
+//                    user[0].setRank(user[0].getRank()+rating);
+                    user[0].updateFirestore();
+//                    name_from_id[0] = (String) document.getData().get("fullName");
+                    Log.d("TAG", "DocumentSnapshot data: " + document.getData());
+                } else {
+                    Log.d("TAG", "No such document");
+                }
+            } else {
+                Log.d("TAG", "get failed with ", task.getException());
+            }
+        });
+
         sum = new Summary(teacher, semester, course, university, path+ ".pdf", userId);
 //        Summary sum = new Summary(teacher.getText().toString(), simester.getText().toString(), course.getText().toString(), university.getText().toString(), path+"." +MimeTypeMap.getFileExtensionFromUrl(filePath.toString()), userId);
         final String keyName = path.replaceAll("/", "")+ "-" +userId;

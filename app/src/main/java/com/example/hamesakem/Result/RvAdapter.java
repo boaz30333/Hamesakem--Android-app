@@ -2,6 +2,8 @@ package com.example.hamesakem.Result;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,8 +71,21 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    name_from_id[0] = (String) document.getData().get("fName");
+//                    User user = User.getUser(sum_array.get(position).userId);
+                    User user = document.toObject(User.class);
+                    name_from_id[0] = (String) document.getData().get("fullName");
                     holder.id_name.setText("" + name_from_id[0]);
+                    switch (user.computeRank()) {
+                        case 1:
+                            holder.id_name.setTextColor(Color.GREEN);
+                            break;
+                        case 2:
+                            holder.id_name.setTextColor(Color.MAGENTA);
+                            break;
+                        case 3:
+                            holder.id_name.setTextColor(Color.GRAY);
+                            break;
+                    }
                     Log.d("TAG", "DocumentSnapshot data: " + document.getData());
                 } else {
                     Log.d("TAG", "No such document");
@@ -138,7 +153,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                                 sum.num_of_rates++;
                                 sum.sum_of_rate+=rating;
                                 ratingBar.setRating(sum.getRank());
-                                myRef.child(key_).child("count").setValue((Long) (snapshot.child(key_).getValue()) + 1);
+                                myRef.child(key_).child("count").setValue((snapshot.child(key_).child("count").getValue(Long.class)) + 1);
                                 myRef.child(key_).child("users").child(current_uid).setValue(rating);
 
                             }
@@ -155,6 +170,29 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                         myRef2.child(key_).setValue(sum);
                         String count = "("+sum.getRank()+")"+" ("+sum.num_of_rates+")";
                         holder.count.setText(count);
+                        final User[] user = new User[1];
+                        DocumentReference docRef = holder.fStore.collection("users").document(sum_array.get(position).userId);
+                        docRef.get().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+//                    User user = User.getUser(sum_array.get(position).userId);
+                                    user[0] = document.toObject(User.class);
+                                    user[0].setNum_of_rates(user[0].getNum_of_rates()+1);
+                                    user[0].setRank(user[0].getRank()+rating);
+                                    user[0].updateFirestore();
+                                    name_from_id[0] = (String) document.getData().get("fullName");
+                                    Log.d("TAG", "DocumentSnapshot data: " + document.getData());
+                                } else {
+                                    Log.d("TAG", "No such document");
+                                }
+                            } else {
+                                Log.d("TAG", "get failed with ", task.getException());
+                            }
+                        });
+//                        user[0].setNum_of_rates(user[0].getNum_of_rates()+1);
+//                        user[0].setRank(user[0].getRank()+rating);
+//                        user[0].updateFirestore();
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
