@@ -107,8 +107,6 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
             public void onClick(View v) {
                 DownloadFile d = new DownloadFile(result_activity, sum_array.get(position));
                 d.down();
-
-
             }
         });
         String key = (String)sum.uri;
