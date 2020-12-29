@@ -62,7 +62,7 @@ public class Manager extends MenuApp {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
         Query v3 = myRef
-                .child("summariesToManager");
+                .child("summariesToManager").orderByChild("count");
         v3.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -93,7 +93,8 @@ public class Manager extends MenuApp {
                     for(String key : keys_sum) {
                         Log.d("key", "" + key);
                         sum[0] = snapshot.child(key).getValue(Summary.class);
-//                        System.out.println("sum.userId:" + sum[0].userId);
+                        if(sum[0]!=null)
+                        System.out.println("sum.userId:" + sum[0].userId);
                         sum_array_check.add(sum[0]);
                     }
                 }
