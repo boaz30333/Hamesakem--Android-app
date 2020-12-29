@@ -93,7 +93,7 @@ public class Manager extends MenuApp {
                     for(String key : keys_sum) {
                         Log.d("key", "" + key);
                         sum[0] = snapshot.child(key).getValue(Summary.class);
-                        System.out.println("sum.userId:" + sum[0].userId);
+//                        System.out.println("sum.userId:" + sum[0].userId);
                         sum_array_check.add(sum[0]);
                     }
                 }
