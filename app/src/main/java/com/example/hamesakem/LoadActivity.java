@@ -39,6 +39,7 @@ public class LoadActivity extends MenuApp implements View.OnClickListener {
     //Buttons
 //    private Button buttonChoose;
     private Button buttonUpload;
+    private Button email;
     String course, teacher, year, semester, university;
 //    TextView course;
 //    TextView teacher;
@@ -63,6 +64,7 @@ protected void onCreate(Bundle savedInstanceState) {
     //getting views from layout
 //        buttonChoose = (Button) findViewById(R.id.buttonChoose);
     buttonUpload = (Button) findViewById(R.id.bsave);
+    email = (Button) findViewById(R.id.email);
 
 //        imageView = (ImageView) findViewById(R.id.imageView);
 
@@ -84,8 +86,8 @@ protected void onCreate(Bundle savedInstanceState) {
     }
 
     private boolean checkInput() {
-        if(university.length()==0 ||course.length()==0 || teacher.length()==0 || year.length()==0 || semester.length()==0 || course.length()==0){
-            Toast.makeText(this, "שגיאה: דרוש למלא את כל השדות!", Toast.LENGTH_LONG).show();
+        if(university.length()==0 || university.equals("-") || course.length()==0 || course.equals("-") || teacher.length()==0 || teacher.equals("-") || year.length()==0 || semester.length()==0 || course.length()==0){
+            Toast.makeText(this, "שגיאה: דרוש למלא את כל השדות ובעברית!", Toast.LENGTH_LONG).show();
             return false;
         }
 //        String yr = year.replaceAll(" ", "");;
@@ -101,7 +103,8 @@ protected void onCreate(Bundle savedInstanceState) {
                 return false;
             }
         }
-        if(semester.length() != 1 || (!semester.equals("a") && !semester.equals("b") && !semester.equals("s") && !semester.equals("א") && !semester.equals("ב") && !semester.equals("ק"))){
+//        if(semester.length() != 1 || (!semester.equals("a") && !semester.equals("b") && !semester.equals("s") && !semester.equals("א") && !semester.equals("ב") && !semester.equals("ק"))){
+        if(semester.length() != 1 ||  (!semester.equals("א") && !semester.equals("ב") && !semester.equals("ק"))){
             Toast.makeText(this, " שגיאה: הסימסטר לא תקין! " + semester, Toast.LENGTH_LONG).show();
             return false;
         }
@@ -241,13 +244,20 @@ protected void onCreate(Bundle savedInstanceState) {
     private String editInput(String str) {
         str = str.toLowerCase();
         for(int i = 0; i < str.length(); i++){
-            if(!(str.charAt(i) >= 'a' && str.charAt(i) <= 'z') && !(str.charAt(i) >= 'א' && str.charAt(i) <= 'ת') && !(str.charAt(i) != ' ' || (str.charAt(i) != '-') )) {
-                String cahrToReplace = ""+str.charAt(i);
-                str = str.replaceAll(cahrToReplace, "");
-                i--;
+//            if(!(str.charAt(i) >= 'a' && str.charAt(i) <= 'z') && !(str.charAt(i) >= 'א' && str.charAt(i) <= 'ת') && !(str.charAt(i) != ' ' || (str.charAt(i) != '-') )) {
+            if(!(str.charAt(i) >= 'א' && str.charAt(i) <= 'ת')) {
+                if((str.charAt(i) == ' ' || (str.charAt(i) == '-')) && i!=0 && (str.charAt(i-1) >= 'א' && str.charAt(i-1) <= 'ת') && i!=str.length()-1 && (str.charAt(i+1) >= 'א' && str.charAt(i+1) <= 'ת') ) {
+                    str = str.replaceFirst(""+str.charAt(i), "-");
+                }
+                else {
+                    str = str.replaceFirst(""+str.charAt(i), "");
+                    i--;
+                    }
             }
+            System.out.println("str: "+ str);
         }
-        return str.replaceAll(" ", "-");
+//        return str.replaceAll(" ", "-");
+        return str;
     }
 
 //    @Override
@@ -272,7 +282,10 @@ protected void onCreate(Bundle savedInstanceState) {
 //    }
 
     public void onClick2(View v){
-        Intent intent=new Intent(this,DownloadFile.class);
-        startActivity(intent);
+//        Intent intent=new Intent(this,DownloadFile.class);
+//        startActivity(intent);
+        SendEmail se =new SendEmail(LoadActivity.this);
+        //send to..
+        se.send("itamarzo0@gmail.com");
     }
 }

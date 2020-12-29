@@ -39,6 +39,7 @@
     <string name="cancel_report">בטל דיווח על תוכן לא ראוי</string>
     <string name="cancelReport">בטל דיווח</string>
     <string name="num_report">מספר דיווחים</string>
+    <string name="button">Button</string>
 
 
 </resources>
