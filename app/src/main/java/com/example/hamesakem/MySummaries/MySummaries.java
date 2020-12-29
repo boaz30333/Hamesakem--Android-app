@@ -18,6 +18,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MySummaries extends MenuApp {
 
@@ -57,6 +60,14 @@ public class MySummaries extends MenuApp {
                         my_summaries.add(sum);
                     }
                 }
+                Collections.sort(my_summaries, new Comparator<Summary>() {
+                    @Override
+                    public int compare(Summary o1, Summary o2) {
+                        if(o1.getRank()>o2.getRank()) return 1;
+                        else if(o1.getRank()<o2.getRank()) return -1;
+                        else return 0;
+                    }
+                });
                 fbcbSum.onCallback(my_summaries);
             }
 

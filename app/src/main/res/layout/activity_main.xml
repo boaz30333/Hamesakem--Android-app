@@ -12,53 +12,56 @@
         android:id="@+id/button6"
         android:layout_width="200dp"
         android:layout_height="39dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="1dp"
         android:background="@drawable/rounded"
         android:text="@string/summeries"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.962" />
+        app:layout_constraintTop_toBottomOf="@+id/button7" />
 
     <Button
         android:id="@+id/button7"
         android:layout_width="200dp"
         android:layout_height="39dp"
-        android:background="@drawable/rounded"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/btn_main_select"
+        android:backgroundTint="#FF1111"
+        android:backgroundTintMode="src_in"
+        android:drawableTintMode="src_over"
         android:text="@string/checkSummaries"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.962" />
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="39dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/rounded"
+        android:layout_width="115dp"
+        android:layout_height="94dp"
+        android:layout_marginTop="67dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/logout"
         android:onClick="logout"
-        android:text="@string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintHorizontal_bias="0.898"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tl" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="200dp"
         android:layout_height="39dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="552dp"
         android:background="@drawable/rounded"
-        android:onClick="onClick"
         android:text="@string/upload"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.99"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -83,11 +86,11 @@
             android:gravity="center"
             android:paddingBottom="30dp">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button4"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded"
+                android:background="@drawable/btn_main_select"
                 android:text="@string/choose_university"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textStyle="bold" />
@@ -99,11 +102,11 @@
             android:gravity="center"
             android:paddingBottom="30dp">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button3"
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/rounded"
+                android:background="@drawable/btn_main_select"
                 android:foregroundGravity="center"
                 android:text="@string/choose_course"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -116,11 +119,12 @@
             android:gravity="center"
             android:paddingBottom="30dp">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button5"
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/rounded"
+                android:background="@drawable/btn_main_select"
+                android:drawableTintMode="multiply"
                 android:text="@string/choose_lecturer"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textStyle="bold" />
@@ -132,17 +136,41 @@
             android:gravity="center"
             android:paddingBottom="30dp">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button9"
                 android:layout_width="137dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/rounded"
+                android:background="@drawable/btn_main_select"
+                android:drawableEnd="@android:drawable/ic_menu_search"
+                android:drawableTint="#8AFFFFFF"
+                android:drawableTintMode="multiply"
+                android:drawingCacheQuality="high"
+                android:focusable="auto"
+                android:focusableInTouchMode="false"
                 android:gravity="center"
+                android:includeFontPadding="false"
+                android:paddingStart="40dp"
+                android:paddingEnd="25dp"
+                android:scrollbarAlwaysDrawVerticalTrack="false"
+                android:selectAllOnFocus="true"
                 android:text="@string/search"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textStyle="normal|bold" />
         </TableRow>
     </TableLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="231dp"
+        android:layout_height="121dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="585dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

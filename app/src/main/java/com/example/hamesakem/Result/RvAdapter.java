@@ -79,7 +79,11 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
 //                Log.d("TAG", "get failed with ", task.getException());
 //            }
 //        });
+        Summary sum = sum_array.get(position);
+
         holder.id_name.setText(current_user.fName);
+        String count = "("+sum.getRank()+")"+" ("+sum.num_of_rates+")";
+        holder.count.setText(count);
 //        holder.l_name.setText(sum_array.get(position).lecturer);
 //        holder.c_name.setText(sum_array.get(position).topic);
 //        holder.u_name.setText(sum_array.get(position).university);
@@ -92,7 +96,6 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
 
             }
         });
-        Summary sum = sum_array.get(position);
         String key = (String)sum.uri;
         String[] fullPath = key.split("\\.");
         key = fullPath[0];
@@ -120,8 +123,14 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                                 catch(Exception c){
                                     System.out.println(c.getMessage());
                                 }
-                                float diff = rating - (Long)snapshot.child(key_).child("users").child(current_uid).getValue();
-                                sum.sum_of_rate+=diff;
+                                try {
+                                    double old_rating = snapshot.child(key_).child("users").child(current_uid).getValue(Double.class);
+                                    sum.sum_of_rate += (rating -old_rating );
+                                }
+                                catch(Exception c){
+                                    System.out.println(c.getMessage());
+                                    throw c;
+                                }
                                 myRef.child(key_).child("users").child(current_uid).setValue(rating);
                                 ratingBar.setRating(sum.getRank());
 
@@ -146,6 +155,8 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
 
                         }
                         myRef2.child(key_).setValue(sum);
+                        String count = "("+sum.getRank()+")"+" ("+sum.num_of_rates+")";
+                        holder.count.setText(count);
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
@@ -247,7 +258,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
         RatingBar r;
         TextView u_name;
         TextView c_name;
-        TextView l_name;
+        TextView count;
         TextView id_name;
         ToggleButton report;
         FirebaseFirestore fStore;
@@ -256,7 +267,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
             super(itemView);
             b = (Button) itemView.findViewById(R.id.button_row);
             r = (RatingBar) itemView.findViewById(R.id.rating);
-//            u_name = itemView.findViewById(R.id.u_name);
+            count = itemView.findViewById(R.id.count);
 //            c_name = itemView.findViewById(R.id.c_name);
 //            l_name = itemView.findViewById(R.id.t_name);
             id_name = itemView.findViewById(R.id.id_name);
