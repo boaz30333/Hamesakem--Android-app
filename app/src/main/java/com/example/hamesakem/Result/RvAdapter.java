@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +20,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hamesakem.DownloadFile;
+import com.example.hamesakem.LoadActivity;
 import com.example.hamesakem.R;
+import com.example.hamesakem.SendEmail;
 import com.example.hamesakem.Summary;
 import com.example.hamesakem.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -73,6 +76,15 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                 if (document.exists()) {
 //                    User user = User.getUser(sum_array.get(position).userId);
                     User user = document.toObject(User.class);
+                    holder.iv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            SendEmail se =new SendEmail(result_activity);
+                            //send to..
+                            assert user != null;
+                            se.send(user.email);
+                        }
+                    });
 
                     assert user != null;
                     holder.id_name.setText(user.fullName);
@@ -298,6 +310,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
         TextView id_name;
         ToggleButton report;
         FirebaseFirestore fStore;
+        ImageView iv;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -309,7 +322,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
             id_name = itemView.findViewById(R.id.id_name);
             report = (ToggleButton)itemView.findViewById(R.id.report);
             fStore = FirebaseFirestore.getInstance();
-
+            iv= itemView.findViewById(R.id.email);
         }
     }
 }

@@ -100,20 +100,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.993" />
 
-    <Button
-        android:id="@+id/email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="31dp"
-        android:layout_marginEnd="283dp"
-        android:layout_marginBottom="14dp"
-        android:onClick="onClick2"
-        android:text="@string/button"
-        app:layout_constraintBottom_toTopOf="@+id/bsave"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tesimester" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
