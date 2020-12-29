@@ -73,8 +73,9 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                 if (document.exists()) {
 //                    User user = User.getUser(sum_array.get(position).userId);
                     User user = document.toObject(User.class);
-                    name_from_id[0] = (String) document.getData().get("fullName");
-                    holder.id_name.setText("" + name_from_id[0]);
+
+                    assert user != null;
+                    holder.id_name.setText(user.fullName);
                     switch (user.computeRank()) {
                         case 1:
                             holder.id_name.setTextColor(Color.GREEN);
@@ -95,7 +96,8 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
             }
         });
         Summary sum = sum_array.get(position);
-        String count = "("+sum.getRank()+")"+" ("+sum.num_of_rates+")";
+        String rank=String.format("%.1f", sum.getRank());
+        String count = "("+rank+")"+" ("+sum.num_of_rates+")";
         holder.count.setText(count);
 //        holder.l_name.setText(sum_array.get(position).lecturer);
 //        holder.c_name.setText(sum_array.get(position).topic);
