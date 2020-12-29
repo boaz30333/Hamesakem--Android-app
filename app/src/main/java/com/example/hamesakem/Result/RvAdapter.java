@@ -63,25 +63,23 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-//        final String[] name_from_id = new String[1];
-//        DocumentReference docRef = holder.fStore.collection("users").document(sum_array.get(position).userId);
-//        docRef.get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                DocumentSnapshot document = task.getResult();
-//                if (document.exists()) {
-//                    name_from_id[0] = (String) document.getData().get("fName");
-//                    holder.id_name.setText("" + name_from_id[0]);
-//                    Log.d("TAG", "DocumentSnapshot data: " + document.getData());
-//                } else {
-//                    Log.d("TAG", "No such document");
-//                }
-//            } else {
-//                Log.d("TAG", "get failed with ", task.getException());
-//            }
-//        });
+        final String[] name_from_id = new String[1];
+        DocumentReference docRef = holder.fStore.collection("users").document(sum_array.get(position).userId);
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    name_from_id[0] = (String) document.getData().get("fName");
+                    holder.id_name.setText("" + name_from_id[0]);
+                    Log.d("TAG", "DocumentSnapshot data: " + document.getData());
+                } else {
+                    Log.d("TAG", "No such document");
+                }
+            } else {
+                Log.d("TAG", "get failed with ", task.getException());
+            }
+        });
         Summary sum = sum_array.get(position);
-
-        holder.id_name.setText(current_user.fName);
         String count = "("+sum.getRank()+")"+" ("+sum.num_of_rates+")";
         holder.count.setText(count);
 //        holder.l_name.setText(sum_array.get(position).lecturer);
