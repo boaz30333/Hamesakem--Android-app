@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 public class MenuApp extends AppCompatActivity {
 
+
     final int MANAGER = 3 , MYSUMMARIES = 2;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

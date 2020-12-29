@@ -98,7 +98,7 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
 
                 final EditText resetMail = new EditText(v.getContext());
-                resetMail.setText(" ");
+//                resetMail.setText("");
                 final AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(v.getContext());
                 passwordResetDialog.setTitle("לאפס סיסמא?");
                 passwordResetDialog.setMessage("הכנס כתובת אימייל לקבלת קישור לאיפוס סיסמא.");

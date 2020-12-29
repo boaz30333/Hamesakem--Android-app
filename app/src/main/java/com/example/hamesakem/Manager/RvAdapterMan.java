@@ -2,6 +2,7 @@ package com.example.hamesakem.Manager;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.example.hamesakem.DownloadFile;
 import com.example.hamesakem.MySummaries.RvAdapterSum;
 import com.example.hamesakem.R;
 import com.example.hamesakem.Summary;
+import com.example.hamesakem.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -59,8 +61,20 @@ public class RvAdapterMan extends RecyclerView.Adapter<RvAdapterMan.MyViewHolder
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        User user = User.getUser(sum_array.get(position).userId);
                         name_from_id[0]=  (String)document.getData().get("fName");
                         holder.id_name.setText(""+name_from_id[0]);
+                        switch (user.computeRank()) {
+                            case 1:
+                                holder.id_name.setTextColor(Color.GREEN);
+                                break;
+                            case 2:
+                                holder.id_name.setTextColor(Color.MAGENTA);
+                                break;
+                            case 3:
+                                holder.id_name.setTextColor(Color.GRAY);
+                                break;
+                        }
                         Log.d("TAG", "DocumentSnapshot data: " + document.getData());
                     } else {
                         Log.d("TAG", "No such document");

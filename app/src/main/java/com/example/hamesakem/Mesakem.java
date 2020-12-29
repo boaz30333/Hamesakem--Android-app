@@ -8,7 +8,7 @@ public class Mesakem extends User {
         Rank = rank;
     }
 
-    public int getRank() {
+    public double getRank() {
         return Rank;
     }
 
