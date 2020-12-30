@@ -313,8 +313,6 @@ protected void onCreate(Bundle savedInstanceState) {
     public void onClick2(View v){
 //        Intent intent=new Intent(this,DownloadFile.class);
 //        startActivity(intent);
-        SendEmail se =new SendEmail(LoadActivity.this);
-        //send to..
-        se.send("itamarzo0@gmail.com");
+
     }
 }
