@@ -14,4 +14,5 @@
     <color name="default_color">#6200ee</color>
     <color name="turquoise">#40e0d0</color>
     <color name="shadow">#79000000</color>
+    <color name="lightblue">#03a9f4</color>
 </resources>

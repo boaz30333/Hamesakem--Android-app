@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
@@ -86,13 +87,13 @@ public class MainActivity extends MenuApp {
         user = fAuth.getCurrentUser();
 
 
-        upload = (Button) findViewById(R.id.button2);
+//        upload = (Button) findViewById(R.id.button2);
         course = (Button) findViewById(R.id.button3);
         university = (Button) findViewById(R.id.button4);
         lecturer = (Button) findViewById(R.id.button5);
         search = (Button) findViewById(R.id.button9);
-        my_sum = (Button) findViewById(R.id.button6);
-        sum_to_manager = (Button) findViewById(R.id.button7);
+//        my_sum = (Button) findViewById(R.id.button6);
+//        sum_to_manager = (Button) findViewById(R.id.button7);
 
         list_c = new ListView(this);
         list_u = new ListView(this);
@@ -122,22 +123,22 @@ public class MainActivity extends MenuApp {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
-
-        myRef.child("sum").orderByChild("userId").equalTo(userId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                System.out.println("5");
-                if (snapshot.exists()) {
-                    my_sum.setVisibility(View.VISIBLE);
-                } else {
-                    my_sum.setVisibility(View.INVISIBLE);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
+//
+//        myRef.child("sum").orderByChild("userId").equalTo(userId).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                System.out.println("5");
+//                if (snapshot.exists()) {
+//                    my_sum.setVisibility(View.VISIBLE);
+//                } else {
+//                    my_sum.setVisibility(View.INVISIBLE);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//            }
+//        });
         checkAdmin();
         Query vv = myRef.child("universities");
         vv.addValueEventListener(new ValueEventListener() {
@@ -231,9 +232,14 @@ public class MainActivity extends MenuApp {
         builder_c.setTitle("בחר קורס");
         builder_c.setSingleChoiceItems(adapter_c, 0, (dialog, which) -> {
             // when click on curse
+
             course_choice = c_listItems.get(which);
             choose_c = true;
-        }); //when click ok
+        });
+
+
+
+        //when click ok
         DialogInterface.OnClickListener course_listener = (dialog, which) -> {
 //            choose_l = false;
 //            l_listItems.clear();
@@ -262,8 +268,22 @@ public class MainActivity extends MenuApp {
             }
         };
         builder_c.setPositiveButton("OK", course_listener);
+
+//        builder_c.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                course_choice = c_listItems.get(position);
+//                choose_c = true;
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
         builder_c.setNegativeButton("Cancel", null);
         dialog_c = builder_c.create();
+
         ((ArrayAdapter) adapter_c).notifyDataSetChanged();
         //---------------------------------------------------------------------
         AlertDialog.Builder builder_l = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogCustom);
@@ -312,8 +332,9 @@ public class MainActivity extends MenuApp {
             if (c_listItems == null || c_listItems.isEmpty()) {
                 choice_p_c.show();
             } else {
-                adapter_c.getView(0,null,list_c).performClick();
                 dialog_c.show();
+                ((AlertDialog) dialog_c).getListView().setItemChecked(0, true);
+
             }
         });
         university.setOnClickListener(v -> {
@@ -321,28 +342,30 @@ public class MainActivity extends MenuApp {
             if (u_listItems.isEmpty()) {
                 choice_p_u.show();
             } else {
-                adapter_u.getView(0,null,list_u).performClick();
                 dialog_u.show();
+                ((AlertDialog) dialog_u).getListView().setItemChecked(0, true);
+
             }
         });
         lecturer.setOnClickListener(v -> {
             if (l_listItems == null || l_listItems.isEmpty()) {
                 choice_p_l.show();
             } else {
-                adapter_l.getView(0,null,list_l).performClick();
                 dialog_l.show();
+                ((AlertDialog) dialog_l).getListView().setItemChecked(0, true);
+
             }
         });
 
     }
 
     private void OnBtnClick2() {
-        my_sum.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, MySummaries.class);
-            intent.putExtra("userId", userId);
-            intent.putExtra("current_user",current_user);
-            startActivityForResult(intent, 1);
-        });
+//        my_sum.setOnClickListener(v -> {
+//            Intent intent = new Intent(MainActivity.this, MySummaries.class);
+//            intent.putExtra("userId", userId);
+//            intent.putExtra("current_user",current_user);
+//            startActivityForResult(intent, 1);
+//        });
 
         search.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, result.class);
@@ -351,17 +374,17 @@ public class MainActivity extends MenuApp {
             startActivityForResult(intent, 2);
         });
 
-        upload.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, LoadActivity.class);
-            intent.putExtra("current_user",current_user);
-            startActivityForResult(intent, 3);
-        });
-
-        sum_to_manager.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, Manager.class);
-            intent.putExtra("current_user",current_user);
-            startActivityForResult(intent, 4);
-        });
+//        upload.setOnClickListener(v -> {
+//            Intent intent = new Intent(MainActivity.this, LoadActivity.class);
+//            intent.putExtra("current_user",current_user);
+//            startActivityForResult(intent, 3);
+//        });
+//
+//        sum_to_manager.setOnClickListener(v -> {
+//            Intent intent = new Intent(MainActivity.this, Manager.class);
+//            intent.putExtra("current_user",current_user);
+//            startActivityForResult(intent, 4);
+//        });
     }
 
     private void getUser(String userId, FireBaseCallBack fireBaseCallBack) {
@@ -399,15 +422,15 @@ public class MainActivity extends MenuApp {
     }
 
     private void checkAdmin() {
-        ArrayList<String> admins = new ArrayList<String>();
-        admins.add("boaz30333@gmail.com");
-        admins.add("bhorib@gmail.com");
-        admins.add("itamarzo0@gmail.com");
-        FirebaseAuth fAuth;
-        fAuth = FirebaseAuth.getInstance();
-        String email = fAuth.getCurrentUser().getEmail();
-        if (admins.contains(email)) sum_to_manager.setVisibility(View.VISIBLE);
-        else sum_to_manager.setVisibility(View.INVISIBLE);
+//        ArrayList<String> admins = new ArrayList<String>();
+//        admins.add("boaz30333@gmail.com");
+//        admins.add("bhorib@gmail.com");
+//        admins.add("itamarzo0@gmail.com");
+//        FirebaseAuth fAuth;
+//        fAuth = FirebaseAuth.getInstance();
+//        String email = fAuth.getCurrentUser().getEmail();
+//        if (admins.contains(email)) sum_to_manager.setVisibility(View.VISIBLE);
+//        else sum_to_manager.setVisibility(View.INVISIBLE);
     }
 
 

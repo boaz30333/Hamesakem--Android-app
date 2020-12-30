@@ -189,7 +189,8 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
 
                         }
                         myRef2.child(key_).setValue(sum);
-                        String count = "("+sum.getRank()+")"+" ("+sum.num_of_rates+")";
+                        String rank=String.format("%.1f", sum.getRank());
+                        String count = "("+rank+")"+" ("+sum.num_of_rates+")";
                         holder.count.setText(count);
                         final User[] user = new User[1];
                         DocumentReference docRef = holder.fStore.collection("users").document(sum_array.get(position).userId);
