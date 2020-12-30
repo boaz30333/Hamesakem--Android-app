@@ -54,7 +54,7 @@ public class RvAdapterSum extends RecyclerView.Adapter<RvAdapterSum.MyViewHolder
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         User user = User.getUser(sum_array.get(position).userId);
-                        name_from_id[0]=  (String)document.getData().get("fName");
+                        name_from_id[0]=  (String)document.getData().get("fullName");
                         holder.id_name.setText(""+name_from_id[0]);
                         switch (user.computeRank()) {
                             case 1:
