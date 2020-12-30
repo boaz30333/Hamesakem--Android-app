@@ -31,16 +31,32 @@ public class MenuApp extends AppCompatActivity {
         inflater.inflate(R.menu.menu, menu);
         //hide manager button
         ArrayList<String> admins = new ArrayList<String>();
-        admins.add("boaz30333@gmail.com");
-        admins.add("bhorib@gmail.com");
-        admins.add("itamarzo0@gmail.com");
+//        admins.add("boaz30333@gmail.com");
+//        admins.add("bhorib@gmail.com");
+//        admins.add("itamarzo0@gmail.com");
         FirebaseAuth fAuth;
         fAuth = FirebaseAuth.getInstance();
-        String email = fAuth.getCurrentUser().getEmail();
-        if (!admins.contains(email))
-            menu.getItem(MANAGER).setVisible(false);
-        else
-            menu.getItem(MANAGER).setVisible(true);
+        String id = fAuth.getCurrentUser().getUid();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("managers");
+        ref.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                            admins.add(dsp.getKey());
+                        }
+                        if (!admins.contains(id))
+                            menu.getItem(MANAGER).setVisible(false);
+                        else
+                            menu.getItem(MANAGER).setVisible(true);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //handle databaseError
+                    }
+                });
+
 
         //hide my_summaries button
         String userId = fAuth.getCurrentUser().getUid();

@@ -55,18 +55,18 @@ public class RvAdapterSum extends RecyclerView.Adapter<RvAdapterSum.MyViewHolder
                     if (document.exists()) {
                         User user = document.toObject(User.class);
                         name_from_id[0]=  (String)document.getData().get("fullName");
-                        holder.id_name.setText(""+name_from_id[0]);
-                        switch (user.computeRank()) {
-                            case 1:
-                                holder.id_name.setTextColor(Color.GREEN);
-                                break;
-                            case 2:
-                                holder.id_name.setTextColor(Color.MAGENTA);
-                                break;
-                            case 3:
-                                holder.id_name.setTextColor(Color.GRAY);
-                                break;
-                        }
+//                        holder.id_name.setText(""+name_from_id[0]);
+//                        switch (user.computeRank()) {
+//                            case 1:
+//                                holder.id_name.setTextColor(Color.GREEN);
+//                                break;
+//                            case 2:
+//                                holder.id_name.setTextColor(Color.MAGENTA);
+//                                break;
+//                            case 3:
+//                                holder.id_name.setTextColor(Color.GRAY);
+//                                break;
+//                        }
                         Log.d("TAG", "DocumentSnapshot data: " + document.getData());
                     } else {
                         Log.d("TAG", "No such document");
@@ -102,7 +102,7 @@ public class RvAdapterSum extends RecyclerView.Adapter<RvAdapterSum.MyViewHolder
         TextView u_name;
         TextView c_name;
         TextView l_name;
-        TextView id_name;
+//        TextView id_name;
         FirebaseFirestore fStore;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -112,7 +112,7 @@ public class RvAdapterSum extends RecyclerView.Adapter<RvAdapterSum.MyViewHolder
             u_name = itemView.findViewById(R.id.u_name);
             c_name=itemView.findViewById(R.id.c_name);
             l_name=itemView.findViewById(R.id.t_name);
-            id_name=itemView.findViewById(R.id.id_name);
+//            id_name=itemView.findViewById(R.id.id_name);
             fStore = FirebaseFirestore.getInstance();
 
         }
