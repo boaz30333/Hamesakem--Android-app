@@ -68,7 +68,6 @@ protected void onCreate(Bundle savedInstanceState) {
     //getting views from layout
 //        buttonChoose = (Button) findViewById(R.id.buttonChoose);
     buttonUpload = (Button) findViewById(R.id.bsave);
-    email = (Button) findViewById(R.id.email);
 
 //        imageView = (ImageView) findViewById(R.id.imageView);
 

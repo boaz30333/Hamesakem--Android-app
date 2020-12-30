@@ -95,7 +95,7 @@ public class Manager extends MenuApp {
                         sum[0] = snapshot.child(key).getValue(Summary.class);
                         if(sum[0]!=null)
                         System.out.println("sum.userId:" + sum[0].userId);
-                        sum_array_check.add(sum[0]);
+                        sum_array_check.add(0,sum[0]);
                     }
                 }
                 else{}
