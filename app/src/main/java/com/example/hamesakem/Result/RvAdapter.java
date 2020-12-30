@@ -131,6 +131,9 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
         holder.r.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if(fromUser==true){
+                final double[] diff = {0};
+                final boolean[] new_rater = {false};
                 DatabaseReference myRef = database.getReference("summariesRank");
                 myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -142,6 +145,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                             String e= key_ +"/users/"+current_uid;
                             //this user already rate
                             if(snapshot.hasChild(e)) {
+
                                 try {
                                     Long d = (Long)snapshot.child(key_).child("users").child(current_uid).getValue();
                                 }
@@ -150,7 +154,8 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                                 }
                                 try {
                                     double old_rating = snapshot.child(key_).child("users").child(current_uid).getValue(Double.class);
-                                    sum.sum_of_rate += (rating -old_rating );
+                                   diff[0] = rating -old_rating;
+                                    sum.sum_of_rate += diff[0];
                                 }
                                 catch(Exception c){
                                     System.out.println(c.getMessage());
@@ -162,6 +167,8 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                             }
                             //this user never rate before
                             else{
+                                diff[0] =rating;
+                                new_rater[0] = true;
                                 sum.num_of_rates++;
                                 sum.sum_of_rate+=rating;
                                 ratingBar.setRating(sum.getRank());
@@ -172,6 +179,8 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                         }
                         //this sum never get rate before
                         else{
+                            diff[0] =rating;
+                            new_rater[0] =true;
                           sum.num_of_rates++;
                           sum.sum_of_rate+=rating;
                           ratingBar.setRating(sum.getRank());
@@ -190,8 +199,10 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                                 if (document.exists()) {
 //                    User user = User.getUser(sum_array.get(position).userId);
                                     user[0] = document.toObject(User.class);
-                                    user[0].setNum_of_rates(user[0].getNum_of_rates()+1);
-                                    user[0].setRank(user[0].getRank()+rating);
+                                    if(new_rater[0] ==true) {
+                                        user[0].setNum_of_rates(user[0].getNum_of_rates() + 1);
+                                    }
+                                    user[0].setRank(user[0].getRank()+diff[0]);
                                     user[0].updateFirestore();
                                     name_from_id[0] = (String) document.getData().get("fullName");
                                     Log.d("TAG", "DocumentSnapshot data: " + document.getData());
@@ -211,7 +222,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
 
                     }
                 });
-            }
+            }}
         });
 
         //-----check if this user already report and allow him to cancel his report

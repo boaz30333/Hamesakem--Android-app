@@ -2,6 +2,7 @@ package com.example.hamesakem;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -52,11 +56,30 @@ public class Delete {
         storageRef.child(path).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                User user = User.getUser(sum_.userId);
-                user.setNum_of_sum(user.getNum_of_sum()-1);
-                user.setNum_of_rates(user.getNum_of_rates()-sum_.num_of_rates);
-                user.setRank(user.getRank()-sum_.sum_of_rate);
-                user.updateFirestore();
+
+                FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+                final User[] user = new User[1];
+                DocumentReference docRef = fStore.collection("users").document(sum_.userId);
+                docRef.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+//                    User user = User.getUser(sum_array.get(position).userId);
+                            user[0] = document.toObject(User.class);
+                            user[0].setNum_of_sum( user[0].getNum_of_sum()-1);
+                            user[0].setNum_of_rates( user[0].getNum_of_rates()-sum_.num_of_rates);
+                            user[0].setRank( user[0].getRank()-sum_.sum_of_rate);
+                            user[0].updateFirestore();
+//                    name_from_id[0] = (String) document.getData().get("fullName");
+                            Log.d("TAG", "DocumentSnapshot data: " + document.getData());
+                        } else {
+                            Log.d("TAG", "No such document");
+                        }
+                    } else {
+                        Log.d("TAG", "get failed with ", task.getException());
+                    }
+                });
+
                 progressDialog.dismiss();
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("sum");
