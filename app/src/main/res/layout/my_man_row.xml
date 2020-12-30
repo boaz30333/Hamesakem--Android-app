@@ -5,13 +5,13 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:background="@drawable/card_b"
-    android:backgroundTint="#000000">
+    android:background="@android:drawable/editbox_dropdown_light_frame"
+    android:backgroundTint="#F3F2EB">
 
     <androidx.cardview.widget.CardView
         android:layout_width="411dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="#51000000"
+        android:backgroundTint="#51EDE7E7"
         app:cardBackgroundColor="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,33 +26,44 @@
 
             <Button
                 android:id="@+id/button_row"
-                android:layout_width="99dp"
-                android:layout_height="wrap_content"
-                android:text="מחק סיכום"
+                style="@android:style/Widget.DeviceDefault.Light.EditText"
+                android:layout_width="45dp"
+                android:layout_height="36dp"
+                android:background="@android:drawable/ic_menu_delete"
+                android:backgroundTint="#755C5C"
+                android:stateListAnimator="@anim/nav_default_pop_enter_anim"
+                android:text=" "
+                android:textColor="#DD5D5D"
+                android:textColorHighlight="#D54747"
+                android:textColorLink="#F62F2F"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.493"
+                app:layout_constraintHorizontal_bias="0.704"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.913" />
+                app:layout_constraintVertical_bias="0.913"
+                app:rippleColor="@color/white"
+                app:shapeAppearance="@style/Theme.HaMesakem.PopupOverlay"
+                app:strokeColor="#BD4343" />
 
             <Button
                 android:id="@+id/button_row3"
-                android:layout_width="99dp"
-                android:layout_height="wrap_content"
-                android:text="@string/cancelReport"
+                android:layout_width="43dp"
+                android:layout_height="39dp"
+                android:background="@drawable/fui_ic_check_circle_black_128dp"
+                android:backgroundTint="#982323"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.125"
+                app:layout_constraintHorizontal_bias="0.54"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.913" />
+                app:layout_constraintVertical_bias="0.911" />
 
             <Button
                 android:id="@+id/button_row2"
-                android:layout_width="99dp"
-                android:layout_height="wrap_content"
-                android:text="הורד סיכום"
+                android:layout_width="48dp"
+                android:layout_height="34dp"
+                android:background="@android:drawable/stat_sys_download"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.868"
