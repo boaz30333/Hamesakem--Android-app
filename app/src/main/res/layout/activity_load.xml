@@ -48,7 +48,7 @@
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.271" />
@@ -85,19 +85,20 @@
 
     <Button
         android:id="@+id/bsave"
-        android:layout_width="101dp"
-        android:layout_height="70dp"
-        android:background="@android:drawable/ic_menu_upload"
+        android:layout_width="187dp"
+        android:layout_height="84dp"
+        android:drawableLeft="@android:drawable/ic_menu_upload"
         android:fontFamily="sans-serif-black"
         android:onClick="onClick"
+        android:text=" העלה סיכום"
         android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.087"
+        app:layout_constraintHorizontal_bias="0.549"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.959" />
+        app:layout_constraintVertical_bias="0.953" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
