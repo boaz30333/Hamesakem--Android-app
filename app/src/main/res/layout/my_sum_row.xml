@@ -46,18 +46,22 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.882" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_row"
                 android:layout_width="99dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded"
+                android:drawableEnd="@android:drawable/ic_menu_delete"
+                android:drawableTint="@color/white"
+                android:drawableTintMode="multiply"
+                android:drawingCacheQuality="high"
                 android:text="מחק סיכום"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.096"
+                app:layout_constraintHorizontal_bias="0.092"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.873" />
+                app:layout_constraintVertical_bias="0.897" />
 
             <TextView
                 android:id="@+id/u_title"
