@@ -31,9 +31,10 @@ User current_user;
         setContentView(R.layout.activity_result);
         current_user= (User)getIntent().getSerializableExtra("current_user");
         sum_array= (ArrayList<Summary>) getIntent().getSerializableExtra("sum_result");
+
         Collections.sort(sum_array, (o1, o2) -> {
-            if(o1.getRank()>o2.getRank()) return 1;
-            else if(o1.getRank()<o2.getRank()) return -1;
+            if(o1.getRank()>o2.getRank()) return -1;
+            else if(o1.getRank()<o2.getRank()) return 1;
             else return 0;
         });
 

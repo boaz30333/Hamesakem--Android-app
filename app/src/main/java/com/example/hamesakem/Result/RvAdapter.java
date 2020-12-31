@@ -43,7 +43,6 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
     ArrayList<Summary> sum_array;
     Context context;
     Activity result_activity;
-    String key_;
     FirebaseDatabase database;
     FirebaseAuth auth;
     String current_uid;
@@ -121,17 +120,13 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                 d.down();
             }
         });
-        final String[] key = {(String) sum[0].uri};
-        String[] fullPath = key[0].split("\\.");
-        key[0] = fullPath[0];
-        key[0] = key[0].replaceAll("/", "") + "-" + sum[0].userId;
-        key_ = key[0];
-holder.r.setId(position);
+
         holder.r.setRating(sum[0].getRank());
         holder.r.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                sum[0] = sum_array.get(ratingBar.getId());
+                final String key_ ;
+                sum[0] = sum_array.get(position);
                 String key = (String) sum[0].uri;
                 String[] fullPath = key.split("\\.");
                 key = fullPath[0];
@@ -227,12 +222,14 @@ holder.r.setId(position);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-//                sum[0] = sum_array.get(ratingBar.getId());
-//                String key = (String) sum[0].uri;
-//                String[] fullPath = key.split("\\.");
-//                key = fullPath[0];
-//                key = key.replaceAll("/", "") + "-" + sum[0].userId;
-//                key_ = key;
+                final String key_ ;
+                sum[0] = sum_array.get(position);
+                String key = (String) sum[0].uri;
+                String[] fullPath = key.split("\\.");
+                key = fullPath[0];
+                key = key.replaceAll("/", "") + "-" + sum[0].userId;
+                key_ = key;
+
                 if(snapshot.hasChild(key_)) {
                     String e= key_ +"/reporters/"+current_uid;
                     if(snapshot.hasChild(e)) {
@@ -255,7 +252,13 @@ holder.r.setId(position);
                     myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
-
+                            final String key_ ;
+                            sum[0] = sum_array.get(position);
+                            String key = (String) sum[0].uri;
+                            String[] fullPath = key.split("\\.");
+                            key = fullPath[0];
+                            key = key.replaceAll("/", "") + "-" + sum[0].userId;
+                            key_ = key;
 
                             if(snapshot.hasChild(key_)) {
                                 String e= key_+"/reporters/"+current_uid;
@@ -285,6 +288,13 @@ holder.r.setId(position);
                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
+                            final String key_ ;
+                            sum[0] = sum_array.get(position);
+                            String key = (String) sum[0].uri;
+                            String[] fullPath = key.split("\\.");
+                            key = fullPath[0];
+                            key = key.replaceAll("/", "") + "-" + sum[0].userId;
+                            key_ = key;
                             if (snapshot.hasChild(key_)) {
                                 if((Long)(snapshot.child(key_).child("count").getValue())>1) {
 

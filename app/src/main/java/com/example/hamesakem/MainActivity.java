@@ -37,6 +37,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 public class MainActivity extends MenuApp {
@@ -150,13 +152,16 @@ public class MainActivity extends MenuApp {
                         String u = (String) child.getKey();
                         if (!u_listItems.contains(u)) u_listItems.add(u);
                     }
+                    Collections.sort(u_listItems);
                 }
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+
         //--------------------------------------------------
         AlertDialog.Builder choice_problem1 = new AlertDialog.Builder(this);
         choice_problem1.setTitle("אין אפשרויות לבחירה");
@@ -214,6 +219,7 @@ public class MainActivity extends MenuApp {
                             }
                             sum_list.add(sum);
                         }
+                        Collections.sort(c_listItems);
                     }
                 }
 
@@ -266,6 +272,7 @@ public class MainActivity extends MenuApp {
                 }
                 else iter.remove();
             }
+            Collections.sort(l_listItems);
         };
         builder_c.setPositiveButton("OK", course_listener);
 
