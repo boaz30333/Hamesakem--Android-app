@@ -311,7 +311,7 @@ public class MainActivity extends MenuApp {
             while (iter.hasNext()) {
 
                 Summary s = iter.next();
-                if (s.lecturer != lecturer_choice) iter.remove();
+                if (!s.lecturer.equals(lecturer_choice)) iter.remove();
             }
             Toast.makeText(getApplicationContext(), "" + lecturer_choice, Toast.LENGTH_SHORT).show();
             lecturer.setText("" + lecturer_choice);

@@ -50,13 +50,14 @@
                 android:id="@+id/button_row"
                 android:layout_width="99dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/rounded"
                 android:text="מחק סיכום"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.125"
+                app:layout_constraintHorizontal_bias="0.096"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.976" />
+                app:layout_constraintVertical_bias="0.873" />
 
             <TextView
                 android:id="@+id/u_title"
