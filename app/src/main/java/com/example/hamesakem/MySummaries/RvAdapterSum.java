@@ -80,6 +80,10 @@ public class RvAdapterSum extends RecyclerView.Adapter<RvAdapterSum.MyViewHolder
         holder.c_name.setText(sum_array.get(position).topic);
         holder.u_name.setText(sum_array.get(position).university);
         holder.r.setRating(sum_array.get(position).getRank());
+        final Summary[] sum = {sum_array.get(position)};
+        String rank=String.format("%.1f", sum[0].getRank());
+        String count = "("+rank+")"+" ("+ sum[0].num_of_rates+")";
+        holder.count.setText(count);
         holder.r.setEnabled(false);
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +109,7 @@ public class RvAdapterSum extends RecyclerView.Adapter<RvAdapterSum.MyViewHolder
         TextView c_name;
         TextView l_name;
 //        TextView id_name;
+TextView count;
         FirebaseFirestore fStore;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -116,6 +121,7 @@ public class RvAdapterSum extends RecyclerView.Adapter<RvAdapterSum.MyViewHolder
             l_name=itemView.findViewById(R.id.t_name);
 //            id_name=itemView.findViewById(R.id.id_name);
             fStore = FirebaseFirestore.getInstance();
+            count = itemView.findViewById(R.id.count);
 
         }
     }

@@ -118,6 +118,7 @@ protected void onCreate(Bundle savedInstanceState) {
     private void showFileChooser() {
         Intent intent = new Intent();
         intent.setType("application/pdf");
+        intent.setType("application/pdf");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select pdf file"), PICK_PDF_REQUEST);
     }
@@ -164,6 +165,8 @@ protected void onCreate(Bundle savedInstanceState) {
                             updateRealTimeDB(userId, path);
 
                             //and displaying a success toast
+                            finish();
+
                             Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
                         }
                     })

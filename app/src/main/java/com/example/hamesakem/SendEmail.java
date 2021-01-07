@@ -18,9 +18,10 @@ public class SendEmail {
 
         String[] TO = {to_email};
 //        String[] CC = {""};
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+//        emailIntent.setType("text/plain");
         emailIntent.setData(Uri.parse("mailto:"));
-        emailIntent.setType("text/plain");
+
 
 
         emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
@@ -30,7 +31,6 @@ public class SendEmail {
 
         try {
             act.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-            act.finish();
             Log.i("Finished sending email...", "");
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(act,
