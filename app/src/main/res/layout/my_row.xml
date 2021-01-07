@@ -9,7 +9,8 @@
     android:background="@drawable/card_b"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:foreground="?android:attr/selectableItemBackground"
+>
 
     <androidx.cardview.widget.CardView
         android:layout_width="411dp"
@@ -48,41 +49,47 @@
 
             <ImageView
                 android:id="@+id/email"
-                android:layout_width="46dp"
-                android:layout_height="36dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="92dp"
+                android:layout_width="55dp"
+                android:layout_height="40dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.772"
+                app:layout_constraintHorizontal_bias="0.761"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.52"
+                app:layout_constraintVertical_bias="0.07999998"
                 card_view:srcCompat="@android:drawable/sym_action_email" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_row"
                 android:layout_width="220dp"
                 android:layout_height="36dp"
-                android:layout_marginStart="11dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginBottom="12dp"
                 android:background="@drawable/rounded"
+                android:drawableEnd="@android:drawable/stat_sys_download"
+                android:drawableTint="#8AFFFFFF"
+                android:drawableTintMode="multiply"
+                android:drawingCacheQuality="high"
+                android:focusable="auto"
+                android:focusableInTouchMode="false"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:paddingStart="40dp"
+                android:paddingEnd="25dp"
                 android:text="@string/download"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/report"
-                app:layout_constraintHorizontal_bias="0.904"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.857"
-               />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/id_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="11dp"
                 android:text="@string/ID_name"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/rating"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.097"
                 app:layout_constraintStart_toStartOf="parent"
@@ -105,27 +112,32 @@
 
             <ToggleButton
                 android:id="@+id/report"
-                android:layout_width="134dp"
-                android:layout_height="37dp"
-                android:layout_marginEnd="28dp"
+                android:layout_width="116dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
                 android:background="@drawable/rounded_red"
+                android:drawableEnd="?android:attr/alertDialogIcon"
+                android:paddingStart="5dp"
+                android:paddingEnd="1dp"
                 android:text="ToggleButton"
                 android:textOff="@string/Report_content"
                 android:textOn="@string/cancel_report"
-                app:layout_constraintBottom_toBottomOf="@+id/button_row"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/button_row"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintHorizontal_bias="0.027"
+                app:layout_constraintStart_toEndOf="@+id/button_row"
+                app:layout_constraintTop_toTopOf="@+id/button_row" />
 
             <TextView
                 android:id="@+id/count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="34dp"
                 android:layout_marginEnd="112dp"
                 android:text="(0.0)(0)"
                 android:textSize="17sp"
                 app:layout_constraintBottom_toBottomOf="@+id/rating"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/rating"
                 app:layout_constraintTop_toTopOf="@+id/rating"
                 app:layout_constraintVertical_bias="0.55" />
 

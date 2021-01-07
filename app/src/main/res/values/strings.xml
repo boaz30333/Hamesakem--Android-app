@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HaMesakem</string>
+    <string name="app_name">Hamesakem</string>
     <string name="title_activity_load">LoadActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

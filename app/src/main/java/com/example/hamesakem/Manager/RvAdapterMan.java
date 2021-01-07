@@ -138,6 +138,9 @@ public class RvAdapterMan extends RecyclerView.Adapter<RvAdapterMan.MyViewHolder
             @Override
             public void onClick(View v) {
                 myRef.child(key_).removeValue();
+                sum_array.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, sum_array.size());
                 Toast.makeText(manager_activity.getApplicationContext(), "Report denied ", Toast.LENGTH_LONG).show();
 
             }

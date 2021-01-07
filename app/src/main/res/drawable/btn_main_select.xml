@@ -2,7 +2,21 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 <!--    <item android:state_pressed="true" android:drawable="@drawable/rounded_red"-->
 <!--        />-->
-    <item android:state_focused="true" android:drawable="@drawable/rounded_red"/>
+    <item android:state_focused="true" android:drawable="@drawable/rounded_lightblue">
+    <layer-list>
+        <!-- SHADOW -->
+        <item android:right="5dp" android:top="5dp">
+            <shape>
+                <corners android:radius="30in" />
+                <solid android:color="#51000000" />
+            </shape>
+        </item>
+        <!-- BUTTON -->
+        <item android:bottom="2dp" android:left="2dp" android:drawable="@drawable/rounded_lightblue">
+
+        </item>
+    </layer-list>
+       </item>
 
 
     <item android:state_hovered="true">
@@ -10,29 +24,30 @@
             <!-- SHADOW -->
             <item>
                 <shape>
-                    <solid android:color="@color/shadow"/>
+                    <solid android:color="#51000000"/>
                     <corners android:radius="19dp"/>
 
                 </shape>
             </item>
             <!-- BUTTON -->
-            <item android:bottom="5px" android:drawable="@drawable/rounded_red">
+            <item android:bottom="2dp" android:left="2dp" android:drawable="@drawable/rounded_lightblue">
 
             </item>
         </layer-list>
     </item>
+
+
     <item android:state_pressed="true">
         <layer-list>
             <!-- SHADOW -->
-            <item>
+            <item android:right="5dp" android:top="5dp">
                 <shape>
-                    <solid android:color="@color/shadow"/>
-                    <corners android:radius="19dp"/>
-
+                    <corners android:radius="30in" />
+                    <solid android:color="#51000000" />
                 </shape>
             </item>
             <!-- BUTTON -->
-            <item android:bottom="5px" android:drawable="@drawable/rounded_red">
+            <item android:bottom="2dp" android:left="2dp" android:drawable="@drawable/rounded_lightblue">
 
             </item>
         </layer-list>

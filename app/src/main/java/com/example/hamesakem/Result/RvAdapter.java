@@ -43,7 +43,6 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
     ArrayList<Summary> sum_array;
     Context context;
     Activity result_activity;
-    String key_;
     FirebaseDatabase database;
     FirebaseAuth auth;
     String current_uid;
@@ -107,9 +106,9 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                 Log.d("TAG", "get failed with ", task.getException());
             }
         });
-        Summary sum = sum_array.get(position);
-        String rank=String.format("%.1f", sum.getRank());
-        String count = "("+rank+")"+" ("+sum.num_of_rates+")";
+        final Summary[] sum = {sum_array.get(position)};
+        String rank=String.format("%.1f", sum[0].getRank());
+        String count = "("+rank+")"+" ("+ sum[0].num_of_rates+")";
         holder.count.setText(count);
 //        holder.l_name.setText(sum_array.get(position).lecturer);
 //        holder.c_name.setText(sum_array.get(position).topic);
@@ -121,16 +120,18 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                 d.down();
             }
         });
-        String key = (String)sum.uri;
-        String[] fullPath = key.split("\\.");
-        key = fullPath[0];
-        key = key.replaceAll("/", "") + "-" + sum.userId;
-        key_ = key;
 
-        holder.r.setRating(sum.getRank());
+        holder.r.setRating(sum[0].getRank());
         holder.r.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                final String key_ ;
+                sum[0] = sum_array.get(position);
+                String key = (String) sum[0].uri;
+                String[] fullPath = key.split("\\.");
+                key = fullPath[0];
+                key = key.replaceAll("/", "") + "-" + sum[0].userId;
+                key_ = key;
                 if(fromUser==true){
                 final double[] diff = {0};
                 final boolean[] new_rater = {false};
@@ -140,38 +141,27 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                     public void onDataChange(DataSnapshot snapshot) {
                         //somebody rate
                         DatabaseReference myRef2 = database.getReference("sum");
-
+                        ratingBar.getId();
                         if(snapshot.hasChild(key_)) {
                             String e= key_ +"/users/"+current_uid;
                             //this user already rate
                             if(snapshot.hasChild(e)) {
 
-                                try {
-                                    Long d = (Long)snapshot.child(key_).child("users").child(current_uid).getValue();
-                                }
-                                catch(Exception c){
-                                    System.out.println(c.getMessage());
-                                }
-                                try {
                                     double old_rating = snapshot.child(key_).child("users").child(current_uid).getValue(Double.class);
                                    diff[0] = rating -old_rating;
-                                    sum.sum_of_rate += diff[0];
-                                }
-                                catch(Exception c){
-                                    System.out.println(c.getMessage());
-                                    throw c;
-                                }
+                                    sum[0].sum_of_rate += diff[0];
+
                                 myRef.child(key_).child("users").child(current_uid).setValue(rating);
-                                ratingBar.setRating(sum.getRank());
+                                ratingBar.setRating(sum[0].getRank());
 
                             }
                             //this user never rate before
                             else{
                                 diff[0] =rating;
                                 new_rater[0] = true;
-                                sum.num_of_rates++;
-                                sum.sum_of_rate+=rating;
-                                ratingBar.setRating(sum.getRank());
+                                sum[0].num_of_rates++;
+                                sum[0].sum_of_rate+=rating;
+                                ratingBar.setRating(sum[0].getRank());
                                 myRef.child(key_).child("count").setValue((snapshot.child(key_).child("count").getValue(Long.class)) + 1);
                                 myRef.child(key_).child("users").child(current_uid).setValue(rating);
 
@@ -181,16 +171,16 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                         else{
                             diff[0] =rating;
                             new_rater[0] =true;
-                          sum.num_of_rates++;
-                          sum.sum_of_rate+=rating;
-                          ratingBar.setRating(sum.getRank());
+                          sum[0].num_of_rates++;
+                          sum[0].sum_of_rate+=rating;
+                          ratingBar.setRating(sum[0].getRank());
                           myRef.child(key_).child("count").setValue(1);
                           myRef.child(key_).child("users").child(current_uid).setValue(rating);
 
                         }
-                        myRef2.child(key_).setValue(sum);
-                        String rank=String.format("%.1f", sum.getRank());
-                        String count = "("+rank+")"+" ("+sum.num_of_rates+")";
+                        myRef2.child(key_).setValue(sum[0]);
+                        String rank=String.format("%.1f", sum[0].getRank());
+                        String count = "("+rank+")"+" ("+ sum[0].num_of_rates+")";
                         holder.count.setText(count);
                         final User[] user = new User[1];
                         DocumentReference docRef = holder.fStore.collection("users").document(sum_array.get(position).userId);
@@ -232,6 +222,14 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                final String key_ ;
+                sum[0] = sum_array.get(position);
+                String key = (String) sum[0].uri;
+                String[] fullPath = key.split("\\.");
+                key = fullPath[0];
+                key = key.replaceAll("/", "") + "-" + sum[0].userId;
+                key_ = key;
+
                 if(snapshot.hasChild(key_)) {
                     String e= key_ +"/reporters/"+current_uid;
                     if(snapshot.hasChild(e)) {
@@ -254,7 +252,13 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                     myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
-
+                            final String key_ ;
+                            sum[0] = sum_array.get(position);
+                            String key = (String) sum[0].uri;
+                            String[] fullPath = key.split("\\.");
+                            key = fullPath[0];
+                            key = key.replaceAll("/", "") + "-" + sum[0].userId;
+                            key_ = key;
 
                             if(snapshot.hasChild(key_)) {
                                 String e= key_+"/reporters/"+current_uid;
@@ -284,6 +288,13 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.MyViewHolder> {
                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
+                            final String key_ ;
+                            sum[0] = sum_array.get(position);
+                            String key = (String) sum[0].uri;
+                            String[] fullPath = key.split("\\.");
+                            key = fullPath[0];
+                            key = key.replaceAll("/", "") + "-" + sum[0].userId;
+                            key_ = key;
                             if (snapshot.hasChild(key_)) {
                                 if((Long)(snapshot.child(key_).child("count").getValue())>1) {
 
