@@ -1,9 +1,9 @@
 @startuml
-class com.example.hamesakem.Delete {
-~ FirebaseStorage storage
-~ String path
-~ Activity act
-~ Summary sum
+class com.example.hamesakem.DeleteSummary {
+- FirebaseStorage storage
+- String path
+- Activity act
+- Summary sum
 + void del()
 - void updateValue(DatabaseReference,String,String)
 }
@@ -21,10 +21,10 @@ Interface מקרא {
 
 }
 class com.example.hamesakem.DownloadSummary {
-~ FirebaseStorage storage
-~ String path
-~ Activity act
-~ Summary sum
+- FirebaseStorage storage
+- String path
+- Activity act
+- Summary sum
 - void permissions()
 + {static} boolean hasPermissions(Context,String)
 + void down() {precondition: sum != null}
@@ -36,23 +36,22 @@ class com.example.hamesakem.DownloadSummary {
 class com.example.hamesakem.UploadSummary {
 - StorageReference mStorageRef
 - {static} int PICK_PDF_REQUEST
-~ String course
-~ Summary sum
+- String course
+- Summary sum
 - Uri filePath
-~ {static} int PICK_FILE_REQUEST
 - boolean checkInput()
-- void showFileChooser()
-# void onActivityResult(int,int,Intent)
-- void UploadSummary()
++ void showFileChooser()
++ void UploadSummary()
 - void updateRealTimeDB(String,String)
 - void updateValue(DatabaseReference,String,String)
-- String edi       tInput(String)
+- String editInput(String)
 }
+
 class com.example.hamesakem.Manager {
-~ ArrayList<String> keys_sum
-~ ArrayList<Summary> sum_array_check
-- void sum_to_check(FireBaseCallBackString fbcbString) {precondition : fbcbString!= null   }
-- void getSummary(FireBaseCallBackSum fbcbSum) {precondition : fbcbSum!= null}
+- ArrayList<String> keys_sum
+- ArrayList<Summary> sum_array_check
++ void sum_to_check(FireBaseCallBackString fbcbString)
++ void getSummary(FireBaseCallBackSum fbcbSum) {precondition : keys_sum!= null}
 }
 
 class com.example.hamesakem.User {
@@ -69,9 +68,10 @@ class com.example.hamesakem.User {
 + void setEmail(String){ precondition : email in use == false}
 + void setPhoneNumber(String)
 }
+
 class com.example.hamesakem.Mesakem {
-+ int Rank
-+ ArrayList<Summary> my_summaries
+- int Rank
+- ArrayList<Summary> my_summaries
 
 + int getRank()
 + void setRank(int)
@@ -79,15 +79,21 @@ class com.example.hamesakem.Mesakem {
 }
 
 class com.example.hamesakem.Summary {
-+ String lecturer
-+ String topic
-+ String university
-+ String uri
-+ String userId
-+ String year
-+ int num_of_rate
-+ double sum_rate
+- String lecturer
+- String topic
+- String university
+- String uri
+- String userId
+- String year
+- int num_of_rate
+- double sum_rate
 +   Summary(String lecturer, String year, String topic, String university, String uri, String userId)
++ String getUri()
++ String getuserId()
++ String getLecturer()
++ String getUniversity()
++ String getTopic()
++ String getYear()
 + double getRank(){precondition: num_of_rate>0}
 + void addRank(double new_rate){postcondition :  num_of_rate>0 }
 }
@@ -97,12 +103,11 @@ class com.example.hamesakem.Summary {
 com.example.hamesakem.User <|-- com.example.hamesakem.Mesakem
 com.example.hamesakem.User <|-- com.example.hamesakem.Manager
 
-java.io.Serializable <|.. com.example.hamesakem.Summary
 com.example.hamesakem.Manager "1.." o-- "0..*" com.example.hamesakem.Summary : has list to check
-com.example.hamesakem.Mesakem "1" *-- "0..*" com.example.hamesakem.Summary
+com.example.hamesakem.Mesakem "1" *-- "1..*" com.example.hamesakem.Summary
 
-com.example.hamesakem.Manager  -[dotted]--> com.example.hamesakem.Delete : use
-com.example.hamesakem.Mesakem  -[dotted]-> com.example.hamesakem.Delete : use
+com.example.hamesakem.Manager  -[dotted]--> "0..*" com.example.hamesakem.DeleteSummary : use
+com.example.hamesakem.Mesakem  -[dotted]-> "0..*" com.example.hamesakem.DeleteSummary : use
 com.example.hamesakem.User  -[dotted]-> "0..*" com.example.hamesakem.DownloadSummary : use
 com.example.hamesakem.User  -[dotted]-> "0..*" com.example.hamesakem.UploadSummary : use
 
