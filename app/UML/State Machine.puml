@@ -1,8 +1,9 @@
 @startuml
 (*)  -->[Writer_Upload_Summary] "Downloadable"
-"Downloadable"--> [User_Want_To_Read]"Download"
---> [Reader_Think_Unappropraite_Summary] "Report"
-"Report"-->[Unappropraite_Summary] "Delete"
+"Downloadable"-> [User_Want_To_Read]"Downloaded"
+--> [Reader_Think_Unappropraite_Summary] "Reported"
+"Reported"-->[Unappropraite_Summary] "Deleted"
+"Downloadable"->[Writer_delete_summary] "Deleted"
 -->(*)
-"Download" -->[Reader_Want_To_Rank] "Rank"
+"Downloaded" -->[Reader_Want_To_Rank] "Ranked"
 @enduml
