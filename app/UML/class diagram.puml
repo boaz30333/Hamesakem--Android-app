@@ -63,10 +63,6 @@ class com.example.hamesakem.User {
 + String getName()
 + String getEmail()
 + String getPhoneNumber()
-+ void setUserID(String)
-+ void setName(String)
-+ void setEmail(String){ precondition : email in use == false}
-+ void setPhoneNumber(String)
 }
 
 class com.example.hamesakem.Mesakem {
@@ -106,7 +102,7 @@ com.example.hamesakem.User <|-- com.example.hamesakem.Manager
 com.example.hamesakem.Manager "1.." o-- "0..*" com.example.hamesakem.Summary : has list to check
 com.example.hamesakem.Mesakem "1" *-- "1..*" com.example.hamesakem.Summary
 
-com.example.hamesakem.Manager  -[dotted]--> "0..*" com.example.hamesakem.DeleteSummary : use
+com.example.hamesakem.Manager  -[dotted]-> "0..*" com.example.hamesakem.DeleteSummary : use
 com.example.hamesakem.Mesakem  -[dotted]-> "0..*" com.example.hamesakem.DeleteSummary : use
 com.example.hamesakem.User  -[dotted]-> "0..*" com.example.hamesakem.DownloadSummary : use
 com.example.hamesakem.User  -[dotted]-> "0..*" com.example.hamesakem.UploadSummary : use
